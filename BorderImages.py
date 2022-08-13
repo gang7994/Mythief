@@ -5,7 +5,14 @@ from Settings import *
 class Wall(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "Wall.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "wall1.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
+        
+class Obstacle(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "obstacle1.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.name = "Wall"
 
@@ -13,7 +20,7 @@ class Wall(pygame.sprite.Sprite):
 class Finish(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "finish.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.name = "Finish"
 
@@ -21,7 +28,7 @@ class Finish(pygame.sprite.Sprite):
 class NoneRoad(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "notRoad.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "void_checked.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.name = "NoneRoad"
 

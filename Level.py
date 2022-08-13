@@ -1,6 +1,6 @@
 import pygame, os
 from Settings import *
-from BorderImages import Wall, NoneRoad, Finish
+from BorderImages import Wall, NoneRoad, Finish, Obstacle
 from Player import Player
 from Road import Road
 
@@ -23,6 +23,8 @@ class Level:
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "W":
                     Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "O":
+                    Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "R" or col == "P":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                 if col == "F":

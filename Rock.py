@@ -30,7 +30,7 @@ class Rock(pygame.sprite.Sprite):
                     self.kill()
                 if sprite.name == "NoneRoad":
                     self.border_images.remove(sprite)
-                    sprite.image = pygame.image.load(os.path.join(images_path, "road.png")).convert_alpha()
+                    sprite.image = pygame.image.load(os.path.join(images_path, "tile_N.png")).convert_alpha()
 
     # 업데이트 영역
     def update(self):
