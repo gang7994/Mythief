@@ -3,6 +3,7 @@ from Settings import *
 from BorderImages import Wall, NoneRoad, Finish, Obstacle
 from Player import Player
 from Road import Road
+from Monster import Monster
 
 # 레벨 클래스
 class Level:
@@ -19,7 +20,7 @@ class Level:
             for col_idx, col in enumerate(row):
                 tile_pos_x = col_idx * tile_width_size
                 tile_pos_y = row_idx * tile_height_size
-                if col == ".":
+                if col == "." or col == "M":
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "W":
                     Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -32,8 +33,12 @@ class Level:
                 if col == "P":
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
+                if col == "M":
+                    monster_start_pos_x = tile_pos_x
+                    monster_start_pos_y = tile_pos_y
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images], self.border_images)
+        self.monster = Monster((monster_start_pos_x, monster_start_pos_y), [self.images], self.border_images)
 
     # 현재 레벨의 플레이어 반환
     def get_player(self):
