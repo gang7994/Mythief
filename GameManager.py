@@ -50,7 +50,7 @@ class GameManager:
     # 무기 이미지 그리기
     def draw_rock_image(self):
         self.screen.blit(pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha(), (10, 150))
-        pygame.draw.rect(self.screen, WHITE, (10, 150, 32, 32), 2)
+        pygame.draw.rect(self.screen, WHITE, (5.5, 145.5, 32, 32), 2)
 
     # 무기 쿨타임 그리기
     def draw_rock_cool_time(self):
@@ -58,7 +58,7 @@ class GameManager:
             if self.level.player.current_time - self.level.player.rock_time <= self.level.player.rock_cool_time:
                 pygame.draw.rect(self.screen,
                                  BLACK,
-                                 (10, 150, 32,
+                                 (5.5, 145.5, 32,
                                   32 - (self.level.player.current_time - self.level.player.rock_time) / 22))
 
     # 클리어 함수
