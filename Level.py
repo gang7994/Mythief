@@ -18,8 +18,8 @@ class Level:
     def create_map(self):
         for row_idx, row in enumerate(map[self.map_idx]):
             for col_idx, col in enumerate(row):
-                tile_pos_x = col_idx * tile_width_size
-                tile_pos_y = row_idx * tile_height_size
+                tile_pos_x = col_idx * tile_width_size + horizontal_margin
+                tile_pos_y = row_idx * tile_height_size + vertical_margin
                 if col == ".":
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "W":
