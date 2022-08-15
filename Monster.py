@@ -61,7 +61,7 @@ class Monster(pygame.sprite.Sprite):
                         self.rect.top = sprite.rect.bottom
 
     # 몬스터 로직 업데이트
-    def monster_update(self):
+    def update(self):
         self.move_order()
         self.move(self.monster_speed)
         self.move_wait()

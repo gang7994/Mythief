@@ -12,6 +12,7 @@ class Level:
         self.display_surface = pygame.display.get_surface()
         self.images = pygame.sprite.Group()
         self.border_images = pygame.sprite.Group()
+        self.monster_images = pygame.sprite.Group()
         self.create_map()
 
     # 맵 생성
@@ -34,11 +35,10 @@ class Level:
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
                 if col == "M":
-                    monster_start_pos_x = tile_pos_x
-                    monster_start_pos_y = tile_pos_y
+                    Monster((tile_pos_x, tile_pos_y), [self.monster_images, self.border_images],
+                            self.border_images)
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images], self.border_images)
-        self.monster = Monster((monster_start_pos_x, monster_start_pos_y), [self.images, self.border_images], self.border_images)
 
     # 현재 레벨의 플레이어 반환
     def get_player(self):
@@ -51,6 +51,7 @@ class Level:
     # 현재 레벨의 메인 게임 로직
     def run(self):
         self.images.draw(self.display_surface)
+        self.monster_images.draw(self.display_surface)
         self.player.rocks.draw(self.display_surface)
-        self.monster.monster_update()
+        self.monster_images.update()
         self.images.update()

@@ -35,6 +35,7 @@ class Player(pygame.sprite.Sprite):
         if self.current_hp <= 0:
             self.current_hp = 0
         self.damaged_start = pygame.time.get_ticks()
+        self.image = pygame.image.load(os.path.join(images_path, "damaged_pix.png")).convert_alpha()
         self.image.set_alpha(200)
 
     # 회복 함수
@@ -133,6 +134,7 @@ class Player(pygame.sprite.Sprite):
             current_time = pygame.time.get_ticks()
             if current_time - self.damaged_start > self.undamaged_time:
                 self.is_damaged = False
+                self.image = pygame.image.load(os.path.join(images_path, "pix.png")).convert_alpha()
                 self.image.set_alpha(255)
 
 
@@ -144,19 +146,21 @@ class Player(pygame.sprite.Sprite):
                 if sprite.rect.colliderect(self.rect):
                     if sprite.name == "Monster" and not self.is_damaged:
                         self.get_damaged(10)
-                    if self.dir.x > 0:
-                        self.rect.right = sprite.rect.left
-                    elif self.dir.x < 0:
-                        self.rect.left = sprite.rect.right
+                    elif sprite.name != "Monster":
+                        if self.dir.x > 0:
+                            self.rect.right = sprite.rect.left
+                        elif self.dir.x < 0:
+                            self.rect.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
                     if sprite.name == "Monster" and not self.is_damaged:
                         self.get_damaged(10)
-                    if self.dir.y > 0:
-                        self.rect.bottom = sprite.rect.top
-                    elif self.dir.y < 0:
-                        self.rect.top = sprite.rect.bottom
+                    elif sprite.name != "Monster":
+                        if self.dir.y > 0:
+                            self.rect.bottom = sprite.rect.top
+                        elif self.dir.y < 0:
+                            self.rect.top = sprite.rect.bottom
 
     # 업데이트 영역 -> 무적 시간 함수 추가
     def update(self):
