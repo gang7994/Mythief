@@ -3,8 +3,12 @@ import os
 # 게임 세팅 - 시험해보기 주석
 
 # 화면 사이즈
-screen_width = 1056
-screen_height = 576
+horizontal_margin = 200    
+vertical_margin = 100
+screen_width = 1056 + horizontal_margin * 2
+screen_height = 576 + vertical_margin * 2
+
+
 # 색
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

@@ -71,6 +71,11 @@ class GameManager:
         self.screen.blit(msg, msg_rect)
         self.running = False
 
+    def show_info(self):
+        font = pygame.font.Font(None, 20)
+        pos = font.render(f"Player_pos: {self.level.player.rect.centerx, self.level.player.rect.centery,}", True, WHITE)
+        self.screen.blit(pos, (10, 700))
+    
     # 게임 로직
     def Run(self):
         # 프레임 영역
@@ -81,8 +86,7 @@ class GameManager:
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running = False
-
+                    sys.exit()
             # 이미지 영역
             self.screen.fill(BLACK)
             self.level.run()
@@ -90,6 +94,7 @@ class GameManager:
             self.draw_rock_image()
             self.draw_rock_cool_time()
             self.draw_hp()
+            self.show_info()
             elapse_time = (pygame.time.get_ticks() - start_time) / 1000
             self.draw_time(elapse_time)
             self.draw_score(self.total_score)
