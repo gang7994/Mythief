@@ -3,7 +3,7 @@ from Settings import *
 from Rock import Rock
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images):
+    def __init__(self, pos, groups, border_images, damage_images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "pix.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -16,15 +16,16 @@ class Player(pygame.sprite.Sprite):
         self.dir = pygame.math.Vector2()
         self.move_order = [0]
         self.is_horizon = False
-        self.player_speed = 1
+        self.player_speed = 2
         self.border_images = border_images
+        self.damage_images = damage_images
         self.rocks = pygame.sprite.Group()
         self.rock_cool_time = 700
         self.is_rock_ready = True
         self.rock_count = 0
         self.current_time = 0
         self.rock_time = 0
-        self.undamaged_time = 500    # 무적시간 0.5초
+        self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
 
     # 피해 함수 (무적 시간 추가) -> 무적시 투명도 올림
@@ -144,23 +145,28 @@ class Player(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name == "Monster" and not self.is_damaged:
-                        self.get_damaged(10)
-                    elif sprite.name != "Monster":
-                        if self.dir.x > 0:
-                            self.rect.right = sprite.rect.left
-                        elif self.dir.x < 0:
-                            self.rect.left = sprite.rect.right
+                    if self.dir.x > 0:
+                        self.rect.right = sprite.rect.left
+                    elif self.dir.x < 0:
+                        self.rect.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name == "Monster" and not self.is_damaged:
-                        self.get_damaged(10)
-                    elif sprite.name != "Monster":
-                        if self.dir.y > 0:
-                            self.rect.bottom = sprite.rect.top
-                        elif self.dir.y < 0:
-                            self.rect.top = sprite.rect.bottom
+                    if self.dir.y > 0:
+                        self.rect.bottom = sprite.rect.top
+                    elif self.dir.y < 0:
+                        self.rect.top = sprite.rect.bottom
+
+    # 데미지를 주는 충돌을 따로 만듦
+    def damage_collision(self):
+        for sprite in self.damage_images:
+            if sprite.rect.colliderect(self.rect):
+                if sprite.name == "Monster" and not self.is_damaged:
+                    self.get_damaged(10)
+                if sprite.name == "monster_laser" and not self.is_damaged:
+                    self.get_damaged(5)
+                    sprite.kill()
+
 
     # 업데이트 영역 -> 무적 시간 함수 추가
     def update(self):
@@ -168,4 +174,5 @@ class Player(pygame.sprite.Sprite):
         self.add_rock()
         self.re_load_rock()
         self.rocks.update()
+        self.damage_collision()
         self.move(self.player_speed)
