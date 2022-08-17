@@ -74,7 +74,9 @@ class GameManager:
     def show_info(self):
         font = pygame.font.Font(None, 20)
         pos = font.render(f"Player_pos: {self.level.player.rect.centerx, self.level.player.rect.centery,}", True, WHITE)
+        remain_monster = font.render(f"Remaining_Monster: {self.level.remain_monster}", True, WHITE) # Show_info로 주석표기
         self.screen.blit(pos, (10, 700))
+        self.screen.blit(remain_monster, (10, 710))
     
     # 게임 로직
     def Run(self):
@@ -104,6 +106,7 @@ class GameManager:
             y = self.level.get_finish()
             if x.rect.colliderect(y.rect):
                 if self.level.map_idx < len(map) - 1:
+                    Level.remain_monster = 0 # Show_info
                     self.level = Level(self.level.map_idx + 1)
                 else:
                     self.clear(int(elapse_time))

@@ -7,6 +7,7 @@ from Monster import Monster
 
 # 레벨 클래스
 class Level:
+    remain_monster = 0 # Show_info
     def __init__(self, map_idx):
         self.map_idx = map_idx
         self.display_surface = pygame.display.get_surface()
@@ -52,6 +53,7 @@ class Level:
                 if col == "M":
                     Monster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
                             self.border_images, self.damage_images)
+                    Level.remain_monster+=1 # Show_info
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images], self.border_images, self.damage_images)
 
