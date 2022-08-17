@@ -1,6 +1,6 @@
 import pygame, os
 from Settings import *
-from BorderImages import Wall, NoneRoad, Finish, Obstacle
+from BorderImages import Wall1, Wall2, Wall3, Wall4, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle
 from Player import Player
 from Road import Road
 from Monster import Monster
@@ -24,8 +24,22 @@ class Level:
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
                 if col == ".":
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "W":
-                    Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "W1":
+                    Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "W2":
+                    Wall2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "W3":
+                    Wall3((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "W4":
+                    Wall4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "C1":
+                    Corner1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "C2":
+                    Corner2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "C3":
+                    Corner3((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "C4":
+                    Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "R" or col == "P" or col == "M":

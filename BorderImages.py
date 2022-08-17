@@ -2,10 +2,59 @@ import pygame, os
 from Settings import *
 
 # 벽 이미지
-class Wall(pygame.sprite.Sprite):
+class Wall1(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall1.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
+        
+class Wall2(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall2.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
+        
+class Wall3(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall3.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
+        
+class Wall4(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall4.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
+        
+class Corner1(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall_corner1.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
+    
+class Corner2(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall_corner2.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
+        
+class Corner3(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall_corner3.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
+        
+class Corner4(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall_corner4.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.name = "Wall"
         
