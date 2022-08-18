@@ -4,7 +4,7 @@ from Settings import *
 import GameManager
 pygame.init()
 
-SCREEN = pygame.display.set_mode((1456, 776))
+SCREEN = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Menu")
 
 def get_titlefont(size): 
