@@ -3,7 +3,7 @@ from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle
 from Player import Player
 from Road import Road
-from Monster import Monster
+from Monster import LaserMonster, JumpMonster
 
 # 레벨 클래스
 class Level:
@@ -43,7 +43,7 @@ class Level:
                     Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "R" or col == "P" or col == "M":
+                if col == "R" or col == "P" or col == "M" or col == "JM":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images])
@@ -51,9 +51,14 @@ class Level:
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
                 if col == "M":
-                    Monster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
+                    LaserMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
                             self.border_images, self.damage_images)
                     Level.remain_monster+=1 # Show_info
+                if col == "JM":
+                    JumpMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
+                            self.border_images, self.damage_images)
+                    Level.remain_monster+=1 # Show_info
+
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images], self.border_images, self.damage_images)
 
@@ -68,8 +73,21 @@ class Level:
     # 몬스터 레이져 그리기
     def draw_monster_laser(self, display_surface):
         for monster in self.monster_images:
-            if monster.name == "Monster":
+            if monster.name == "laser_Monster":
                 monster.lasers.draw(display_surface)
+
+    # 플레이어 , 적 거리 계산
+    def get_player_distance(self, player):
+        for monster in self.monster_images:
+            if monster.name == "jump_Monster":
+                monster_vec = pygame.math.Vector2(monster.rect.center)
+                player_vec = pygame.math.Vector2(player.rect.center)
+                distance = (player_vec - monster_vec).magnitude()
+                if distance <= monster.boundary:
+                    if (player_vec - monster_vec)[0] != 0 or (player_vec - monster_vec)[1] != 0:
+                        monster.rush((player_vec - monster_vec).normalize())
+                else:
+                    monster.is_rush = False
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
@@ -77,5 +95,6 @@ class Level:
         self.monster_images.draw(self.display_surface)
         self.player.rocks.draw(self.display_surface)
         self.draw_monster_laser(self.display_surface)
+        self.get_player_distance(self.player)
         self.monster_images.update()
         self.images.update()

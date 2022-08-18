@@ -161,11 +161,13 @@ class Player(pygame.sprite.Sprite):
     def damage_collision(self):
         for sprite in self.damage_images:
             if sprite.rect.colliderect(self.rect):
-                if sprite.name == "Monster" and not self.is_damaged:
+                if sprite.name == "laser_Monster" and not self.is_damaged:
                     self.get_damaged(10)
                 if sprite.name == "monster_laser" and not self.is_damaged:
                     self.get_damaged(5)
                     sprite.kill()
+                if sprite.name == "jump_Monster" and not self.is_damaged:
+                    self.get_damaged(10)
 
 
     # 업데이트 영역 -> 무적 시간 함수 추가
