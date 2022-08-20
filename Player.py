@@ -5,7 +5,7 @@ from Rock import Rock
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "pix0.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
@@ -33,10 +33,17 @@ class Player(pygame.sprite.Sprite):
         if self.walk_count > 1:
             self.walk_count = 0
         if self.walk_count == 0:
-            self.image = pygame.image.load(os.path.join(images_path, "pix0.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
         elif self.walk_count == 1:
-            self.image = pygame.image.load(os.path.join(images_path, "pix1.png")).convert_alpha()
-        
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_1.png")).convert_alpha()
+        elif self.walk_count == 2:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_2.png")).convert_alpha()
+        elif self.walk_count == 3:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_3.png")).convert_alpha()
+        elif self.walk_count == 4:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_4.png")).convert_alpha()
+        elif self.walk_count == 5:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_5.png")).convert_alpha()
 
     # 피해 함수 (무적 시간 추가) -> 무적시 투명도 올림
     def get_damaged(self, attack):
@@ -153,7 +160,7 @@ class Player(pygame.sprite.Sprite):
             current_time = pygame.time.get_ticks()
             if current_time - self.damaged_start > self.undamaged_time:
                 self.is_damaged = False
-                self.image = pygame.image.load(os.path.join(images_path, "pix.png")).convert_alpha()
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
                 self.image.set_alpha(255)
 
 
