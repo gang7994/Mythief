@@ -12,12 +12,14 @@ class Encyclopedia:
     def Encyclopedia(self):
         while True:
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-            self.screen.fill("white")
-            OPTIONS_TEXT = get_font(45).render("백과사전창", True, "Black")
+            self.screen.fill("Black")
+            OPTIONS_TEXT = get_font(45).render("백과사전창", True, "White")
             OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width/2), 30))
+            self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
+            self.screen.blit(self.popup, (100, 100))
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
             OPTIONS_BACK = Button(image=None, pos=(1300, 0), 
-                                text_input="BACK", font = get_font(60), base_color="Black", hovering_color="Red")
+                                text_input="BACK", font = get_font(60), base_color="White", hovering_color="Red")
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
             OPTIONS_BACK.update(self.screen)
             for event in pygame.event.get():
@@ -37,12 +39,15 @@ class Credit:
     def Credit(self):
         while True:
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-            self.screen.fill("white")
-            OPTIONS_TEXT = get_font(45).render("크레딧창", True, "Black")
+            self.screen.fill("Black")
+            OPTIONS_TEXT = get_font(45).render("크레딧창", True, "White")
             OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width/2), 30))
+            self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
+            self.popup = pygame.transform.scale(self.popup, (800, 650))
+            self.screen.blit(self.popup, (328, 100))
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
             OPTIONS_BACK = Button(image=None, pos=(1300, 0), 
-                                text_input="BACK", font=get_font(60), base_color="Black", hovering_color="Red")
+                                text_input="BACK", font=get_font(60), base_color="White", hovering_color="Red")
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
             OPTIONS_BACK.update(self.screen)
             for event in pygame.event.get():
@@ -62,13 +67,14 @@ class Option:
     def Option(self):
         while True:
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-            self.screen.fill("white")
-            OPTIONS_TEXT = get_font(45).render("옵션창", True, "Black")
+            self.screen.fill("Black")
+            OPTIONS_TEXT = get_font(45).render("옵션창", True, "White")
             OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width/2), 30))
+            self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
+            self.screen.blit(self.popup, (100, 100))
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
-
             OPTIONS_BACK = Button(image=None, pos=(1300, 0), 
-                                text_input="BACK", font=get_font(60), base_color="Black", hovering_color="Red")
+                                text_input="BACK", font=get_font(60), base_color="White", hovering_color="Red")
 
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
             OPTIONS_BACK.update(self.screen)
