@@ -5,7 +5,7 @@ from Rock import Rock
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "pix.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "pix0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
@@ -27,6 +27,16 @@ class Player(pygame.sprite.Sprite):
         self.rock_time = 0
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
+        self.walk_count = 0
+
+    def walk_animation(self):
+        if self.walk_count > 1:
+            self.walk_count = 0
+        if self.walk_count == 0:
+            self.image = pygame.image.load(os.path.join(images_path, "pix0.png")).convert_alpha()
+        elif self.walk_count == 1:
+            self.image = pygame.image.load(os.path.join(images_path, "pix1.png")).convert_alpha()
+        
 
     # 피해 함수 (무적 시간 추가) -> 무적시 투명도 올림
     def get_damaged(self, attack):
@@ -51,8 +61,12 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.dir.x = -1
+            self.walk_count+=1
+            self.walk_animation()
         elif keys[pygame.K_RIGHT]:
             self.dir.x = 1
+            self.walk_count+=1
+            self.walk_animation()
         else:
             self.dir.x = 0
         return self.dir.x
@@ -62,8 +76,12 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.dir.y = -1
+            self.walk_count+=1
+            self.walk_animation()
         elif keys[pygame.K_DOWN]:
             self.dir.y = 1
+            self.walk_count+=1
+            self.walk_animation()
         else:
             self.dir.y = 0
         return self.dir.y
