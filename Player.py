@@ -28,10 +28,15 @@ class Player(pygame.sprite.Sprite):
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
         self.walk_count = 0
-
+        self.walk_time = 0
+        self.walk_current_time = 0
+        self.step_cooltime = 100
+        self.is_walk = True
+    
     def walk_animation(self):
         if self.walk_count > 1:
             self.walk_count = 0
+        self.walk_current_time = pygame.time.get_ticks()
         if self.walk_count == 0:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
         elif self.walk_count == 1:
@@ -45,6 +50,12 @@ class Player(pygame.sprite.Sprite):
         elif self.walk_count == 5:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_5.png")).convert_alpha()
 
+    def walk_delay(self):
+        if not self.is_walk:
+            self.walk_current_time = pygame.time.get_ticks()
+            if self.walk_current_time - self.walk_time > self.step_cooltime:
+                self.is_walk = True
+    
     # 피해 함수 (무적 시간 추가) -> 무적시 투명도 올림
     def get_damaged(self, attack):
         self.is_damaged = True
@@ -68,12 +79,18 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.dir.x = -1
-            self.walk_count+=1
-            self.walk_animation()
+            if self.is_walk:
+                self.walk_time = pygame.time.get_ticks()
+                self.walk_count+=1
+                self.is_walk = False
+                self.walk_animation()
         elif keys[pygame.K_RIGHT]:
             self.dir.x = 1
-            self.walk_count+=1
-            self.walk_animation()
+            if self.is_walk:
+                self.walk_time = pygame.time.get_ticks()
+                self.walk_count+=1
+                self.is_walk = False
+                self.walk_animation()
         else:
             self.dir.x = 0
         return self.dir.x
@@ -83,12 +100,18 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.dir.y = -1
-            self.walk_count+=1
-            self.walk_animation()
+            if self.is_walk:
+                self.walk_time = pygame.time.get_ticks()
+                self.walk_count+=1
+                self.is_walk = False
+                self.walk_animation()
         elif keys[pygame.K_DOWN]:
             self.dir.y = 1
-            self.walk_count+=1
-            self.walk_animation()
+            if self.is_walk:
+                self.walk_time = pygame.time.get_ticks()
+                self.walk_count+=1
+                self.is_walk = False
+                self.walk_animation()
         else:
             self.dir.y = 0
         return self.dir.y
@@ -203,3 +226,4 @@ class Player(pygame.sprite.Sprite):
         self.rocks.update()
         self.damage_collision()
         self.move(self.player_speed)
+        self.walk_delay()
