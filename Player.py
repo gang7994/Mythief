@@ -5,7 +5,7 @@ from Rock import Rock
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "pix.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
@@ -27,7 +27,35 @@ class Player(pygame.sprite.Sprite):
         self.rock_time = 0
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
+        self.walk_count = 0
+        self.walk_time = 0
+        self.walk_current_time = 0
+        self.step_cooltime = 100
+        self.is_walk = True
+    
+    def walk_animation(self):
+        if self.walk_count > 1:
+            self.walk_count = 0
+        self.walk_current_time = pygame.time.get_ticks()
+        if self.walk_count == 0:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
+        elif self.walk_count == 1:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_1.png")).convert_alpha()
+        elif self.walk_count == 2:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_2.png")).convert_alpha()
+        elif self.walk_count == 3:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_3.png")).convert_alpha()
+        elif self.walk_count == 4:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_4.png")).convert_alpha()
+        elif self.walk_count == 5:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_5.png")).convert_alpha()
 
+    def walk_delay(self):
+        if not self.is_walk:
+            self.walk_current_time = pygame.time.get_ticks()
+            if self.walk_current_time - self.walk_time > self.step_cooltime:
+                self.is_walk = True
+    
     # 피해 함수 (무적 시간 추가) -> 무적시 투명도 올림
     def get_damaged(self, attack):
         self.is_damaged = True
@@ -51,8 +79,18 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.dir.x = -1
+            if self.is_walk:
+                self.walk_time = pygame.time.get_ticks()
+                self.walk_count+=1
+                self.is_walk = False
+                self.walk_animation()
         elif keys[pygame.K_RIGHT]:
             self.dir.x = 1
+            if self.is_walk:
+                self.walk_time = pygame.time.get_ticks()
+                self.walk_count+=1
+                self.is_walk = False
+                self.walk_animation()
         else:
             self.dir.x = 0
         return self.dir.x
@@ -62,8 +100,18 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.dir.y = -1
+            if self.is_walk:
+                self.walk_time = pygame.time.get_ticks()
+                self.walk_count+=1
+                self.is_walk = False
+                self.walk_animation()
         elif keys[pygame.K_DOWN]:
             self.dir.y = 1
+            if self.is_walk:
+                self.walk_time = pygame.time.get_ticks()
+                self.walk_count+=1
+                self.is_walk = False
+                self.walk_animation()
         else:
             self.dir.y = 0
         return self.dir.y
@@ -135,7 +183,7 @@ class Player(pygame.sprite.Sprite):
             current_time = pygame.time.get_ticks()
             if current_time - self.damaged_start > self.undamaged_time:
                 self.is_damaged = False
-                self.image = pygame.image.load(os.path.join(images_path, "pix.png")).convert_alpha()
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
                 self.image.set_alpha(255)
 
 
@@ -178,3 +226,4 @@ class Player(pygame.sprite.Sprite):
         self.rocks.update()
         self.damage_collision()
         self.move(self.player_speed)
+        self.walk_delay()
