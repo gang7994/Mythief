@@ -27,14 +27,23 @@ class Player(pygame.sprite.Sprite):
         self.rock_time = 0
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
+        # walk animation variable 
         self.walk_count = 0
         self.walk_time = 0
         self.walk_current_time = 0
         self.step_cooltime = 100
         self.is_walk = True
+        # idle animation variable
+        self.idle_count = 0
+        self.idle_time = 0
+        self.idle_current_time = 0
+        self.idle_cooltime = 100
+        self.is_idle = True
+        self.is_move_x = False
+        self.is_move_y = False
     
     def walk_animation(self):
-        if self.walk_count > 1:
+        if self.walk_count > 5:
             self.walk_count = 0
         self.walk_current_time = pygame.time.get_ticks()
         if self.walk_count == 0:
@@ -54,13 +63,39 @@ class Player(pygame.sprite.Sprite):
             if self.is_damaged: self.image.set_alpha(200)
         elif self.walk_count == 5:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_5.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
+        
+    def idle_animation(self):
+        if self.idle_count > 2:
+            self.idle_count = 0
+        self.idle_current_time = pygame.time.get_ticks()
+        if self.idle_count == 0:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_idle0.png")).convert_alpha()
+        elif self.idle_count == 1:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_idle1.png")).convert_alpha()
+        elif self.idle_count == 2:
+            self.image = pygame.image.load(os.path.join(images_path, "sprite_idle2.png")).convert_alpha()
+    
 
     def walk_delay(self):
         if not self.is_walk:
             self.walk_current_time = pygame.time.get_ticks()
             if self.walk_current_time - self.walk_time > self.step_cooltime:
                 self.is_walk = True
+    
+    def idle_delay(self):
+        if not self.is_idle:
+            self.idle_current_time = pygame.time.get_ticks()
+            if self.idle_current_time - self.idle_time > self.idle_cooltime:
+                self.is_idle = True
+    
+    def idle(self):
+        if not self.is_move_x and not self.is_move_y:
+            if self.is_idle:
+                self.idle_time = pygame.time.get_ticks()
+                self.idle_count+=1
+                self.is_idle = False
+                self.idle_animation()
+    
     
     # 피해 함수 (무적 시간 추가) -> 무적시 투명도 올림
     def get_damaged(self, attack):
@@ -83,13 +118,16 @@ class Player(pygame.sprite.Sprite):
     def get_horizontal(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
+            self.is_move_x = True
             self.dir.x = -1
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
                 self.is_walk = False
                 self.walk_animation()
+                self.image = pygame.transform.flip(self.image, True, False)
         elif keys[pygame.K_RIGHT]:
+            self.is_move_x = True
             self.dir.x = 1
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
@@ -98,12 +136,14 @@ class Player(pygame.sprite.Sprite):
                 self.walk_animation()
         else:
             self.dir.x = 0
+            self.is_move_x = False
         return self.dir.x
 
     # 수직 이동 입력
     def get_vertical(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
+            self.is_move_y = True
             self.dir.y = -1
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
@@ -111,6 +151,7 @@ class Player(pygame.sprite.Sprite):
                 self.is_walk = False
                 self.walk_animation()
         elif keys[pygame.K_DOWN]:
+            self.is_move_y = True
             self.dir.y = 1
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
@@ -119,6 +160,7 @@ class Player(pygame.sprite.Sprite):
                 self.walk_animation()
         else:
             self.dir.y = 0
+            self.is_move_y = False
         return self.dir.y
 
     # 이동 함수
@@ -231,3 +273,6 @@ class Player(pygame.sprite.Sprite):
         self.damage_collision()
         self.move(self.player_speed)
         self.walk_delay()
+        self.idle()
+        self.idle_delay()
+        
