@@ -3,7 +3,7 @@ from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle
 from Player import Player
 from Road import Road
-from Monster import LaserMonster, JumpMonster
+from Monster import LaserMonster, RushMonster
 
 # 레벨 클래스
 class Level:
@@ -55,7 +55,7 @@ class Level:
                             self.border_images, self.damage_images)
                     Level.remain_monster+=1 # Show_info
                 if col == "JM":
-                    JumpMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
+                    RushMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
                             self.border_images, self.damage_images)
                     Level.remain_monster+=1 # Show_info
 
@@ -79,13 +79,24 @@ class Level:
     # 플레이어 , 적 거리 계산
     def get_player_distance(self, player):
         for monster in self.monster_images:
-            if monster.name == "jump_Monster":
+            if monster.name == "rush_Monster":
                 monster_vec = pygame.math.Vector2(monster.rect.center)
                 player_vec = pygame.math.Vector2(player.rect.center)
                 distance = (player_vec - monster_vec).magnitude()
+                if (player_vec - monster_vec)[0] < 0:
+                    dir_x = -1
+                elif (player_vec - monster_vec)[0] == 0:
+                    dir_x = 0
+                elif (player_vec - monster_vec)[0] > 0:
+                    dir_x = 1
+                if (player_vec - monster_vec)[1] < 0:
+                    dir_y = -1
+                elif (player_vec - monster_vec)[1] == 0:
+                    dir_y = 0
+                elif (player_vec - monster_vec)[1] > 0:
+                    dir_y = 1
                 if distance <= monster.boundary:
-                    if (player_vec - monster_vec)[0] != 0 or (player_vec - monster_vec)[1] != 0:
-                        monster.rush((player_vec - monster_vec).normalize())
+                    monster.rush((dir_x, dir_y))
                 else:
                     monster.is_rush = False
 

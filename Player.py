@@ -39,16 +39,22 @@ class Player(pygame.sprite.Sprite):
         self.walk_current_time = pygame.time.get_ticks()
         if self.walk_count == 0:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
         elif self.walk_count == 1:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_1.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
         elif self.walk_count == 2:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_2.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
         elif self.walk_count == 3:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_3.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
         elif self.walk_count == 4:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_4.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
         elif self.walk_count == 5:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_5.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
 
     def walk_delay(self):
         if not self.is_walk:
@@ -64,7 +70,6 @@ class Player(pygame.sprite.Sprite):
         if self.current_hp <= 0:
             self.current_hp = 0
         self.damaged_start = pygame.time.get_ticks()
-        self.image = pygame.image.load(os.path.join(images_path, "damaged_pix.png")).convert_alpha()
         self.image.set_alpha(200)
 
     # 회복 함수
@@ -183,12 +188,11 @@ class Player(pygame.sprite.Sprite):
             current_time = pygame.time.get_ticks()
             if current_time - self.damaged_start > self.undamaged_time:
                 self.is_damaged = False
-                self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
                 self.image.set_alpha(255)
 
 
 
-    # 충돌 함수 -> 적 충돌시 hp감소 추가(방향에 대한 매개변수로 인해 적 충돌에 버그가 좀 있음, 적 충돌을 따로 만들어야할 수도 있음)
+    # 충돌 함수
     def collision(self, direction):
         if direction == "horizontal":
             for sprite in self.border_images:
@@ -214,7 +218,7 @@ class Player(pygame.sprite.Sprite):
                 if sprite.name == "monster_laser" and not self.is_damaged:
                     self.get_damaged(5)
                     sprite.kill()
-                if sprite.name == "jump_Monster" and not self.is_damaged:
+                if sprite.name == "rush_Monster" and not self.is_damaged:
                     self.get_damaged(10)
 
 

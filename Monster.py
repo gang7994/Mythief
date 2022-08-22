@@ -100,12 +100,12 @@ class LaserMonster(pygame.sprite.Sprite):
         self.re_load_laser()
         self.lasers.update()
 
-class JumpMonster(pygame.sprite.Sprite):
+class RushMonster(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "monster.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.name = "jump_Monster"
+        self.name = "rush_Monster"
         self.dir = pygame.math.Vector2()
         self.border_images = border_images
         self.damage_images = damage_images
@@ -113,7 +113,7 @@ class JumpMonster(pygame.sprite.Sprite):
         self.is_moving = False
         self.monster_order_wait_time = 1000
         self.monster_move = [[1, 0], [0, 1], [0, 0], [-1, 0], [0, -1]]
-        self.boundary = 200
+        self.boundary = 150
         self.is_rush = False
 
     # 적 움직임 랜덤으로 얻기
@@ -161,10 +161,9 @@ class JumpMonster(pygame.sprite.Sprite):
         self.is_rush = True
         self.rect.left += direction[0] * self.monster_speed
         self.dir.x = direction[0]
-        self.collision("horizontal")
-        self.rect.top += direction[1] * self.monster_speed
-        self.dir.y = direction[1]
-        self.collision("vertical")
+        if not direction[0]:
+            self.rect.top += direction[1] * self.monster_speed
+            self.dir.y = direction[1]
 
 
     def update(self):
