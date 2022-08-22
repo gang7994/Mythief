@@ -3,10 +3,11 @@ from Settings import *
 from Rock import Rock
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images, damage_images):
+    def __init__(self, pos, groups, border_images, damage_images, images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Player"
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
         self.current_hp = 100
@@ -19,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.player_speed = 2
         self.border_images = border_images
         self.damage_images = damage_images
-        self.rocks = pygame.sprite.Group()
+        self.images = images
         self.rock_cool_time = 700
         self.is_rock_ready = True
         self.rock_count = 0
@@ -209,13 +210,13 @@ class Player(pygame.sprite.Sprite):
     def throw_rock(self):
         self.rock_count += 1
         if self.dir.x == 1:
-            self.rocks.add(Rock(self.rect.center, 1, self.border_images))
+            self.images.add(Rock(self.rect.center, 1, self.border_images))
         elif self.dir.x == -1:
-            self.rocks.add(Rock(self.rect.center, 2, self.border_images))
+            self.images.add(Rock(self.rect.center, 2, self.border_images))
         elif self.dir.y == 1:
-            self.rocks.add(Rock(self.rect.center, 3, self.border_images))
+            self.images.add(Rock(self.rect.center, 3, self.border_images))
         elif self.dir.y == -1:
-            self.rocks.add(Rock(self.rect.center, 4, self.border_images))
+            self.images.add(Rock(self.rect.center, 4, self.border_images))
 
     # 재장전 함수
     def re_load_rock(self):
@@ -269,7 +270,6 @@ class Player(pygame.sprite.Sprite):
         self.un_damaged_time()
         self.add_rock()
         self.re_load_rock()
-        self.rocks.update()
         self.damage_collision()
         self.move(self.player_speed)
         self.walk_delay()

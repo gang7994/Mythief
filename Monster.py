@@ -6,7 +6,7 @@ from MonsterLaser import MonsterLaser
 
 class LaserMonster(pygame.sprite.Sprite):
     # 몬스터 이미지 임시로 변경
-    def __init__(self, pos, groups, border_images, damage_images):
+    def __init__(self, pos, groups, border_images, damage_images, images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "monster.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -18,7 +18,7 @@ class LaserMonster(pygame.sprite.Sprite):
         self.is_moving = False
         self.monster_order_wait_time = 1000
         self.monster_move = [[1,0], [0,1], [0,0], [-1,0], [0,-1]]
-        self.lasers = pygame.sprite.Group()
+        self.images = images
         self.laser_cool_time = random.randint(1, 5) * 1000
         self.is_laser_ready = True
         self.current_time = 0
@@ -76,13 +76,13 @@ class LaserMonster(pygame.sprite.Sprite):
     # 몬스터 레이져 발사 함수
     def throw_laser(self):
         if self.dir.x == 1:
-            self.lasers.add(MonsterLaser(self.rect.center, 1, [self.damage_images], self.border_images))
+            self.images.add(MonsterLaser(self.rect.center, 1, [self.damage_images], self.border_images))
         elif self.dir.x == -1:
-            self.lasers.add(MonsterLaser(self.rect.center, 2, [self.damage_images], self.border_images))
+            self.images.add(MonsterLaser(self.rect.center, 2, [self.damage_images], self.border_images))
         elif self.dir.y == 1:
-            self.lasers.add(MonsterLaser(self.rect.center, 3, [self.damage_images], self.border_images))
+            self.images.add(MonsterLaser(self.rect.center, 3, [self.damage_images], self.border_images))
         elif self.dir.y == -1:
-            self.lasers.add(MonsterLaser(self.rect.center, 4, [self.damage_images], self.border_images))
+            self.images.add(MonsterLaser(self.rect.center, 4, [self.damage_images], self.border_images))
 
     # 재장전 함수
     def re_load_laser(self):
@@ -98,7 +98,6 @@ class LaserMonster(pygame.sprite.Sprite):
         self.move_wait()
         self.add_laser()
         self.re_load_laser()
-        self.lasers.update()
 
 class RushMonster(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images):
