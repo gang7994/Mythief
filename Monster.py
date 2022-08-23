@@ -143,17 +143,19 @@ class RushMonster(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if self.dir.x > 0:
-                        self.rect.right = sprite.rect.left
-                    elif self.dir.x < 0:
-                        self.rect.left = sprite.rect.right
+                    if sprite.name == "Wall":
+                        if self.dir.x > 0:
+                            self.rect.right = sprite.rect.left
+                        elif self.dir.x < 0:
+                            self.rect.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if self.dir.y > 0:
-                        self.rect.bottom = sprite.rect.top
-                    elif self.dir.y < 0:
-                        self.rect.top = sprite.rect.bottom
+                    if sprite.name == "Wall":
+                        if self.dir.y > 0:
+                            self.rect.bottom = sprite.rect.top
+                        elif self.dir.y < 0:
+                            self.rect.top = sprite.rect.bottom
 
     # 돌진 함수 - 버그 있음
     def rush(self, direction):

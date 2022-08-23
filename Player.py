@@ -64,6 +64,7 @@ class Player(pygame.sprite.Sprite):
             if self.is_damaged: self.image.set_alpha(200)
         elif self.walk_count == 5:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_5.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
         
     def idle_animation(self):
         if self.idle_count > 2:
@@ -71,10 +72,13 @@ class Player(pygame.sprite.Sprite):
         self.idle_current_time = pygame.time.get_ticks()
         if self.idle_count == 0:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_idle0.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
         elif self.idle_count == 1:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_idle1.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
         elif self.idle_count == 2:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_idle2.png")).convert_alpha()
+            if self.is_damaged: self.image.set_alpha(200)
     
 
     def walk_delay(self):
@@ -201,7 +205,7 @@ class Player(pygame.sprite.Sprite):
     # 무기 입력 확인 함수
     def add_rock(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE] and self.is_rock_ready:
+        if (keys[pygame.K_SPACE] and self.is_rock_ready) and (self.dir.x != 0 or self.dir.y != 0):
             self.throw_rock()
             self.is_rock_ready = False
             self.rock_time = pygame.time.get_ticks()
