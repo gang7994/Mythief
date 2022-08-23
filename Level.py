@@ -11,9 +11,11 @@ class Level:
     def __init__(self, map_idx):
         self.map_idx = map_idx
         self.display_surface = pygame.display.get_surface()
-        self.images = CameraGroup()
+        self.images = CameraGroup(self.map_idx)
         self.border_images = pygame.sprite.Group()
-        self.monster_images = CameraGroup()
+        self.monster_images = CameraGroup(self.map_idx)
+        if self.map_idx == 2:
+            self.glow = CameraGroup(self.map_idx)
         self.damage_images = pygame.sprite.Group()
         self.create_map()
 
@@ -97,6 +99,8 @@ class Level:
                 else:
                     monster.is_rush = False
 
+
+
     # 현재 레벨의 메인 게임 로직
     def run(self):
         self.images.custom_draw(self.player)
@@ -104,16 +108,22 @@ class Level:
         self.get_player_distance(self.player)
         self.monster_images.update()
         self.images.update()
+        if self.map_idx == 2:
+            self.glow.draw_glow()
 
 # 카메라 클래스
 class CameraGroup(pygame.sprite.Group):
-    def __init__(self):
+    def __init__(self, map_idx):
         super().__init__()
         self.display_surface = pygame.display.get_surface()
+        self.map_idx = map_idx
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
         self.camera_move_flag = False
+        if self.map_idx == 2:
+            self.new_surf = pygame.Surface((screen_width, screen_height))
+            self.glow = self.circle_surf(200, WHITE)
 
     # 카메라 드로우
     def custom_draw(self, player):
@@ -144,6 +154,20 @@ class CameraGroup(pygame.sprite.Group):
                 if self.offset.x > pos[0] + 200: self.offset.x = pos[0] + 200
         else:
             self.camera_move_flag = False
+
+    def circle_surf(self, radius, color):
+        surf = pygame.Surface((radius * 2, radius * 2))
+        pygame.draw.circle(surf, color, (radius, radius), radius)
+        surf.set_colorkey((0, 0, 0))
+        return surf
+
+    def draw_glow(self):
+        if self.map_idx == 2:
+            self.new_surf.fill(BLACK)
+            self.new_surf.blit(self.glow, (self.half_width - 200, self.half_height - 200))
+            self.display_surface.blit(self.new_surf, pygame.math.Vector2() - self.offset, special_flags=pygame.BLEND_RGB_MULT)
+
+
 
 
 
