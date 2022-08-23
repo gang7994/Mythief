@@ -42,7 +42,10 @@ class Player(pygame.sprite.Sprite):
         self.is_idle = True
         self.is_move_x = False
         self.is_move_y = False
-    
+        # throw animation variable
+        self.throw = []
+
+        
     def walk_animation(self):
         if self.walk_count > 5:
             self.walk_count = 0
@@ -80,7 +83,18 @@ class Player(pygame.sprite.Sprite):
             self.image = pygame.image.load(os.path.join(images_path, "sprite_idle2.png")).convert_alpha()
             if self.is_damaged: self.image.set_alpha(200)
     
-
+    def throw_animation(self):
+        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw0.png")).convert_alpha())
+        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw1.png")).convert_alpha())
+        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw2.png")).convert_alpha())
+        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw3.png")).convert_alpha())
+        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw4.png")).convert_alpha())
+        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw5.png")).convert_alpha())
+        for i in self.throw:
+            self.image = i
+            if self.dir.x == -1:
+                self.image = pygame.transform.flip(self.image, True, False)
+                
     def walk_delay(self):
         if not self.is_walk:
             self.walk_current_time = pygame.time.get_ticks()
@@ -209,6 +223,7 @@ class Player(pygame.sprite.Sprite):
             self.throw_rock()
             self.is_rock_ready = False
             self.rock_time = pygame.time.get_ticks()
+            self.throw_animation()
 
     # 무기 발사 함수
     def throw_rock(self):
