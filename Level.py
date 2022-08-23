@@ -113,27 +113,38 @@ class CameraGroup(pygame.sprite.Group):
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
-        self.flag = False
-    
+        self.camera_move_flag = False
+
     # 카메라 드로우
     def custom_draw(self, player):
-        self.offset.x = player.rect.centerx - self.half_width
-        self.offset.y = player.rect.centery - self.half_height
-        self.camera_move()
+        if not self.camera_move_flag:
+            self.offset.x = player.rect.centerx - self.half_width
+            self.offset.y = player.rect.centery - self.half_height
+        self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height))
         for sprite in self.sprites():
             offset_rect = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_rect)
+
     # 카메라 이동
-    def camera_move(self):
+    def camera_move(self, pos):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            self.offset.y -= 100
-        if keys[pygame.K_a]:
-            self.offset.x -= 100
-        if keys[pygame.K_s]:
-            self.offset.y += 100
-        if keys[pygame.K_d]:
-            self.offset.x += 100
+        if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
+            self.camera_move_flag = True
+            if keys[pygame.K_w]:
+                self.offset.y -= 2
+                if self.offset.y < pos[1] - 200: self.offset.y = pos[1] - 200
+            if keys[pygame.K_a]:
+                self.offset.x -= 2
+                if self.offset.x < pos[0] - 200: self.offset.x = pos[0] - 200
+            if keys[pygame.K_s]:
+                self.offset.y += 2
+                if self.offset.y > pos[1] + 200: self.offset.y = pos[1] + 200
+            if keys[pygame.K_d]:
+                self.offset.x += 2
+                if self.offset.x > pos[0] + 200: self.offset.x = pos[0] + 200
+        else:
+            self.camera_move_flag = False
+
 
 
 
