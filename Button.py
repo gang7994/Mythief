@@ -1,23 +1,19 @@
+import pygame
 class Button():
-	def __init__(self, image, pos, text_input, font, base_color, hovering_color):
-		self.image = image
+	def __init__(self, image0, image1, pos, scale_x, scale_y):
+		self.image0 = pygame.transform.scale(image0, (scale_x, scale_y))
+		self.image1 = pygame.transform.scale(image1, (scale_x, scale_y))
+		self.image = self.image0
 		self.x_pos = pos[0]
 		self.y_pos = pos[1]
-		self.font = font
-		self.base_color, self.hovering_color = base_color, hovering_color
-		self.text_input = text_input
-		self.text = self.font.render(self.text_input, True, self.base_color)
-		if self.image is None:
-			self.image = self.text
-		self.rect = self.image.get_rect(topleft=(self.x_pos, self.y_pos))
+		self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
 		self.rect_width = self.rect.size[0]
 		self.rectr_height = self.rect.size[1]
-		self.text_rect = self.text.get_rect(center=(self.x_pos+(self.rect_width/2), self.y_pos+(self.rectr_height/2)))
+  
 
 	def update(self, screen):
-		if self.image is not None:
-			screen.blit(self.image, self.rect)
-		screen.blit(self.text, self.text_rect)
+		screen.blit(self.image, self.rect)
+
 
 	def checkForInput(self, position):
 		if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
@@ -26,6 +22,6 @@ class Button():
 
 	def changeColor(self, position):
 		if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-			self.text = self.font.render(self.text_input, True, self.hovering_color)
+			self.image = self.image1
 		else:
-			self.text = self.font.render(self.text_input, True, self.base_color)
+			self.image = self.image0

@@ -1,6 +1,7 @@
 from lib2to3.pgen2.token import OP
 import pygame, sys
 from Button import Button
+from Button_text import Button_text
 from Settings import *
 import GameManager
 
@@ -18,7 +19,7 @@ class Encyclopedia:
             self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
             self.screen.blit(self.popup, (100, 100))
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
-            OPTIONS_BACK = Button(image=None, pos=(1300, 0), 
+            OPTIONS_BACK = Button_text(image=None, pos=(1300, 0), 
                                 text_input="BACK", font = get_font(60), base_color="White", hovering_color="Red")
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
             OPTIONS_BACK.update(self.screen)
@@ -46,7 +47,7 @@ class Credit:
             self.popup = pygame.transform.scale(self.popup, (800, 650))
             self.screen.blit(self.popup, (328, 100))
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
-            OPTIONS_BACK = Button(image=None, pos=(1300, 0), 
+            OPTIONS_BACK = Button_text(image=None, pos=(1300, 0), 
                                 text_input="BACK", font=get_font(60), base_color="White", hovering_color="Red")
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
             OPTIONS_BACK.update(self.screen)
@@ -73,7 +74,7 @@ class Option:
             self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
             self.screen.blit(self.popup, (100, 100))
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
-            OPTIONS_BACK = Button(image=None, pos=(1300, 0), 
+            OPTIONS_BACK = Button_text(image=None, pos=(1300, 0), 
                                 text_input="BACK", font=get_font(60), base_color="White", hovering_color="Red")
 
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
@@ -110,18 +111,23 @@ def main_menu():
     while True:
         MENU_MOUSE_POS = pygame.mouse.get_pos()
         MENU_TEXT = get_titlefont(100).render("Mythief", True, "#b68f40")
-        MENU_RECT = MENU_TEXT.get_rect(topleft=(80, 80))
+        MENU_RECT = MENU_TEXT.get_rect(center=(728, 120))
 
-        PLAY_BUTTON = Button(image=pygame.image.load(os.path.join(images_path, "Button.png")).convert_alpha(), pos=(80, 200), 
-                            text_input="게임시작", font=get_font(60), base_color="Black", hovering_color="White")
-        ENCYCLOPEDIA_BUTTON = Button(image=pygame.image.load(os.path.join(images_path, "Button.png")).convert_alpha(), pos=(80, 310), 
-                            text_input="백과사전", font=get_font(60), base_color="Black", hovering_color="White")
-        CREDIT_BUTTON = Button(image=pygame.image.load(os.path.join(images_path, "Button.png")).convert_alpha(), pos=(80, 420), 
-                            text_input="크레딧", font=get_font(60), base_color="Black", hovering_color="White")
-        OPTION_BUTTON = Button(image=pygame.image.load(os.path.join(images_path, "Button.png")).convert_alpha(), pos=(80, 530), 
-                            text_input="설정", font=get_font(60), base_color="Black", hovering_color="White")
-        QUIT_BUTTON = Button(image=pygame.image.load(os.path.join(images_path, "Button.png")).convert_alpha(), pos=(80, 640), 
-                            text_input="종료", font=get_font(60), base_color="Black", hovering_color="White")
+        PLAY_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(), 
+                            image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(), 
+                            pos=(728, 250), scale_x=400, scale_y=100)
+        ENCYCLOPEDIA_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_Collection_0.png")).convert_alpha(), 
+                            image1=pygame.image.load(os.path.join(images_path, "btn_Collection_1.png")).convert_alpha(), 
+                            pos=(728, 360), scale_x=400, scale_y=100)
+        CREDIT_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_credit_0.png")).convert_alpha(), 
+                            image1=pygame.image.load(os.path.join(images_path, "btn_credit_1.png")).convert_alpha(), 
+                            pos=(728, 470), scale_x=400, scale_y=100)
+        OPTION_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(), 
+                            image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(), 
+                            pos=(728, 580), scale_x=400, scale_y=100)
+        QUIT_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_exit_0.png")).convert_alpha(), 
+                            image1=pygame.image.load(os.path.join(images_path, "btn_exit_1.png")).convert_alpha(), 
+                            pos=(728, 690), scale_x=400, scale_y=100)
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
         for button in [PLAY_BUTTON, ENCYCLOPEDIA_BUTTON, CREDIT_BUTTON, OPTION_BUTTON, QUIT_BUTTON]:
