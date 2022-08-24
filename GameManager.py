@@ -81,11 +81,11 @@ class GameManager:
     # 게임 로직
     def Run(self):
         # 프레임 영역
-        self.clock.tick(FPS)
         start_time = pygame.time.get_ticks()
 
         # 메인 로직 영역
         while self.running:
+            self.clock.tick(FPS)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()

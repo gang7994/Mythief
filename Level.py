@@ -1,4 +1,4 @@
-import pygame, os
+import pygame, os, random
 from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle
 from Player import Player
@@ -11,11 +11,12 @@ class Level:
     def __init__(self, map_idx):
         self.map_idx = map_idx
         self.display_surface = pygame.display.get_surface()
-        self.images = CameraGroup(self.map_idx)
+        self.images = CameraGroup()
         self.border_images = pygame.sprite.Group()
-        self.monster_images = CameraGroup(self.map_idx)
+        self.monster_images = CameraGroup()
         if self.map_idx == 2:
-            self.glow = CameraGroup(self.map_idx)
+            self.glow = Glow()
+            self.fire = []
         self.damage_images = pygame.sprite.Group()
         self.create_map()
 
@@ -60,6 +61,9 @@ class Level:
                     RushMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
                             self.border_images, self.damage_images)
                     Level.remain_monster+=1 # Show_info
+                if col == "W1g":
+                    Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.fire.append([tile_pos_x, tile_pos_y])
 
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
@@ -109,21 +113,19 @@ class Level:
         self.monster_images.update()
         self.images.update()
         if self.map_idx == 2:
-            self.glow.draw_glow()
+            self.glow.draw_player_glow()
+            self.glow.draw_fire_glow(self.player, [self.fire[0][0],self.fire[0][1]])
+            self.glow.draw_fire_glow(self.player, [self.fire[1][0],self.fire[1][1]])
 
 # 카메라 클래스
 class CameraGroup(pygame.sprite.Group):
-    def __init__(self, map_idx):
+    def __init__(self):
         super().__init__()
         self.display_surface = pygame.display.get_surface()
-        self.map_idx = map_idx
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
         self.camera_move_flag = False
-        if self.map_idx == 2:
-            self.new_surf = pygame.Surface((screen_width, screen_height))
-            self.glow = self.circle_surf(200, WHITE)
 
     # 카메라 드로우
     def custom_draw(self, player):
@@ -155,20 +157,70 @@ class CameraGroup(pygame.sprite.Group):
         else:
             self.camera_move_flag = False
 
+class Glow:
+    def __init__(self):
+        self.display_surface = pygame.display.get_surface()
+        self.offset = pygame.math.Vector2()
+        self.half_width = self.display_surface.get_size()[0] // 2
+        self.half_height = self.display_surface.get_size()[1] // 2
+        self.new_surf = pygame.Surface((screen_width, screen_height))
+        self.camera_move_flag = False
+        self.player_glow = []
+        self.fire_glow = []
+        for i in [[10, 300],[50,200],[100,100],[200,50],[255,10]]:
+            self.player_glow.append([self.circle_surf(i[1],(i[0],i[0],i[0])), i[1]])
+
+    def camera_move(self, pos):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
+            self.camera_move_flag = True
+            if keys[pygame.K_w]:
+                self.offset.y -= 2
+                if self.offset.y < pos[1] - 200: self.offset.y = pos[1] - 200
+            if keys[pygame.K_a]:
+                self.offset.x -= 2
+                if self.offset.x < pos[0] - 200: self.offset.x = pos[0] - 200
+            if keys[pygame.K_s]:
+                self.offset.y += 2
+                if self.offset.y > pos[1] + 200: self.offset.y = pos[1] + 200
+            if keys[pygame.K_d]:
+                self.offset.x += 2
+                if self.offset.x > pos[0] + 200: self.offset.x = pos[0] + 200
+        else:
+            self.camera_move_flag = False
+
     def circle_surf(self, radius, color):
         surf = pygame.Surface((radius * 2, radius * 2))
         pygame.draw.circle(surf, color, (radius, radius), radius)
         surf.set_colorkey((0, 0, 0))
         return surf
 
-    def draw_glow(self):
-        if self.map_idx == 2:
-            self.new_surf.fill(BLACK)
-            self.new_surf.blit(self.glow, (self.half_width - 200, self.half_height - 200))
-            self.display_surface.blit(self.new_surf, pygame.math.Vector2() - self.offset, special_flags=pygame.BLEND_RGB_MULT)
-
-
-
-
-
+    def draw_player_glow(self):
+        self.new_surf.fill(BLACK)
+        for glow in self.player_glow:
+            self.new_surf.blit(glow[0], (self.half_width - glow[1], self.half_height - glow[1]))
+        self.display_surface.blit(self.new_surf, (0,0), special_flags=pygame.BLEND_RGB_MULT)
+    
+    # 버그 존재 - 고쳐야함
+    def draw_fire_glow(self, player, fire):
+        self.fire_glow.append([fire, [random.randint(0, 20) / 10 - 1, -5], random.randint(6, 11)])
+        if not self.camera_move_flag:
+            self.offset.x = player.rect.centerx - self.half_width
+            self.offset.y = player.rect.centery - self.half_height
+        self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height))
+        for particle in self.fire_glow:
+            particle[0][1] += particle[1][1]
+            particle[2] -= 0.5
+            particle[1][1] += 0.15
+            pygame.draw.circle(self.display_surface,
+                               (255, 255, 255),
+                               [int(particle[0][0]) - self.offset.x, int(particle[0][1] - self.offset.y + 24)],
+                               int(particle[2]))
+            radius = particle[2] * 2
+            self.display_surface.blit(self.circle_surf(radius, (20, 20, 60)),
+                                      (int(particle[0][0] - radius - self.offset.x),
+                                      int(particle[0][1] - radius - self.offset.y + 24)),
+                                      special_flags=pygame.BLEND_RGB_ADD)
+            if particle[2] <= 0:
+                self.fire_glow.remove(particle)
 
