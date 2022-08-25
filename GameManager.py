@@ -1,6 +1,7 @@
-import pygame, sys, os
+import pygame, sys, os, time
 from Settings import *
 from Level import *
+from Button import Button
 
 class GameManager:
     def __init__(self):
@@ -12,6 +13,7 @@ class GameManager:
         self.total_rock_count = 0
         self.total_score = 0
         self.running = True
+        self.is_pause = False
         self.level = Level(0)
 
     # 시간 재기
@@ -71,6 +73,11 @@ class GameManager:
         self.screen.blit(msg, msg_rect)
         self.running = False
 
+    def pause(self):
+        print("stop")
+        self.is_pause = True
+        return self.is_pause
+    
     def show_info(self):
         font = pygame.font.Font(None, 20)
         pos = font.render(f"Player_pos: {self.level.player.rect.centerx, self.level.player.rect.centery,}", True, WHITE)
@@ -82,13 +89,24 @@ class GameManager:
     def Run(self):
         # 프레임 영역
         start_time = pygame.time.get_ticks()
-
         # 메인 로직 영역
         while self.running:
+            
+            PAUSE_MOUSE_POS = pygame.mouse.get_pos()
+            PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause0.png")).convert_alpha(), 
+                                image1=pygame.image.load(os.path.join(images_path, "pause1.png")).convert_alpha(), 
+                                pos=(1390,50), scale_x=50, scale_y=50)
+            PAUSE.changeColor(PAUSE_MOUSE_POS)
             self.clock.tick(FPS)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    if PAUSE.checkForInput(PAUSE_MOUSE_POS) and not self.is_pause:
+                        self.pause()
+                    elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.is_pause:
+                        self.is_pause = False
+    
             # 이미지 영역
             self.screen.fill(BLACK)
             self.level.run()
@@ -96,11 +114,16 @@ class GameManager:
             self.draw_rock_image()
             self.draw_rock_cool_time()
             self.draw_hp()
+            PAUSE.update(self.screen)
             self.show_info()
             elapse_time = (pygame.time.get_ticks() - start_time) / 1000
             self.draw_time(elapse_time)
             self.draw_score(self.total_score)
-
+            if self.is_pause:
+                self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
+                self.popup.set_alpha(200)
+                self.screen.blit(self.popup, (100, 100))
+                
             # 게임 클리어 영역
             x = self.level.get_player()
             y = self.level.get_finish()
@@ -113,7 +136,6 @@ class GameManager:
 
             # 화면 업데이트
             pygame.display.update()
-
         pygame.time.delay(2000)
         pygame.quit()
         sys.exit()

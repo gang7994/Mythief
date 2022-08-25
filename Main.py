@@ -9,7 +9,7 @@ class Encyclopedia:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((screen_width, screen_height))
-        pygame.display.set_caption("Enc")
+        pygame.display.set_caption("Collection")
     def Encyclopedia(self):
         while True:
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
@@ -36,16 +36,26 @@ class Credit:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((screen_width, screen_height))
-        pygame.display.set_caption("Cre")
+        pygame.display.set_caption("Credit")
     def Credit(self):
         while True:
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
             self.screen.fill("Black")
-            OPTIONS_TEXT = get_font(45).render("크레딧창", True, "White")
-            OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width/2), 30))
+            OPTIONS_TEXT = get_titlefont(60).render("Mythief", True, "White")
+            OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width/2), 70))
+            
+            TEXT1 = get_font(30).render("여기에 크레딧 내용 추가", True, "White")
+            TEXT1_RECT = TEXT1.get_rect(center=((screen_width/2), 300))
+            
+            TEXT2 = get_font(30).render("Add credit content here", True, "White")
+            TEXT2_RECT = TEXT1.get_rect(center=((screen_width/2), 400))
+            '''
             self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
             self.popup = pygame.transform.scale(self.popup, (800, 650))
             self.screen.blit(self.popup, (328, 100))
+            '''
+            self.screen.blit(TEXT1, TEXT1_RECT)
+            self.screen.blit(TEXT2, TEXT2_RECT)
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
             OPTIONS_BACK = Button_text(image=None, pos=(1300, 0), 
                                 text_input="BACK", font=get_font(60), base_color="White", hovering_color="Red")
@@ -74,7 +84,7 @@ class Option:
             self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
             self.screen.blit(self.popup, (100, 100))
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
-            OPTIONS_BACK = Button_text(image=None, pos=(1300, 0), 
+            OPTIONS_BACK = Button_text(image=None, pos=(1200, 0), 
                                 text_input="BACK", font=get_font(60), base_color="White", hovering_color="Red")
 
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
