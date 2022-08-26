@@ -93,10 +93,16 @@ class GameManager:
         while self.running:
             self.clock.tick(FPS)
             PAUSE_MOUSE_POS = pygame.mouse.get_pos()
-            PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause0.png")).convert_alpha(), 
+            if not self.is_pause:
+                PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause0.png")).convert_alpha(), 
                                 image1=pygame.image.load(os.path.join(images_path, "pause1.png")).convert_alpha(), 
                                 pos=(1390,50), scale_x=50, scale_y=50)
+            else:
+                PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause2.png")).convert_alpha(), 
+                                image1=pygame.image.load(os.path.join(images_path, "pause3.png")).convert_alpha(), 
+                                pos=(1390,50), scale_x=50, scale_y=50)
             PAUSE.changeColor(PAUSE_MOUSE_POS)
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
