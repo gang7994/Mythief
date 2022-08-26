@@ -75,20 +75,56 @@ class Option:
         pygame.init()
         self.screen = pygame.display.set_mode((screen_width, screen_height))
         pygame.display.set_caption("Cre")
+        
     def Option(self):
+        global bgm_vol, effect_vol
         while True:
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
             self.screen.fill("Black")
             OPTIONS_TEXT = get_font(45).render("옵션창", True, "White")
             OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width/2), 30))
             self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
+
+            TEXT1 = get_font(30).render("BGM VOLUME", True, "White")
+            TEXT1_RECT = TEXT1.get_rect(center=((screen_width/2), 200))
+            
+            TEXT2 = get_font(30).render("EFFECT VOLUME", True, "White")
+            TEXT2_RECT = TEXT1.get_rect(center=((screen_width/2), 400))
+            
             self.screen.blit(self.popup, (100, 100))
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
+            self.screen.blit(TEXT1, TEXT1_RECT)
+            self.screen.blit(TEXT2, TEXT2_RECT)
+
+            self.draw_volume_bar()
+            
+            BGM_UP = Button(image0=pygame.image.load(os.path.join(images_path, "up0.png")).convert_alpha(), 
+                                image1=pygame.image.load(os.path.join(images_path, "up1.png")).convert_alpha(), 
+                                pos=(956,265), scale_x=50, scale_y=50)
+            BGM_DOWN = Button(image0=pygame.image.load(os.path.join(images_path, "down0.png")).convert_alpha(), 
+                                image1=pygame.image.load(os.path.join(images_path, "down1.png")).convert_alpha(), 
+                                pos=(500,265), scale_x=50, scale_y=50)
+            
+            EFFECT_UP = Button(image0=pygame.image.load(os.path.join(images_path, "up0.png")).convert_alpha(), 
+                                image1=pygame.image.load(os.path.join(images_path, "up1.png")).convert_alpha(), 
+                                pos=(956,465), scale_x=50, scale_y=50)
+            EFFECT_DOWN = Button(image0=pygame.image.load(os.path.join(images_path, "down0.png")).convert_alpha(), 
+                                image1=pygame.image.load(os.path.join(images_path, "down1.png")).convert_alpha(), 
+                                pos=(500,465), scale_x=50, scale_y=50)
+            
             OPTIONS_BACK = Button_text(image=None, pos=(1200, 0), 
                                 text_input="BACK", font=get_font(60), base_color="White", hovering_color="Red")
 
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
             OPTIONS_BACK.update(self.screen)
+            BGM_UP.changeColor(OPTIONS_MOUSE_POS)
+            BGM_UP.update(self.screen)
+            BGM_DOWN.changeColor(OPTIONS_MOUSE_POS)
+            BGM_DOWN.update(self.screen)
+            EFFECT_UP.changeColor(OPTIONS_MOUSE_POS)
+            EFFECT_UP.update(self.screen)
+            EFFECT_DOWN.changeColor(OPTIONS_MOUSE_POS)
+            EFFECT_DOWN.update(self.screen)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -96,7 +132,26 @@ class Option:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                         main_menu()
+                    if BGM_UP.checkForInput(OPTIONS_MOUSE_POS):
+                        if bgm_vol != 100:
+                            bgm_vol += 10
+                    if BGM_DOWN.checkForInput(OPTIONS_MOUSE_POS):
+                        if bgm_vol !=0:
+                            bgm_vol -= 10
+                    if EFFECT_UP.checkForInput(OPTIONS_MOUSE_POS):
+                        if effect_vol != 100:
+                            effect_vol += 10
+                    if EFFECT_DOWN.checkForInput(OPTIONS_MOUSE_POS):
+                        if effect_vol !=0:
+                            effect_vol -= 10
             pygame.display.update()
+            
+    def draw_volume_bar(self):
+        pygame.draw.rect(self.screen, WHITE, (528, 250, bgm_vol/0.25, 30))
+        pygame.draw.rect(self.screen, BLACK, (528, 250, 400, 30), 3)
+        pygame.draw.rect(self.screen, WHITE, (528, 450, effect_vol/0.25, 30))
+        pygame.draw.rect(self.screen, BLACK, (528, 450, 400, 30), 3)
+
 
 
 pygame.init()

@@ -10,6 +10,10 @@ vertical_margin = 100
 screen_width = 1056 + horizontal_margin * 2
 screen_height = 576 + vertical_margin * 2
 
+bgm_vol = 100
+effect_vol = 100
+vol_ratio = 0.25
+
 # 색
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
