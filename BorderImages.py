@@ -29,6 +29,20 @@ class Wall4(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join(images_path, "wall4.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.name = "Wall"
+
+class Fire_Wall(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "fire2.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
+
+class Fire_torch(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "fire.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "Wall"
         
 class Corner1(pygame.sprite.Sprite):
     def __init__(self, pos, groups):

@@ -1,6 +1,6 @@
 import pygame, os, random
 from Settings import *
-from BorderImages import Wall1, Wall2, Wall3, Wall4, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle
+from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle
 from Player import Player
 from Road import Road
 from Monster import LaserMonster, RushMonster
@@ -17,8 +17,7 @@ class Level:
         self.damage_images = pygame.sprite.Group()
         self.fire_images = []
         self.create_map()
-        if self.map_idx == 2:
-            self.glow = Glow(self.player.rect.topleft)
+        self.glow = Glow(self.player.rect.topleft)
 
     # 맵 생성
     def create_map(self):
@@ -62,7 +61,7 @@ class Level:
                             self.border_images, self.damage_images)
                     Level.remain_monster+=1 # Show_info
                 if col == "W1g":
-                    Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    Fire_Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.fire_images.append(Glow([tile_pos_x, tile_pos_y]))
 
 
@@ -116,7 +115,7 @@ class Level:
             self.glow.draw_player_glow()
             for fire in self.fire_images:
                 fire.draw_fire_glow(self.player)
-
+        self.glow.draw_display_change()
 
 # 카메라 클래스
 class CameraGroup(pygame.sprite.Group):
@@ -171,6 +170,15 @@ class Glow:
         self.pos = pos
         for i in [[10, 300],[50,200],[100,100],[200,50],[255,10]]:
             self.player_glow.append([self.circle_surf(i[1],(i[0],i[0],i[0])), i[1]])
+        # display_change_animation
+        self.game_display_flag = False
+        self.display_anim_surf = pygame.Surface((screen_width, screen_height))
+        self.circle_pause = False
+        self.loop_cnt = 0
+        self.rad = 0
+
+
+
 
     def camera_move(self, pos):
         keys = pygame.key.get_pressed()
@@ -208,7 +216,7 @@ class Glow:
         pos = []
         pos.append(self.pos[0])
         pos.append(self.pos[1])
-        self.fire_glow.append([pos, [random.randint(0, 20) / 10 - 1, -5], random.randint(6, 11)])
+        self.fire_glow.append([pos, [random.randint(0, 20) / 10 - 1, -5], random.randint(6, 9)])
         if not self.camera_move_flag:
             self.offset.x = player.rect.centerx - self.half_width
             self.offset.y = player.rect.centery - self.half_height
@@ -219,12 +227,28 @@ class Glow:
             particle[1][1] += 0.15
             pygame.draw.circle(self.display_surface,
                                (255, 255, 255),
-                               [int(particle[0][0]) - self.offset.x, int(particle[0][1]) - self.offset.y + 24],
+                               [int(particle[0][0]) - self.offset.x + 24, int(particle[0][1]) - self.offset.y + 24],
                                int(particle[2]))
             radius = particle[2] * 2
             self.display_surface.blit(self.circle_surf(radius, (20, 20, 60)),
-                                      (int(particle[0][0] - radius) - self.offset.x, int(particle[0][1] - radius) - self.offset.y + 24),
+                                      (int(particle[0][0] - radius) - self.offset.x + 24, int(particle[0][1] - radius) - self.offset.y + 24),
                                       special_flags=pygame.BLEND_RGB_ADD)
             if particle[2] <= 0:
                 self.fire_glow.remove(particle)
 
+    def draw_display_change(self):
+        if not self.game_display_flag:
+            self.display_anim_surf.fill((0, 0, 0))
+            self.display_anim_surf.blit(self.circle_surf(self.rad, (255, 255, 255)), (self.half_width - self.rad, self.half_height - self.rad))
+            self.display_surface.blit(self.display_anim_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
+            if not self.circle_pause: self.rad += 10
+            if self.rad > 100:
+                self.loop_cnt += 1
+                self.circle_pause = True
+                if self.loop_cnt == 1:
+                    self.pause_start = pygame.time.get_ticks()
+                else:
+                    self.pause_end = pygame.time.get_ticks()
+                    if self.pause_end - self.pause_start > 300:
+                        self.circle_pause = False
+            if self.rad > 700: self.game_display_flag = True
