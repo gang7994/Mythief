@@ -18,7 +18,7 @@ class GameManager:
 
     # 시간 재기
     def draw_time(self, elapse_time):
-        font = pygame.font.Font(None, 40)
+        font = pygame.font.Font(None, 30)
         timer = font.render("Time : {}".format(int(elapse_time)), True, WHITE)
         self.screen.blit(timer, (10, 170))
 
@@ -34,13 +34,13 @@ class GameManager:
 
     # 점수 그리기
     def draw_score(self, total_score):
-        font = pygame.font.Font(None, 40)
+        font = pygame.font.Font(None, 30)
         score = font.render("Score : {}".format(int(total_score)), True, WHITE)
         self.screen.blit(score, (10, 205))
 
     # 돌 던진 횟수 그리기
     def draw_rock_count(self):
-        font = pygame.font.Font(None, 40)
+        font = pygame.font.Font(None, 30)
         score = font.render("Rock Count : {}".format(int(self.level.player.rock_count)), True, WHITE)
         self.screen.blit(score, (10, 240))
 

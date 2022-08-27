@@ -19,7 +19,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 # 프레임
-FPS = 120
+FPS = 60
 # 타일 사이즈
 tile_width_size = 48
 tile_height_size = 48

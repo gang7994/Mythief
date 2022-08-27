@@ -23,6 +23,7 @@ class LaserMonster(pygame.sprite.Sprite):
         self.is_laser_ready = True
         self.current_time = 0
         self.laser_time = 0
+        self.clock = pygame.time.Clock()
         
     # 적 움직임 랜덤으로 얻기
     def move_order(self):
@@ -41,11 +42,11 @@ class LaserMonster(pygame.sprite.Sprite):
                 self.is_moving = False
 
     # 입력받은 움직임으로 이동
-    def move(self, speed):
+    def move(self, speed, dt):
         if self.is_moving:
-            self.rect.left += self.dir.x * speed
+            self.rect.left += self.dir.x * speed * (dt // 6)
             self.collision("horizontal")
-            self.rect.top += self.dir.y * speed
+            self.rect.top += self.dir.y * speed* (dt // 6)
             self.collision("vertical")
         
     # 몬스터 충돌 (여기에 플레이어 충돌을 만들까 고민중)
@@ -93,8 +94,9 @@ class LaserMonster(pygame.sprite.Sprite):
 
     # 몬스터 로직 업데이트
     def update(self):
+        dt = self.clock.tick(FPS)
         self.move_order()
-        self.move(self.monster_speed)
+        self.move(self.monster_speed, dt)
         self.move_wait()
         self.add_laser()
         self.re_load_laser()
@@ -114,6 +116,7 @@ class RushMonster(pygame.sprite.Sprite):
         self.monster_move = [[1, 0], [0, 1], [0, 0], [-1, 0], [0, -1]]
         self.boundary = 150
         self.is_rush = False
+        self.clock = pygame.time.Clock()
 
     # 적 움직임 랜덤으로 얻기
     def move_order(self):
@@ -132,11 +135,11 @@ class RushMonster(pygame.sprite.Sprite):
                 self.is_moving = False
 
     # 입력받은 움직임으로 이동
-    def move(self, speed):
+    def move(self, speed, dt):
         if self.is_moving:
-            self.rect.left += self.dir.x * speed
+            self.rect.left += self.dir.x * speed * (dt // 6)
             self.collision("horizontal")
-            self.rect.top += self.dir.y * speed
+            self.rect.top += self.dir.y * speed * (dt // 6)
             self.collision("vertical")
 
     def collision(self, direction):
@@ -158,19 +161,20 @@ class RushMonster(pygame.sprite.Sprite):
                             self.rect.top = sprite.rect.bottom
 
     # 돌진 함수 - 버그 있음
-    def rush(self, direction):
+    def rush(self, direction, dt):
         self.is_rush = True
-        self.rect.left += direction[0] * self.monster_speed
+        self.rect.left += direction[0] * self.monster_speed * (dt // 6)
         self.dir.x = direction[0]
         if not direction[0]:
-            self.rect.top += direction[1] * self.monster_speed
+            self.rect.top += direction[1] * self.monster_speed * (dt // 6)
             self.dir.y = direction[1]
 
 
     def update(self):
+        dt = self.clock.tick(FPS)
         if not self.is_rush:
             self.move_order()
-            self.move(self.monster_speed)
+            self.move(self.monster_speed, dt)
             self.move_wait()
 
 

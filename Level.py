@@ -18,6 +18,7 @@ class Level:
         self.fire_images = []
         self.create_map()
         self.glow = Glow(self.player.rect.topleft)
+        self.clock = pygame.time.Clock()
 
     # 맵 생성
     def create_map(self):
@@ -79,7 +80,7 @@ class Level:
         return self.finish
 
     # 플레이어 , 적 거리 계산
-    def get_player_distance(self, player):
+    def get_player_distance(self, player, dt):
         for monster in self.monster_images:
             if monster.name == "rush_Monster":
                 monster_vec = pygame.math.Vector2(monster.rect.center)
@@ -98,7 +99,7 @@ class Level:
                 elif (player_vec - monster_vec)[1] > 0:
                     dir_y = 1
                 if distance <= monster.boundary:
-                    monster.rush((dir_x, dir_y))
+                    monster.rush((dir_x, dir_y), dt)
                 else:
                     monster.is_rush = False
 
@@ -106,9 +107,10 @@ class Level:
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
+        dt = self.clock.tick(FPS)
         self.images.custom_draw(self.player)
         self.monster_images.custom_draw(self.player)
-        self.get_player_distance(self.player)
+        self.get_player_distance(self.player, dt)
         self.monster_images.update()
         self.images.update()
         if self.map_idx == 2:
@@ -126,6 +128,12 @@ class CameraGroup(pygame.sprite.Group):
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
         self.camera_move_flag = False
+        self.camera_borders = {'left': 200, 'right': 200, 'top': 150, 'bottom': 100}
+        l = self.camera_borders['left']
+        t = self.camera_borders['top']
+        w = 1456 - self.camera_borders['left'] - self.camera_borders['right']
+        h = 776 - self.camera_borders['top'] - self.camera_borders['bottom']
+        self.camera_rect = pygame.Rect(l,t,w,h)
 
     # 카메라 드로우
     def custom_draw(self, player):
@@ -136,6 +144,8 @@ class CameraGroup(pygame.sprite.Group):
         for sprite in self.sprites():
             offset_rect = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_rect)
+
+        pygame.draw.rect(self.display_surface, 'yellow', self.camera_rect, 5)
 
     # 카메라 이동
     def camera_move(self, pos):

@@ -44,6 +44,7 @@ class Player(pygame.sprite.Sprite):
         self.is_move_y = False
         # throw animation variable
         self.throw = []
+        self.clock = pygame.time.Clock()
 
         
     def walk_animation(self):
@@ -184,7 +185,7 @@ class Player(pygame.sprite.Sprite):
 
     # 이동 함수
     # 나중에 쉽게 수정할 수 있다면 하는 편이 좋을듯
-    def move(self, speed):
+    def move(self, speed, dt):
         x = self.get_horizontal()
         y = self.get_vertical()
         # 이동 순서(쯔꾸르 이동)
@@ -201,10 +202,10 @@ class Player(pygame.sprite.Sprite):
         if x == 0 and y == 0: self.move_order = [0]
         # 이동 로직 + 충돌방지
         if self.is_horizon:
-            self.rect.left += x * speed
+            self.rect.left += x * speed * (dt // 6)
             self.collision("horizontal")
         else:
-            self.rect.top += y * speed
+            self.rect.top += y * speed * (dt // 6)
             self.collision("vertical")
         # 화면 밖 안나가게
         if self.rect.left < 0:
@@ -286,11 +287,12 @@ class Player(pygame.sprite.Sprite):
 
     # 업데이트 영역 -> 무적 시간 함수 추가
     def update(self):
+        dt = self.clock.tick(FPS)
         self.un_damaged_time()
         self.add_rock()
         self.re_load_rock()
         self.damage_collision()
-        self.move(self.player_speed)
+        self.move(self.player_speed, dt)
         self.walk_delay()
         self.idle()
         self.idle_delay()
