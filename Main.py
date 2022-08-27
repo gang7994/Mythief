@@ -1,4 +1,3 @@
-from lib2to3.pgen2.token import OP
 import pygame, sys
 from Button import Button
 from Button_text import Button_text
@@ -49,11 +48,7 @@ class Credit:
             
             TEXT2 = get_font(30).render("Add credit content here", True, "White")
             TEXT2_RECT = TEXT1.get_rect(center=((screen_width/2), 400))
-            '''
-            self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
-            self.popup = pygame.transform.scale(self.popup, (800, 650))
-            self.screen.blit(self.popup, (328, 100))
-            '''
+
             self.screen.blit(TEXT1, TEXT1_RECT)
             self.screen.blit(TEXT2, TEXT2_RECT)
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
