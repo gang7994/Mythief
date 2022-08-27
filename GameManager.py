@@ -120,11 +120,12 @@ class GameManager:
             self.screen.blit(self.stage, (80, 70))
             
     def show_info(self):
-        font = pygame.font.Font(None, 20)
+        font = pygame.font.Font(None, 30)
         pos = font.render(f"Player_pos: {self.level.player.rect.centerx, self.level.player.rect.centery,}", True, WHITE)
         remain_monster = font.render(f"Remaining_Monster: {self.level.remain_monster}", True, WHITE) # Show_info로 주석표기
-        self.screen.blit(pos, (10, 700))
-        self.screen.blit(remain_monster, (10, 710))
+        fps = font.render(f"FPS: {str(int(self.clock.get_fps()))}", True, WHITE)
+        self.screen.blits([(pos, (10, 600)),(remain_monster, (10, 650)), (fps, (10, 700))])
+
     
     # 게임 로직
     def Run(self):
