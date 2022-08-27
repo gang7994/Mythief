@@ -1,4 +1,3 @@
-from lib2to3.pgen2.token import OP
 import pygame, sys
 from Button import Button
 from Button_text import Button_text
@@ -49,11 +48,7 @@ class Credit:
             
             TEXT2 = get_font(30).render("Add credit content here", True, "White")
             TEXT2_RECT = TEXT1.get_rect(center=((screen_width/2), 400))
-            '''
-            self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
-            self.popup = pygame.transform.scale(self.popup, (800, 650))
-            self.screen.blit(self.popup, (328, 100))
-            '''
+
             self.screen.blit(TEXT1, TEXT1_RECT)
             self.screen.blit(TEXT2, TEXT2_RECT)
             self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
@@ -173,27 +168,27 @@ def Play():
 
 def main_menu():
     SCREEN.fill(BLACK)
+    bg_image = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "mainBackGround.png")).convert_alpha(), (1456, 776))
+    logo_image = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "mainLogo.png")).convert_alpha(), (600, 200))
+    SCREEN.blits([(bg_image, (0,0)), (logo_image, (428, 20))])
     while True:
         MENU_MOUSE_POS = pygame.mouse.get_pos()
-        MENU_TEXT = get_titlefont(100).render("Mythief", True, "#b68f40")
-        MENU_RECT = MENU_TEXT.get_rect(center=(728, 120))
 
         PLAY_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(), 
                             image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(), 
-                            pos=(728, 250), scale_x=400, scale_y=100)
+                            pos=(728, 280), scale_x=400, scale_y=100)
         ENCYCLOPEDIA_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_Collection_0.png")).convert_alpha(), 
                             image1=pygame.image.load(os.path.join(images_path, "btn_Collection_1.png")).convert_alpha(), 
-                            pos=(728, 360), scale_x=400, scale_y=100)
+                            pos=(728, 390), scale_x=400, scale_y=100)
         CREDIT_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_credit_0.png")).convert_alpha(), 
                             image1=pygame.image.load(os.path.join(images_path, "btn_credit_1.png")).convert_alpha(), 
-                            pos=(728, 470), scale_x=400, scale_y=100)
+                            pos=(728, 500), scale_x=400, scale_y=100)
         OPTION_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(), 
                             image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(), 
-                            pos=(728, 580), scale_x=400, scale_y=100)
+                            pos=(728, 610), scale_x=400, scale_y=100)
         QUIT_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_exit_0.png")).convert_alpha(), 
                             image1=pygame.image.load(os.path.join(images_path, "btn_exit_1.png")).convert_alpha(), 
-                            pos=(728, 690), scale_x=400, scale_y=100)
-        SCREEN.blit(MENU_TEXT, MENU_RECT)
+                            pos=(728, 720), scale_x=400, scale_y=100)
 
         for button in [PLAY_BUTTON, ENCYCLOPEDIA_BUTTON, CREDIT_BUTTON, OPTION_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
