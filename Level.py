@@ -102,8 +102,6 @@ class Level:
                 else:
                     monster.is_rush = False
 
-
-
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)

@@ -13,8 +13,8 @@ class GameManager:
         self.total_rock_count = 0
         self.total_score = 0
         self.running = True
-        self.is_pause = False
         self.level = Level(0)
+        self.is_pause = False
 
     # 시간 재기
     def draw_time(self, elapse_time):
@@ -51,8 +51,8 @@ class GameManager:
 
     # 무기 이미지 그리기
     def draw_rock_image(self):
-        self.screen.blit(pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha(), (10, 310))
-        pygame.draw.rect(self.screen, WHITE, (5.5, 305.5, 32, 32), 2)
+        self.screen.blit(pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha(), (10, 270))
+        pygame.draw.rect(self.screen, WHITE, (5.5, 265.5, 32, 32), 2)
 
     def draw_frame(self):
         pygame.draw.rect(self.screen, BLACK, (0,0,1456,776), 150)
@@ -64,7 +64,7 @@ class GameManager:
             if self.level.player.current_time - self.level.player.rock_time <= self.level.player.rock_cool_time:
                 pygame.draw.rect(self.screen,
                                  BLACK,
-                                 (5.5, 305.5, 32,
+                                 (5.5, 265.5, 32,
                                   32 - (self.level.player.current_time - self.level.player.rock_time) / 22))
 
     # 클리어 함수
@@ -76,11 +76,6 @@ class GameManager:
         self.screen.fill(BLACK)
         self.screen.blit(msg, msg_rect)
         self.running = False
-
-    def pause(self):
-        print("stop")
-        self.is_pause = True
-        return self.is_pause
     
     # 현재 스테이지 글자로 표시
     def current_stage(self):
@@ -130,7 +125,6 @@ class GameManager:
         fps = font.render(f"FPS: {str(int(self.clock.get_fps()))}", True, WHITE)
         self.screen.blits([(pos, (10, 660)),(remain_monster, (10, 690)), (fps, (10, 720))])
 
-    
     # 게임 로직
     def Run(self):
         # 프레임 영역
@@ -154,7 +148,7 @@ class GameManager:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if PAUSE.checkForInput(PAUSE_MOUSE_POS) and not self.is_pause:
-                        self.pause()
+                        self.is_pause = True
                     elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.is_pause:
                         self.is_pause = False
     
@@ -168,8 +162,8 @@ class GameManager:
             self.draw_hp()
             self.current_stage()
             self.draw_current_stage(self.level.map_idx)
-            PAUSE.update(self.screen)
             self.show_info()
+            PAUSE.update(self.screen)
     
             elapse_time = (pygame.time.get_ticks() - start_time) / 1000
             self.draw_time(elapse_time)
