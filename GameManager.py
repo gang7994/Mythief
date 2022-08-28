@@ -18,7 +18,7 @@ class GameManager:
 
     # 시간 재기
     def draw_time(self, elapse_time):
-        font = pygame.font.Font(None, 30)
+        font = pygame.font.Font(None, 25)
         timer = font.render("Time : {}".format(int(elapse_time)), True, WHITE)
         self.screen.blit(timer, (10, 170))
 
@@ -34,13 +34,13 @@ class GameManager:
 
     # 점수 그리기
     def draw_score(self, total_score):
-        font = pygame.font.Font(None, 30)
+        font = pygame.font.Font(None, 25)
         score = font.render("Score : {}".format(int(total_score)), True, WHITE)
         self.screen.blit(score, (10, 205))
 
     # 돌 던진 횟수 그리기
     def draw_rock_count(self):
-        font = pygame.font.Font(None, 30)
+        font = pygame.font.Font(None, 25)
         score = font.render("Rock Count : {}".format(int(self.level.player.rock_count)), True, WHITE)
         self.screen.blit(score, (10, 240))
 
@@ -53,6 +53,10 @@ class GameManager:
     def draw_rock_image(self):
         self.screen.blit(pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha(), (10, 310))
         pygame.draw.rect(self.screen, WHITE, (5.5, 305.5, 32, 32), 2)
+
+    def draw_frame(self):
+        pygame.draw.rect(self.screen, BLACK, (0,0,1456,776), 150)
+        pygame.draw.rect(self.screen, WHITE, (150, 150, 1156, 476), 1)
 
     # 무기 쿨타임 그리기
     def draw_rock_cool_time(self):
@@ -80,7 +84,7 @@ class GameManager:
     
     # 현재 스테이지 글자로 표시
     def current_stage(self):
-        font = pygame.font.Font(None,50)
+        font = pygame.font.Font(None,25)
         stage = self.level.map_idx + 1
         if stage == 3: text = font.render(f"[ EVENT ]", True, WHITE)
         else: text = font.render(f"[ STAGE: {stage} ]", True, WHITE)
@@ -120,11 +124,11 @@ class GameManager:
             self.screen.blit(self.stage, (80, 70))
             
     def show_info(self):
-        font = pygame.font.Font(None, 30)
+        font = pygame.font.Font(None, 25)
         pos = font.render(f"Player_pos: {self.level.player.rect.centerx, self.level.player.rect.centery,}", True, WHITE)
         remain_monster = font.render(f"Remaining_Monster: {self.level.remain_monster}", True, WHITE) # Show_info로 주석표기
         fps = font.render(f"FPS: {str(int(self.clock.get_fps()))}", True, WHITE)
-        self.screen.blits([(pos, (10, 600)),(remain_monster, (10, 650)), (fps, (10, 700))])
+        self.screen.blits([(pos, (10, 660)),(remain_monster, (10, 690)), (fps, (10, 720))])
 
     
     # 게임 로직
@@ -157,6 +161,7 @@ class GameManager:
             # 이미지 영역
             self.screen.fill(BLACK)
             self.level.run()
+            self.draw_frame()
             self.draw_rock_count()
             self.draw_rock_image()
             self.draw_rock_cool_time()

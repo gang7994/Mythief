@@ -10,7 +10,6 @@ class Level:
     remain_monster = 0 # Show_info
     def __init__(self, map_idx):
         self.map_idx = map_idx
-        self.display_surface = pygame.display.get_surface()
         self.images = CameraGroup()
         self.border_images = pygame.sprite.Group()
         self.monster_images = CameraGroup()
@@ -108,16 +107,16 @@ class Level:
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)
-        self.images.custom_draw(self.player)
-        self.monster_images.custom_draw(self.player)
+        self.images.custom_draw(self.player, dt)
+        self.monster_images.custom_draw(self.player, dt)
         self.get_player_distance(self.player, dt)
         self.monster_images.update()
         self.images.update()
         if self.map_idx == 2:
             self.glow.draw_player_glow()
             for fire in self.fire_images:
-                fire.draw_fire_glow(self.player)
-        self.glow.draw_display_change()
+                fire.draw_fire_glow(self.player, dt)
+        self.glow.draw_display_change(dt)
 
 # 카메라 클래스
 class CameraGroup(pygame.sprite.Group):
@@ -129,40 +128,33 @@ class CameraGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
         self.camera_move_flag = False
         self.camera_borders = {'left': 200, 'right': 200, 'top': 150, 'bottom': 100}
-        l = self.camera_borders['left']
-        t = self.camera_borders['top']
-        w = 1456 - self.camera_borders['left'] - self.camera_borders['right']
-        h = 776 - self.camera_borders['top'] - self.camera_borders['bottom']
-        self.camera_rect = pygame.Rect(l,t,w,h)
 
     # 카메라 드로우
-    def custom_draw(self, player):
+    def custom_draw(self, player, dt):
         if not self.camera_move_flag:
             self.offset.x = player.rect.centerx - self.half_width
             self.offset.y = player.rect.centery - self.half_height
-        self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height))
+        self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
         for sprite in self.sprites():
             offset_rect = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_rect)
 
-        pygame.draw.rect(self.display_surface, 'yellow', self.camera_rect, 5)
-
     # 카메라 이동
-    def camera_move(self, pos):
+    def camera_move(self, pos, dt):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
             self.camera_move_flag = True
             if keys[pygame.K_w]:
-                self.offset.y -= 2
+                self.offset.y -= 2 * (dt // 6)
                 if self.offset.y < pos[1] - 200: self.offset.y = pos[1] - 200
             if keys[pygame.K_a]:
-                self.offset.x -= 2
+                self.offset.x -= 2 * (dt // 6)
                 if self.offset.x < pos[0] - 200: self.offset.x = pos[0] - 200
             if keys[pygame.K_s]:
-                self.offset.y += 2
+                self.offset.y += 2 * (dt // 6)
                 if self.offset.y > pos[1] + 200: self.offset.y = pos[1] + 200
             if keys[pygame.K_d]:
-                self.offset.x += 2
+                self.offset.x += 2 * (dt // 6)
                 if self.offset.x > pos[0] + 200: self.offset.x = pos[0] + 200
         else:
             self.camera_move_flag = False
@@ -190,21 +182,21 @@ class Glow:
 
 
 
-    def camera_move(self, pos):
+    def camera_move(self, pos, dt):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
             self.camera_move_flag = True
             if keys[pygame.K_w]:
-                self.offset.y -= 2
+                self.offset.y -= 2 * (dt // 6)
                 if self.offset.y < pos[1] - 200: self.offset.y = pos[1] - 200
             if keys[pygame.K_a]:
-                self.offset.x -= 2
+                self.offset.x -= 2 * (dt // 6)
                 if self.offset.x < pos[0] - 200: self.offset.x = pos[0] - 200
             if keys[pygame.K_s]:
-                self.offset.y += 2
+                self.offset.y += 2 * (dt // 6)
                 if self.offset.y > pos[1] + 200: self.offset.y = pos[1] + 200
             if keys[pygame.K_d]:
-                self.offset.x += 2
+                self.offset.x += 2 * (dt // 6)
                 if self.offset.x > pos[0] + 200: self.offset.x = pos[0] + 200
         else:
             self.camera_move_flag = False
@@ -222,7 +214,7 @@ class Glow:
         self.display_surface.blit(self.new_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
     
     # 버그 존재 - 고쳐야함
-    def draw_fire_glow(self, player):
+    def draw_fire_glow(self, player, dt):
         pos = []
         pos.append(self.pos[0])
         pos.append(self.pos[1])
@@ -230,7 +222,7 @@ class Glow:
         if not self.camera_move_flag:
             self.offset.x = player.rect.centerx - self.half_width
             self.offset.y = player.rect.centery - self.half_height
-        self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height))
+        self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
         for particle in self.fire_glow:
             particle[0][1] += particle[1][1]
             particle[2] -= 0.5
@@ -246,12 +238,12 @@ class Glow:
             if particle[2] <= 0:
                 self.fire_glow.remove(particle)
 
-    def draw_display_change(self):
+    def draw_display_change(self, dt):
         if not self.game_display_flag:
             self.display_anim_surf.fill((0, 0, 0))
             self.display_anim_surf.blit(self.circle_surf(self.rad, (255, 255, 255)), (self.half_width - self.rad, self.half_height - self.rad))
             self.display_surface.blit(self.display_anim_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
-            if not self.circle_pause: self.rad += 10
+            if not self.circle_pause: self.rad += 10 * (dt // 6)
             if self.rad > 100:
                 self.loop_cnt += 1
                 self.circle_pause = True
