@@ -84,44 +84,45 @@ class GameManager:
     
     # 현재 스테이지 글자로 표시
     def current_stage(self):
-        font = pygame.font.Font(None,25)
+        font = pygame.font.Font(None, 40)
         stage = self.level.map_idx + 1
-        if stage == 3: text = font.render(f"[ EVENT ]", True, WHITE)
+        if stage == 4: text = font.render(f"[ EVENT ]", True, WHITE)
+        elif stage == 8: text = font.render(f"[ EVENT ]", True, WHITE)
         else: text = font.render(f"[ STAGE: {stage} ]", True, WHITE)
         self.screen.blit(text, (660, 15))
         
     # 현재 스테이지 그림으로 표시
     def draw_current_stage(self, n):
         if n == 0:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage0.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage0.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
         elif n ==1:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage1.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage1.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
         elif n ==2:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage2.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage2.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
         elif n ==3:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage3.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage3.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
         elif n ==4:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage4.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage4.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
         elif n ==5:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage5.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage5.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
         elif n ==6:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage6.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage6.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
         elif n ==7:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage7.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage7.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
         elif n ==8:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage8.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage8.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
         elif n ==9:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage9.png")).convert_alpha(), (1300, 70))
-            self.screen.blit(self.stage, (80, 70))
+            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage9.png")).convert_alpha(), (1150, 70))
+            self.screen.blit(self.stage, (153, 70))
             
     def show_info(self):
         font = pygame.font.Font(None, 25)
