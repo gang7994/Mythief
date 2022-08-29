@@ -45,6 +45,7 @@ class Player(pygame.sprite.Sprite):
         # throw animation variable
         self.throw = []
         self.clock = pygame.time.Clock()
+        self.is_pause = False
 
         
     def walk_animation(self):
@@ -288,12 +289,13 @@ class Player(pygame.sprite.Sprite):
     # 업데이트 영역 -> 무적 시간 함수 추가
     def update(self):
         dt = self.clock.tick(FPS)
-        self.un_damaged_time()
-        self.add_rock()
-        self.re_load_rock()
-        self.damage_collision()
-        self.move(self.player_speed, dt)
-        self.walk_delay()
-        self.idle()
-        self.idle_delay()
+        if not self.is_pause:
+            self.un_damaged_time()
+            self.add_rock()
+            self.re_load_rock()
+            self.damage_collision()
+            self.move(self.player_speed, dt)
+            self.walk_delay()
+            self.idle()
+            self.idle_delay()
         

@@ -11,6 +11,7 @@ class Rock(pygame.sprite.Sprite):
         self.direction = direction
         self.border_images = border_images
         self.clock = pygame.time.Clock()
+        self.is_pause = False
 
     # 영역 밖에서 오브젝트 삭제
     def destroy(self):
@@ -36,8 +37,9 @@ class Rock(pygame.sprite.Sprite):
     # 업데이트 영역
     def update(self):
         dt = self.clock.tick(FPS)
-        if self.direction == 1: self.rect.x += self.speed * (dt // 6)
-        elif self.direction == 2: self.rect.x -= self.speed * (dt // 6)
-        elif self.direction == 3: self.rect.y += self.speed * (dt // 6)
-        elif self.direction == 4: self.rect.y -= self.speed * (dt // 6)
-        self.collision()
+        if not self.is_pause:
+            if self.direction == 1: self.rect.x += self.speed * (dt // 6)
+            elif self.direction == 2: self.rect.x -= self.speed * (dt // 6)
+            elif self.direction == 3: self.rect.y += self.speed * (dt // 6)
+            elif self.direction == 4: self.rect.y -= self.speed * (dt // 6)
+            self.collision()

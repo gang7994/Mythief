@@ -18,6 +18,7 @@ class Level:
         self.create_map()
         self.glow = Glow(self.player.rect.topleft)
         self.clock = pygame.time.Clock()
+        self.is_pause = False
 
     # 맵 생성
     def create_map(self):
@@ -78,6 +79,20 @@ class Level:
     def get_finish(self):
         return self.finish
 
+    def pause(self, str):
+        if str == "T":
+            self.is_pause = True
+            for sprite in self.images:
+                sprite.is_pause = True
+            for sprite in self.monster_images:
+                sprite.is_pause = True
+        elif str == 'F':
+            self.is_pause = False
+            for sprite in self.images:
+                sprite.is_pause = False
+            for sprite in self.monster_images:
+                sprite.is_pause = False
+
     # 플레이어 , 적 거리 계산
     def get_player_distance(self, player, dt):
         for monster in self.monster_images:
@@ -107,7 +122,8 @@ class Level:
         dt = self.clock.tick(FPS)
         self.images.custom_draw(self.player, dt)
         self.monster_images.custom_draw(self.player, dt)
-        self.get_player_distance(self.player, dt)
+        if not self.is_pause:
+            self.get_player_distance(self.player, dt)
         self.monster_images.update()
         self.images.update()
         if self.map_idx == 2:

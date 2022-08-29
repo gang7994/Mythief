@@ -14,7 +14,6 @@ class GameManager:
         self.total_score = 0
         self.running = True
         self.level = Level(0)
-        self.is_pause = False
 
     # 시간 재기
     def draw_time(self, elapse_time):
@@ -129,12 +128,12 @@ class GameManager:
     # 게임 로직
     def Run(self):
         # 프레임 영역
-        start_time = pygame.time.get_ticks()
+        self.start_time = pygame.time.get_ticks()
         # 메인 로직 영역
         while self.running:
             self.clock.tick(FPS)
             PAUSE_MOUSE_POS = pygame.mouse.get_pos()
-            if not self.is_pause:
+            if not self.level.is_pause:
                 PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause0.png")).convert_alpha(), 
                                 image1=pygame.image.load(os.path.join(images_path, "pause1.png")).convert_alpha(), 
                                 pos=(1390,35), scale_x=50, scale_y=50)
@@ -148,10 +147,10 @@ class GameManager:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    if PAUSE.checkForInput(PAUSE_MOUSE_POS) and not self.is_pause:
-                        self.is_pause = True
-                    elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.is_pause:
-                        self.is_pause = False
+                    if PAUSE.checkForInput(PAUSE_MOUSE_POS) and not self.level.is_pause:
+                        self.level.pause("T")
+                    elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
+                        self.level.pause("F")
     
             # 이미지 영역
             self.screen.fill(BLACK)
@@ -165,11 +164,16 @@ class GameManager:
             self.draw_current_stage(self.level.map_idx)
             self.show_info()
             PAUSE.update(self.screen)
-    
-            elapse_time = (pygame.time.get_ticks() - start_time) / 1000
+
+            if not self.level.is_pause:
+                self.tem_now_time = pygame.time.get_ticks() - self.start_time
+                elapse_time = (self.tem_now_time) / 1000
+            else:
+                self.start_time = pygame.time.get_ticks() - self.tem_now_time
+                elapse_time = (self.tem_now_time) / 1000
             self.draw_time(elapse_time)
             self.draw_score(self.total_score)
-            if self.is_pause:
+            if self.level.is_pause:
                 self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
                 self.popup.set_alpha(200)
                 self.screen.blit(self.popup, (100, 100))

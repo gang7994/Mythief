@@ -24,6 +24,7 @@ class LaserMonster(pygame.sprite.Sprite):
         self.current_time = 0
         self.laser_time = 0
         self.clock = pygame.time.Clock()
+        self.is_pause = False
         
     # 적 움직임 랜덤으로 얻기
     def move_order(self):
@@ -95,11 +96,12 @@ class LaserMonster(pygame.sprite.Sprite):
     # 몬스터 로직 업데이트
     def update(self):
         dt = self.clock.tick(FPS)
-        self.move_order()
-        self.move(self.monster_speed, dt)
-        self.move_wait()
-        self.add_laser()
-        self.re_load_laser()
+        if not self.is_pause:
+            self.move_order()
+            self.move(self.monster_speed, dt)
+            self.move_wait()
+            self.add_laser()
+            self.re_load_laser()
 
 class RushMonster(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images):
@@ -117,6 +119,7 @@ class RushMonster(pygame.sprite.Sprite):
         self.boundary = 150
         self.is_rush = False
         self.clock = pygame.time.Clock()
+        self.is_pause = False
 
     # 적 움직임 랜덤으로 얻기
     def move_order(self):
@@ -172,7 +175,7 @@ class RushMonster(pygame.sprite.Sprite):
 
     def update(self):
         dt = self.clock.tick(FPS)
-        if not self.is_rush:
+        if not self.is_rush and not self.is_pause:
             self.move_order()
             self.move(self.monster_speed, dt)
             self.move_wait()
