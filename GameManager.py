@@ -125,6 +125,20 @@ class GameManager:
         fps = font.render(f"FPS: {str(int(self.clock.get_fps()))}", True, WHITE)
         self.screen.blits([(pos, (10, 660)),(remain_monster, (10, 690)), (fps, (10, 720))])
 
+    def show_dir(self):
+        if self.level.player.dir.x == -1:
+            image = pygame.image.load(os.path.join(images_path, "arr0.png")).convert_alpha()
+            self.screen.blit(image, (710, 370))
+        elif self.level.player.dir.x == 1:
+            image = pygame.image.load(os.path.join(images_path, "arr1.png")).convert_alpha()
+            self.screen.blit(image, (746, 370))
+        elif self.level.player.dir.y == -1:
+            image = pygame.image.load(os.path.join(images_path, "arr2.png")).convert_alpha()
+            self.screen.blit(image, (715, 360))
+        elif self.level.player.dir.y == 1:
+            image = pygame.image.load(os.path.join(images_path, "arr3.png")).convert_alpha()
+            self.screen.blit(image, (715, 410))
+    
     # 게임 로직
     def Run(self):
         # 프레임 영역
@@ -162,6 +176,7 @@ class GameManager:
             self.draw_hp()
             self.current_stage()
             self.draw_current_stage(self.level.map_idx)
+            self.show_dir()
             self.show_info()
             PAUSE.update(self.screen)
 

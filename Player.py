@@ -2,6 +2,7 @@ import pygame, os
 from Settings import *
 from Rock import Rock
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images, images):
         super().__init__(groups)
@@ -135,6 +136,9 @@ class Player(pygame.sprite.Sprite):
         if self.current_hp >= self.max_hp:
             self.current_hp = self.max_hp
 
+
+
+
     # 수평 이동 입력
     def get_horizontal(self):
         keys = pygame.key.get_pressed()
@@ -158,6 +162,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.dir.x = 0
             self.is_move_x = False
+
         return self.dir.x
 
     # 수직 이동 입력
