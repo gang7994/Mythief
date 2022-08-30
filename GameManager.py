@@ -126,18 +126,20 @@ class GameManager:
         self.screen.blits([(pos, (10, 660)),(remain_monster, (10, 690)), (fps, (10, 720))])
 
     def show_dir(self):
-        if self.level.player.dir.x == -1:
-            image = pygame.image.load(os.path.join(images_path, "arr0.png")).convert_alpha()
-            self.screen.blit(image, (710, 370))
-        elif self.level.player.dir.x == 1:
-            image = pygame.image.load(os.path.join(images_path, "arr1.png")).convert_alpha()
-            self.screen.blit(image, (746, 370))
-        elif self.level.player.dir.y == -1:
-            image = pygame.image.load(os.path.join(images_path, "arr2.png")).convert_alpha()
-            self.screen.blit(image, (715, 360))
-        elif self.level.player.dir.y == 1:
-            image = pygame.image.load(os.path.join(images_path, "arr3.png")).convert_alpha()
-            self.screen.blit(image, (715, 410))
+        keys = pygame.key.get_pressed()
+        if not (keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]):
+            if self.level.player.dir.x == -1:
+                image = pygame.image.load(os.path.join(images_path, "arr0.png")).convert_alpha()
+                self.screen.blit(image, (710, 370))
+            elif self.level.player.dir.x == 1:
+                image = pygame.image.load(os.path.join(images_path, "arr1.png")).convert_alpha()
+                self.screen.blit(image, (746, 370))
+            elif self.level.player.dir.y == -1:
+                image = pygame.image.load(os.path.join(images_path, "arr2.png")).convert_alpha()
+                self.screen.blit(image, (715, 360))
+            elif self.level.player.dir.y == 1:
+                image = pygame.image.load(os.path.join(images_path, "arr3.png")).convert_alpha()
+                self.screen.blit(image, (715, 410))
     
     # 게임 로직
     def Run(self):
