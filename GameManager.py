@@ -50,8 +50,8 @@ class GameManager:
 
     # 무기 이미지 그리기
     def draw_rock_image(self):
-        self.screen.blit(pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha(), (10, 270))
-        pygame.draw.rect(self.screen, WHITE, (5.5, 265.5, 32, 32), 2)
+        self.screen.blit(pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha(), (1330, 400))
+        pygame.draw.rect(self.screen, WHITE, (1325.5, 395.5, 32, 32), 2)
 
     def draw_frame(self):
         pygame.draw.rect(self.screen, BLACK, (0,0,1456,776), 150)
@@ -63,7 +63,7 @@ class GameManager:
             if self.level.player.current_time - self.level.player.rock_time <= self.level.player.rock_cool_time:
                 pygame.draw.rect(self.screen,
                                  BLACK,
-                                 (5.5, 265.5, 32,
+                                 (1325.5, 395.5, 32,
                                   32 - (self.level.player.current_time - self.level.player.rock_time) / 22))
 
     # 클리어 함수
@@ -164,6 +164,11 @@ class GameManager:
                     if PAUSE.checkForInput(PAUSE_MOUSE_POS) and not self.level.is_pause:
                         self.level.pause("T")
                     elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
+                        self.level.pause("F")
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE and not self.level.is_pause:
+                        self.level.pause("T")
+                    elif event.key == pygame.K_ESCAPE and self.level.is_pause:
                         self.level.pause("F")
     
             # 이미지 영역

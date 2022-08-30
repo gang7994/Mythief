@@ -7,7 +7,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images, images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
-        self.rect = self.image.get_rect(topleft=pos)
+        self.rect = self.image.get_rect(topleft=(pos[0],pos[1] + 15))
+        self.hitbox = self.rect.inflate(0,-30)
         self.name = "Player"
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
@@ -208,11 +209,12 @@ class Player(pygame.sprite.Sprite):
         if x == 0 and y == 0: self.move_order = [0]
         # 이동 로직 + 충돌방지
         if self.is_horizon:
-            self.rect.left += x * speed * (dt // 6)
+            self.hitbox.left += x * speed * (dt // 6)
             self.collision("horizontal")
         else:
-            self.rect.top += y * speed * (dt // 6)
+            self.hitbox.top += y * speed * (dt // 6)
             self.collision("vertical")
+        self.rect.center = self.hitbox.center
         # 화면 밖 안나가게
         if self.rect.left < 0:
             self.rect.left = 0
@@ -265,23 +267,23 @@ class Player(pygame.sprite.Sprite):
     def collision(self, direction):
         if direction == "horizontal":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.rect.colliderect(self.hitbox):
                     if self.dir.x > 0:
-                        self.rect.right = sprite.rect.left
+                        self.hitbox.right = sprite.rect.left
                     elif self.dir.x < 0:
-                        self.rect.left = sprite.rect.right
+                        self.hitbox.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.rect.colliderect(self.hitbox):
                     if self.dir.y > 0:
-                        self.rect.bottom = sprite.rect.top
+                        self.hitbox.bottom = sprite.rect.top
                     elif self.dir.y < 0:
-                        self.rect.top = sprite.rect.bottom
+                        self.hitbox.top = sprite.rect.bottom
 
     # 데미지를 주는 충돌을 따로 만듦
     def damage_collision(self):
         for sprite in self.damage_images:
-            if sprite.rect.colliderect(self.rect):
+            if sprite.rect.colliderect(self.hitbox):
                 if sprite.name == "laser_Monster" and not self.is_damaged:
                     self.get_damaged(10)
                 if sprite.name == "monster_laser" and not self.is_damaged:

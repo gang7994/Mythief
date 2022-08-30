@@ -141,7 +141,6 @@ class CameraGroup(pygame.sprite.Group):
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
         self.camera_move_flag = False
-        self.camera_borders = {'left': 200, 'right': 200, 'top': 150, 'bottom': 100}
 
     # 카메라 드로우
     def custom_draw(self, player, dt):

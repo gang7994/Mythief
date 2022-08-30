@@ -7,6 +7,7 @@ class Wall1(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall1.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2,-2)
         self.name = "Wall"
         self.is_pause = False
         
@@ -15,6 +16,7 @@ class Wall2(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall2.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
         
@@ -23,6 +25,7 @@ class Wall3(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall3.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
         
@@ -31,6 +34,7 @@ class Wall4(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall4.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
 
@@ -39,6 +43,7 @@ class Fire_Wall(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "fire2.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
 
@@ -47,6 +52,7 @@ class Fire_torch(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "fire.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
         
@@ -55,6 +61,7 @@ class Corner1(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "corner0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
     
@@ -63,6 +70,7 @@ class Corner2(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "corner1.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
         
@@ -71,6 +79,7 @@ class Corner3(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "corner2.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
         
@@ -79,6 +88,7 @@ class Corner4(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "corner3.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
         
@@ -87,6 +97,7 @@ class Obstacle(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "obstacle1.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
         self.is_pause = False
 
@@ -96,6 +107,7 @@ class Finish(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Finish"
         self.is_pause = False
 
@@ -105,6 +117,7 @@ class NoneRoad(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "void_checked.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-6, -6)
         self.name = "NoneRoad"
         self.is_pause = False
 
