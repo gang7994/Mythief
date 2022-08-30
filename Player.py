@@ -7,8 +7,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images, images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
-        self.rect = self.image.get_rect(topleft=(pos[0],pos[1] + 15))
-        self.hitbox = self.rect.inflate(0,-30)
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(0,-15)
         self.name = "Player"
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]

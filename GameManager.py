@@ -149,16 +149,31 @@ class GameManager:
         while self.running:
             self.clock.tick(FPS)
             PAUSE_MOUSE_POS = pygame.mouse.get_pos()
+            print(PAUSE_MOUSE_POS) # 잠시 그릴 위치 확인하기 위해 넣은 코드
             if not self.level.is_pause:
                 PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause0.png")).convert_alpha(), 
                                 image1=pygame.image.load(os.path.join(images_path, "pause1.png")).convert_alpha(), 
                                 pos=(1390,35), scale_x=50, scale_y=50)
+                SETTING = Button(image0=pygame.image.load(os.path.join(images_path, "setting_icon.png")).convert_alpha(),
+                               image1=pygame.image.load(os.path.join(images_path, "setting_icon2.png")).convert_alpha(),
+                               pos=(740, 380), scale_x=200, scale_y=200)
+                EXIT = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
+                               image1=pygame.image.load(os.path.join(images_path, "exit_icon2.png")).convert_alpha(),
+                               pos=(1140, 380), scale_x=300, scale_y=300)
             else:
                 PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause2.png")).convert_alpha(), 
                                 image1=pygame.image.load(os.path.join(images_path, "pause3.png")).convert_alpha(), 
-                                pos=(1390,35), scale_x=50, scale_y=50)
+                                pos=(340,380), scale_x=200, scale_y=200)
+                SETTING = Button(image0=pygame.image.load(os.path.join(images_path, "setting_icon.png")).convert_alpha(),
+                               image1=pygame.image.load(os.path.join(images_path, "setting_icon2.png")).convert_alpha(),
+                               pos=(740, 380), scale_x=300, scale_y=300)
+                EXIT = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
+                               image1=pygame.image.load(os.path.join(images_path, "exit_icon2.png")).convert_alpha(),
+                               pos=(1140, 380), scale_x=300, scale_y=300)
             PAUSE.changeColor(PAUSE_MOUSE_POS)
-            
+            SETTING.changeColor(PAUSE_MOUSE_POS)
+            EXIT.changeColor(PAUSE_MOUSE_POS)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
@@ -167,12 +182,19 @@ class GameManager:
                         self.level.pause("T")
                     elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
                         self.level.pause("F")
+
+                    if SETTING.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:   # 음..이런 방식이면 저장된 정보를 가져올 수 없는데
+                        pass
+
+                    if EXIT.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:      # 음..이런 방식이면 저장된 정보를 가져올 수 없는데
+                        pass
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE and not self.level.is_pause:
                         self.level.pause("T")
                     elif event.key == pygame.K_ESCAPE and self.level.is_pause:
                         self.level.pause("F")
-    
+
             # 이미지 영역
             self.screen.fill(BLACK)
             self.level.run()
@@ -199,11 +221,13 @@ class GameManager:
                 self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
                 self.popup.set_alpha(200)
                 self.screen.blit(self.popup, (100, 100))
+                SETTING.update(self.screen)
+                EXIT.update(self.screen)
                 
             # 게임 클리어 영역
             x = self.level.get_player()
             y = self.level.get_finish()
-            if x.rect.colliderect(y.rect):
+            if x.hitbox.colliderect(y.rect):
                 if self.level.map_idx < len(map) - 1:
                     Level.remain_monster = 0 # Show_info
                     self.level = Level(self.level.map_idx + 1)

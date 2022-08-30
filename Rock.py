@@ -7,6 +7,7 @@ class Rock(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
+        self.name = "Rock"
         self.hitbox = self.rect.inflate(-31, -31)
         self.speed = 5
         self.direction = direction

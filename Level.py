@@ -86,12 +86,16 @@ class Level:
                 sprite.is_pause = True
             for sprite in self.monster_images:
                 sprite.is_pause = True
+            for fire in self.fire_images:
+                fire.is_pause = True
         elif str == 'F':
             self.is_pause = False
             for sprite in self.images:
                 sprite.is_pause = False
             for sprite in self.monster_images:
                 sprite.is_pause = False
+            for fire in self.fire_images:
+                fire.is_pause = False
 
     # 플레이어 , 적 거리 계산
     def get_player_distance(self, player, dt):
@@ -150,7 +154,10 @@ class CameraGroup(pygame.sprite.Group):
         self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
         for sprite in self.sprites():
             offset_rect = sprite.rect.topleft - self.offset
-            self.display_surface.blit(sprite.image, offset_rect)
+            if sprite.name == "Player":
+                self.display_surface.blit(sprite.image, (offset_rect[0], offset_rect[1] - 7.5))
+            else:
+                self.display_surface.blit(sprite.image, offset_rect)
 
     # 카메라 이동
     def camera_move(self, pos, dt):
@@ -191,6 +198,7 @@ class Glow:
         self.circle_pause = False
         self.loop_cnt = 0
         self.rad = 0
+        self.is_pause = False
 
 
 
@@ -231,15 +239,17 @@ class Glow:
         pos = []
         pos.append(self.pos[0])
         pos.append(self.pos[1])
-        self.fire_glow.append([pos, [random.randint(0, 20) / 10 - 1, -5], random.randint(6, 9)])
+        if not self.is_pause:
+            self.fire_glow.append([pos, [random.randint(0, 20) / 10 - 1, -5], random.randint(6, 9)])
         if not self.camera_move_flag:
             self.offset.x = player.rect.centerx - self.half_width
             self.offset.y = player.rect.centery - self.half_height
         self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
         for particle in self.fire_glow:
-            particle[0][1] += particle[1][1]
-            particle[2] -= 0.5
-            particle[1][1] += 0.15
+            if not self.is_pause:
+                particle[0][1] += particle[1][1]
+                particle[2] -= 0.5
+                particle[1][1] += 0.15
             pygame.draw.circle(self.display_surface,
                                (255, 255, 255),
                                [int(particle[0][0]) - self.offset.x + 24, int(particle[0][1]) - self.offset.y + 24],
