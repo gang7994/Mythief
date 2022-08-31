@@ -130,16 +130,16 @@ class GameManager:
         if not (keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]):
             if self.level.player.dir.x == -1:
                 image = pygame.image.load(os.path.join(images_path, "arr0.png")).convert_alpha()
-                self.screen.blit(image, (710, 370))
+                self.screen.blit(image, (710, 360))
             elif self.level.player.dir.x == 1:
                 image = pygame.image.load(os.path.join(images_path, "arr1.png")).convert_alpha()
-                self.screen.blit(image, (746, 370))
+                self.screen.blit(image, (746, 360))
             elif self.level.player.dir.y == -1:
                 image = pygame.image.load(os.path.join(images_path, "arr2.png")).convert_alpha()
-                self.screen.blit(image, (715, 360))
+                self.screen.blit(image, (715, 350))
             elif self.level.player.dir.y == 1:
                 image = pygame.image.load(os.path.join(images_path, "arr3.png")).convert_alpha()
-                self.screen.blit(image, (715, 410))
+                self.screen.blit(image, (715, 400))
     
     # 게임 로직
     def Run(self):
@@ -149,7 +149,6 @@ class GameManager:
         while self.running:
             self.clock.tick(FPS)
             PAUSE_MOUSE_POS = pygame.mouse.get_pos()
-            print(PAUSE_MOUSE_POS) # 잠시 그릴 위치 확인하기 위해 넣은 코드
             if not self.level.is_pause:
                 PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause0.png")).convert_alpha(), 
                                 image1=pygame.image.load(os.path.join(images_path, "pause1.png")).convert_alpha(), 
