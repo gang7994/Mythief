@@ -18,6 +18,7 @@ def circle_surf(radius, color):
 # [loc, velocity, timer]
 particles = []
 boom_particles = []
+boom_color = [120, 200, 255]
 boom_flag = False
 
 game_display_flag = False
@@ -74,7 +75,8 @@ while True:
             particle[0][0] += particle[1][0]
             particle[2] -= 1
             particle[1][1] += 0.15
-            pygame.draw.circle(screen, (255, 255, 255), [int(particle[0][0]), int(particle[0][1])],
+            idx = random.randint(0, 2)
+            pygame.draw.circle(screen, (boom_color[idx], boom_color[idx], boom_color[idx]), [int(particle[0][0]), int(particle[0][1])],
                                int(particle[2]))
             radius = particle[2] * 2
             if particle[2] <= 0:

@@ -31,6 +31,8 @@ class Player(pygame.sprite.Sprite):
         self.rock_time = 0
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
+        self.last_x_dir = 1
+        self.last_dir = 2
         # walk animation variable 
         self.walk_count = 0
         self.walk_time = 0
@@ -47,8 +49,11 @@ class Player(pygame.sprite.Sprite):
         self.is_move_y = False
         # throw animation variable
         self.throw = []
+        # pause var
         self.clock = pygame.time.Clock()
         self.is_pause = False
+        # item interaction flag
+        self.test_item_on = False
 
         
     def walk_animation(self):
@@ -84,7 +89,7 @@ class Player(pygame.sprite.Sprite):
             self.image = pygame.image.load(os.path.join(images_path, "sprite_idle1.png")).convert_alpha()
         elif self.idle_count == 2:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_idle2.png")).convert_alpha()
-        if self.dir.x == -1: self.image = pygame.transform.flip(self.image, True, False)
+        if self.last_x_dir == -1: self.image = pygame.transform.flip(self.image, True, False)
         if self.is_damaged: self.image.set_alpha(200)
     
     def throw_animation(self):
@@ -96,7 +101,7 @@ class Player(pygame.sprite.Sprite):
         self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw5.png")).convert_alpha())
         for i in self.throw:
             self.image = i
-            if self.dir.x == -1:
+            if self.last_x_dir == -1:
                 self.image = pygame.transform.flip(self.image, True, False)
                 
     def walk_delay(self):
@@ -138,15 +143,14 @@ class Player(pygame.sprite.Sprite):
             self.current_hp = self.max_hp
 
 
-
-
     # 수평 이동 입력
     def get_horizontal(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            self.dir.y = 0
             self.is_move_x = True
             self.dir.x = -1
+            self.last_x_dir = -1
+            self.last_dir = 1
             self.player_speed_x = 2
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
@@ -155,9 +159,10 @@ class Player(pygame.sprite.Sprite):
                 self.walk_animation()
                 self.image = pygame.transform.flip(self.image, True, False)
         elif keys[pygame.K_RIGHT]:
-            self.dir.y = 0
             self.is_move_x = True
             self.dir.x = 1
+            self.last_x_dir = 1
+            self.last_dir = 2
             self.player_speed_x = 2
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
@@ -165,7 +170,7 @@ class Player(pygame.sprite.Sprite):
                 self.is_walk = False
                 self.walk_animation()
         else:
-            
+            self.dir.x = 0
             self.is_move_x = False
             self.player_speed_x = 0
 
@@ -175,26 +180,31 @@ class Player(pygame.sprite.Sprite):
     def get_vertical(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
-            self.dir.x = 0
             self.is_move_y = True
             self.dir.y = -1
+            self.last_dir = 3
             self.player_speed_y = 2
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
                 self.is_walk = False
                 self.walk_animation()
+                if self.last_x_dir == -1:
+                    self.image = pygame.transform.flip(self.image, True, False)
         elif keys[pygame.K_DOWN]:
-            self.dir.x = 0
             self.is_move_y = True
             self.dir.y = 1
+            self.last_dir = 4
             self.player_speed_y = 2
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
                 self.is_walk = False
                 self.walk_animation()
+                if self.last_x_dir == -1:
+                    self.image = pygame.transform.flip(self.image, True, False)
         else:
+            self.dir.y = 0
             self.is_move_y = False
             self.player_speed_y = 0
         return self.dir.y
@@ -246,13 +256,13 @@ class Player(pygame.sprite.Sprite):
     # 무기 발사 함수
     def throw_rock(self):
         self.rock_count += 1
-        if self.dir.x == 1:
-            self.images.add(Rock(self.rect.center, 1, self.border_images))
-        elif self.dir.x == -1:
-            self.images.add(Rock(self.rect.center, 2, self.border_images))
-        elif self.dir.y == 1:
+        if self.last_dir == 2:
+            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 1, self.border_images))
+        elif self.last_dir == 1:
+            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 2, self.border_images))
+        elif self.last_dir == 4:
             self.images.add(Rock(self.rect.center, 3, self.border_images))
-        elif self.dir.y == -1:
+        elif self.last_dir == 3:
             self.images.add(Rock(self.rect.center, 4, self.border_images))
 
     # 재장전 함수

@@ -4,6 +4,7 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
 from Player import Player
 from Road import Road
 from Monster import LaserMonster, RushMonster
+from Item import TestItem
 
 # 레벨 클래스
 class Level:
@@ -46,10 +47,12 @@ class Level:
                     Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "R" or col == "P" or col == "M" or col == "JM":
+                if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images])
+                if col == "I":
+                    TestItem((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.border_images])
                 if col == "P":
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
@@ -120,6 +123,16 @@ class Level:
                     monster.rush((dir_x, dir_y), dt)
                 else:
                     monster.is_rush = False
+        for item in self.border_images:
+            if item.name == "test_item":
+                item_vec = pygame.math.Vector2(item.rect.center)
+                player_vec = pygame.math.Vector2(player.rect.center)
+                distance = (player_vec - item_vec).magnitude()
+                if distance <= item.boundary:
+                    item.is_interaction = True
+                else:
+                    item.is_interaction = False
+
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
