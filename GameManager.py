@@ -2,6 +2,7 @@ import pygame, sys, os, time
 from Settings import *
 from Level import *
 from Button import Button
+from Map import *
 
 class GameManager:
     def __init__(self):

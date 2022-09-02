@@ -5,6 +5,7 @@ from Player import Player
 from Road import Road
 from Monster import LaserMonster, RushMonster
 from Item import TestItem
+from Map import *
 
 # 레벨 클래스
 class Level:
