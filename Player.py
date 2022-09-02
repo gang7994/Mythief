@@ -19,7 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.dir = pygame.math.Vector2()
         self.move_order = [0]
         self.is_horizon = False
-        self.player_speed = 2
+        self.player_speed_x = 0
+        self.player_speed_y = 0
         self.border_images = border_images
         self.damage_images = damage_images
         self.images = images
@@ -79,13 +80,12 @@ class Player(pygame.sprite.Sprite):
         self.idle_current_time = pygame.time.get_ticks()
         if self.idle_count == 0:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_idle0.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
         elif self.idle_count == 1:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_idle1.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
         elif self.idle_count == 2:
             self.image = pygame.image.load(os.path.join(images_path, "sprite_idle2.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
+        if self.dir.x == -1: self.image = pygame.transform.flip(self.image, True, False)
+        if self.is_damaged: self.image.set_alpha(200)
     
     def throw_animation(self):
         self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw0.png")).convert_alpha())
@@ -144,8 +144,10 @@ class Player(pygame.sprite.Sprite):
     def get_horizontal(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
+            self.dir.y = 0
             self.is_move_x = True
             self.dir.x = -1
+            self.player_speed_x = 2
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
@@ -153,16 +155,19 @@ class Player(pygame.sprite.Sprite):
                 self.walk_animation()
                 self.image = pygame.transform.flip(self.image, True, False)
         elif keys[pygame.K_RIGHT]:
+            self.dir.y = 0
             self.is_move_x = True
             self.dir.x = 1
+            self.player_speed_x = 2
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
                 self.is_walk = False
                 self.walk_animation()
         else:
-            self.dir.x = 0
+            
             self.is_move_x = False
+            self.player_speed_x = 0
 
         return self.dir.x
 
@@ -170,29 +175,33 @@ class Player(pygame.sprite.Sprite):
     def get_vertical(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
+            self.dir.x = 0
             self.is_move_y = True
             self.dir.y = -1
+            self.player_speed_y = 2
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
                 self.is_walk = False
                 self.walk_animation()
         elif keys[pygame.K_DOWN]:
+            self.dir.x = 0
             self.is_move_y = True
             self.dir.y = 1
+            self.player_speed_y = 2
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
                 self.is_walk = False
                 self.walk_animation()
         else:
-            self.dir.y = 0
             self.is_move_y = False
+            self.player_speed_y = 0
         return self.dir.y
 
     # 이동 함수
     # 나중에 쉽게 수정할 수 있다면 하는 편이 좋을듯
-    def move(self, speed, dt):
+    def move(self, speed_x, speed_y, dt):
         x = self.get_horizontal()
         y = self.get_vertical()
         # 이동 순서(쯔꾸르 이동)
@@ -209,10 +218,10 @@ class Player(pygame.sprite.Sprite):
         if x == 0 and y == 0: self.move_order = [0]
         # 이동 로직 + 충돌방지
         if self.is_horizon:
-            self.hitbox.left += x * speed * (dt // 6)
+            self.hitbox.left += x * speed_x * (dt // 6)
             self.collision("horizontal")
         else:
-            self.hitbox.top += y * speed * (dt // 6)
+            self.hitbox.top += y * speed_y * (dt // 6)
             self.collision("vertical")
         self.rect.center = self.hitbox.center
         # 화면 밖 안나가게
@@ -228,7 +237,7 @@ class Player(pygame.sprite.Sprite):
     # 무기 입력 확인 함수
     def add_rock(self):
         keys = pygame.key.get_pressed()
-        if (keys[pygame.K_SPACE] and self.is_rock_ready) and (self.dir.x != 0 or self.dir.y != 0):
+        if (keys[pygame.K_SPACE] and self.is_rock_ready):
             self.throw_rock()
             self.is_rock_ready = False
             self.rock_time = pygame.time.get_ticks()
@@ -301,7 +310,7 @@ class Player(pygame.sprite.Sprite):
             self.add_rock()
             self.re_load_rock()
             self.damage_collision()
-            self.move(self.player_speed, dt)
+            self.move(self.player_speed_x, self.player_speed_y, dt)
             self.walk_delay()
             self.idle()
             self.idle_delay()
