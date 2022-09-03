@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.border_images = border_images
         self.damage_images = damage_images
         self.images = images
-        self.rock_cool_time = 700
+        self.rock_cool_time = 3000
         self.is_rock_ready = True
         self.rock_count = 0
         self.current_time = 0

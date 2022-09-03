@@ -2,6 +2,7 @@ import pygame, sys, os, time
 from Settings import *
 from Level import *
 from Button import Button
+from Button_text import Button_text
 from Map import *
 
 class GameManager:
@@ -14,7 +15,197 @@ class GameManager:
         self.total_rock_count = 0
         self.total_score = 0
         self.running = True
-        self.level = Level(0)
+        self.level = None
+
+    def Encyclopedia(self):
+        running = True
+        while running:
+            OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+            self.screen.fill("Black")
+            OPTIONS_TEXT = self.get_font(45).render("백과사전창", True, "White")
+            OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width/2), 30))
+            self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
+            self.screen.blit(self.popup, (100, 100))
+            self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
+            OPTIONS_BACK = Button_text(image=None, pos=(1300, 0),
+                                text_input="BACK", font = self.get_font(60), base_color="White", hovering_color="Red")
+            OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
+            OPTIONS_BACK.update(self.screen)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
+                        running = False
+            pygame.display.update()
+
+    def Credit(self):
+        running = True
+        while running:
+            OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+            self.screen.fill("Black")
+            OPTIONS_TEXT = self.get_titlefont(60).render("Mythief", True, "White")
+            OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width / 2), 70))
+
+            TEXT1 = self.get_font(30).render("여기에 크레딧 내용 추가", True, "White")
+            TEXT1_RECT = TEXT1.get_rect(center=((screen_width / 2), 300))
+
+            TEXT2 = self.get_font(30).render("Add credit content here", True, "White")
+            TEXT2_RECT = TEXT1.get_rect(center=((screen_width / 2), 400))
+
+            self.screen.blit(TEXT1, TEXT1_RECT)
+            self.screen.blit(TEXT2, TEXT2_RECT)
+            self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
+            OPTIONS_BACK = Button_text(image=None, pos=(1300, 0),
+                                       text_input="BACK", font=self.get_font(60), base_color="White", hovering_color="Red")
+            OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
+            OPTIONS_BACK.update(self.screen)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
+                        running = False
+            pygame.display.update()
+
+    def Option(self):
+        global bgm_vol, effect_vol
+        running = True
+        while running:
+            OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+            self.screen.fill("Black")
+            OPTIONS_TEXT = self.get_font(45).render("옵션창", True, "White")
+            OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width / 2), 30))
+            self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
+
+            TEXT1 = self.get_font(30).render("BGM VOLUME", True, "White")
+            TEXT1_RECT = TEXT1.get_rect(center=((screen_width / 2), 200))
+
+            TEXT2 = self.get_font(30).render("EFFECT VOLUME", True, "White")
+            TEXT2_RECT = TEXT1.get_rect(center=((screen_width / 2), 400))
+
+            self.screen.blit(self.popup, (100, 100))
+            self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
+            self.screen.blit(TEXT1, TEXT1_RECT)
+            self.screen.blit(TEXT2, TEXT2_RECT)
+
+            self.draw_volume_bar()
+
+            BGM_UP = Button(image0=pygame.image.load(os.path.join(images_path, "up0.png")).convert_alpha(),
+                            image1=pygame.image.load(os.path.join(images_path, "up1.png")).convert_alpha(),
+                            pos=(956, 265), scale_x=50, scale_y=50)
+            BGM_DOWN = Button(image0=pygame.image.load(os.path.join(images_path, "down0.png")).convert_alpha(),
+                              image1=pygame.image.load(os.path.join(images_path, "down1.png")).convert_alpha(),
+                              pos=(500, 265), scale_x=50, scale_y=50)
+
+            EFFECT_UP = Button(image0=pygame.image.load(os.path.join(images_path, "up0.png")).convert_alpha(),
+                               image1=pygame.image.load(os.path.join(images_path, "up1.png")).convert_alpha(),
+                               pos=(956, 465), scale_x=50, scale_y=50)
+            EFFECT_DOWN = Button(image0=pygame.image.load(os.path.join(images_path, "down0.png")).convert_alpha(),
+                                 image1=pygame.image.load(os.path.join(images_path, "down1.png")).convert_alpha(),
+                                 pos=(500, 465), scale_x=50, scale_y=50)
+
+            OPTIONS_BACK = Button_text(image=None, pos=(1200, 0),
+                                       text_input="BACK", font=self.get_font(60), base_color="White", hovering_color="Red")
+
+            OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
+            OPTIONS_BACK.update(self.screen)
+            BGM_UP.changeColor(OPTIONS_MOUSE_POS)
+            BGM_UP.update(self.screen)
+            BGM_DOWN.changeColor(OPTIONS_MOUSE_POS)
+            BGM_DOWN.update(self.screen)
+            EFFECT_UP.changeColor(OPTIONS_MOUSE_POS)
+            EFFECT_UP.update(self.screen)
+            EFFECT_DOWN.changeColor(OPTIONS_MOUSE_POS)
+            EFFECT_DOWN.update(self.screen)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
+                        running = False
+                    if BGM_UP.checkForInput(OPTIONS_MOUSE_POS):
+                        if bgm_vol != 100:
+                            bgm_vol += 10
+                    if BGM_DOWN.checkForInput(OPTIONS_MOUSE_POS):
+                        if bgm_vol != 0:
+                            bgm_vol -= 10
+                    if EFFECT_UP.checkForInput(OPTIONS_MOUSE_POS):
+                        if effect_vol != 100:
+                            effect_vol += 10
+                    if EFFECT_DOWN.checkForInput(OPTIONS_MOUSE_POS):
+                        if effect_vol != 0:
+                            effect_vol -= 10
+            pygame.display.update()
+
+    def draw_volume_bar(self):
+        pygame.draw.rect(self.screen, WHITE, (528, 250, bgm_vol / 0.25, 30))
+        pygame.draw.rect(self.screen, BLACK, (528, 250, 400, 30), 3)
+        pygame.draw.rect(self.screen, WHITE, (528, 450, effect_vol / 0.25, 30))
+        pygame.draw.rect(self.screen, BLACK, (528, 450, 400, 30), 3)
+
+    def get_titlefont(self, size):
+        return pygame.font.Font("Images/TestPix/font.ttf", size)
+
+    def get_font(self, size):
+        return pygame.font.SysFont('malgungothic', size)
+
+    def main_menu(self):
+        while True:
+            self.screen.fill(BLACK)
+            bg_image = pygame.transform.scale(
+                pygame.image.load(os.path.join(images_path, "mainBackGround.png")).convert_alpha(), (1456, 776))
+            logo_image = pygame.transform.scale(
+                pygame.image.load(os.path.join(images_path, "mainLogo.png")).convert_alpha(), (600, 200))
+            self.screen.blits([(bg_image, (0, 0)), (logo_image, (428, 20))])
+            MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+            PLAY_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(),
+                                 image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(),
+                                 pos=(728, 280), scale_x=400, scale_y=100)
+            ENCYCLOPEDIA_BUTTON = Button(
+                image0=pygame.image.load(os.path.join(images_path, "btn_Collection_0.png")).convert_alpha(),
+                image1=pygame.image.load(os.path.join(images_path, "btn_Collection_1.png")).convert_alpha(),
+                pos=(728, 390), scale_x=400, scale_y=100)
+            CREDIT_BUTTON = Button(
+                image0=pygame.image.load(os.path.join(images_path, "btn_credit_0.png")).convert_alpha(),
+                image1=pygame.image.load(os.path.join(images_path, "btn_credit_1.png")).convert_alpha(),
+                pos=(728, 500), scale_x=400, scale_y=100)
+            OPTION_BUTTON = Button(
+                image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(),
+                image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(),
+                pos=(728, 610), scale_x=400, scale_y=100)
+            QUIT_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_exit_0.png")).convert_alpha(),
+                                 image1=pygame.image.load(os.path.join(images_path, "btn_exit_1.png")).convert_alpha(),
+                                 pos=(728, 720), scale_x=400, scale_y=100)
+
+            for button in [PLAY_BUTTON, ENCYCLOPEDIA_BUTTON, CREDIT_BUTTON, OPTION_BUTTON, QUIT_BUTTON]:
+                button.changeColor(MENU_MOUSE_POS)
+                button.update(self.screen)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            self.level = Level(0)
+                            self.running = True
+                            self.Run()
+                        if ENCYCLOPEDIA_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            self.Encyclopedia()
+                        if CREDIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            self.Credit()
+                        if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            self.Option()
+                        if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            pygame.quit()
+                            sys.exit()
+
+            pygame.display.update()
 
     # 시간 재기
     def draw_time(self, elapse_time):
@@ -65,7 +256,7 @@ class GameManager:
                 pygame.draw.rect(self.screen,
                                  BLACK,
                                  (1325.5, 395.5, 32,
-                                  32 - (self.level.player.current_time - self.level.player.rock_time) / 22))
+                                  32 - (self.level.player.current_time - self.level.player.rock_time) / 95))
 
     # 클리어 함수
     # def total_score_update(self, score): 수정시 수정 필요
@@ -184,11 +375,9 @@ class GameManager:
                         self.level.pause("F")
 
                     if SETTING.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:   # 음..이런 방식이면 저장된 정보를 가져올 수 없는데
-                        pass
-
+                        self.Option()
                     if EXIT.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:      # 음..이런 방식이면 저장된 정보를 가져올 수 없는데
-                        pass
-
+                        self.running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE and not self.level.is_pause:
                         self.level.pause("T")
@@ -236,11 +425,8 @@ class GameManager:
 
             # 화면 업데이트
             pygame.display.update()
-        pygame.time.delay(2000)
-        pygame.quit()
-        sys.exit()
 
 
 if __name__ == "__main__":
     game = GameManager()
-    game.Run()
+    game.main_menu()
