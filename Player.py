@@ -53,7 +53,12 @@ class Player(pygame.sprite.Sprite):
         self.clock = pygame.time.Clock()
         self.is_pause = False
         # item interaction flag
+        self.item_interaction = False
         self.test_item_on = False
+        self.current_item_gage = 0
+        self.max_item_gage = 100
+        self.item_bar_length = 300
+        self.item_ratio = self.max_item_gage / self.item_bar_length
 
         
     def walk_animation(self):
@@ -311,11 +316,35 @@ class Player(pygame.sprite.Sprite):
                 if sprite.name == "rush_Monster" and not self.is_damaged:
                     self.get_damaged(10)
 
+    def get_item_interaction(self):
+        for item in self.border_images:
+            if item.name == "test_item":
+                item_vec = pygame.math.Vector2(item.rect.center)
+                player_vec = pygame.math.Vector2(self.rect.center)
+                distance = (player_vec - item_vec).magnitude()
+                if distance <= item.boundary:
+                    self.item_interaction = True
+                    keys = pygame.key.get_pressed()
+                    if keys[pygame.K_TAB]:
+                        item.item_gage += 1
+                        self.current_item_gage = item.item_gage
+                        if item.item_gage == 100:
+                            item.is_get = True
+                            self.item_interaction = False
+                            self.current_item_gage = 0
+                            item.kill()
+                    elif not keys[pygame.K_TAB]:
+                        item.item_gage = 0
+                        self.current_item_gage = item.item_gage
+                else:
+                    self.item_interaction = False
+
 
     # 업데이트 영역 -> 무적 시간 함수 추가
     def update(self):
         dt = self.clock.tick(FPS)
         if not self.is_pause:
+            self.get_item_interaction()
             self.un_damaged_time()
             self.add_rock()
             self.re_load_rock()

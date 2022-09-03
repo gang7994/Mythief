@@ -18,6 +18,7 @@ vol_ratio = 0.25
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+YELLOW = (255, 255, 0)
 # 프레임
 FPS = 60
 # 타일 사이즈
@@ -26,4 +27,3 @@ tile_height_size = 48
 # 이미지 경로
 current_path = os.path.dirname(__file__)
 images_path = os.path.join(current_path, "Images\\TestPix")
-# 맵 -> 적들이 길 위에서만 움직이게 변경

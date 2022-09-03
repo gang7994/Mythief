@@ -258,6 +258,17 @@ class GameManager:
                                  (1325.5, 395.5, 32,
                                   32 - (self.level.player.current_time - self.level.player.rock_time) / 95))
 
+    def item_interaction_text(self):
+        if self.level.player.item_interaction:
+            font = pygame.font.Font(None, 25)
+            tap_key = font.render("Press Tap", True, WHITE)
+            self.screen.blit(tap_key, (680, 690))
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_TAB]:
+                pygame.draw.rect(self.screen, YELLOW,
+                                 (570, 710, self.level.player.current_item_gage / self.level.player.item_ratio, 10))
+                pygame.draw.rect(self.screen, WHITE, (570, 710, self.level.player.item_bar_length, 10), 2)
+
     # 클리어 함수
     # def total_score_update(self, score): 수정시 수정 필요
     def clear(self, elapsed_time):
@@ -396,6 +407,7 @@ class GameManager:
             self.draw_current_stage(self.level.map_idx)
             self.show_dir()
             self.show_info()
+            self.item_interaction_text()
             PAUSE.update(self.screen)
 
             if not self.level.is_pause:
