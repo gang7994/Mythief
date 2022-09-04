@@ -332,13 +332,16 @@ class Player(pygame.sprite.Sprite):
                             item.is_get = True
                             self.item_interaction = False
                             self.current_item_gage = 0
+                            inventory.append(item)
                             item.kill()
+                            
                     elif not keys[pygame.K_TAB]:
                         item.item_gage = 0
                         self.current_item_gage = item.item_gage
                 else:
                     self.item_interaction = False
 
+    
 
     # 업데이트 영역 -> 무적 시간 함수 추가
     def update(self):

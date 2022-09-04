@@ -326,7 +326,24 @@ class GameManager:
         pos = font.render(f"Player_pos: {self.level.player.rect.centerx, self.level.player.rect.centery,}", True, WHITE)
         remain_monster = font.render(f"Remaining_Monster: {self.level.remain_monster}", True, WHITE) # Show_info로 주석표기
         fps = font.render(f"FPS: {str(int(self.clock.get_fps()))}", True, WHITE)
-        self.screen.blits([(pos, (10, 660)),(remain_monster, (10, 690)), (fps, (10, 720))])
+        self.screen.blits([(pos, (10, 560)),(remain_monster, (10, 590)), (fps, (10, 620))])
+        
+    def show_inventory(self):
+        pygame.draw.circle(self.screen, GREY, (150, 710), 40)
+        pygame.draw.circle(self.screen, GREY, (270, 710), 40)
+        pygame.draw.circle(self.screen, GREY, (390, 710), 40)
+        pygame.draw.circle(self.screen, GREY, (510, 710), 40)
+        for i, item in enumerate(inventory):
+            if item.name == "test_item":
+                image = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "test0_item.png")).convert_alpha(), (50, 50))
+                image_rect = image.get_rect(center=(150+i*120, 710))
+                self.screen.blit(image, image_rect)
+            elif item.name == "test1_item":
+                image = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "test1_item.png")).convert_alpha(), (50, 50))
+                image_rect = image.get_rect(center=(150+i*120, 710))
+                self.screen.blit(image, image_rect)
+            i+= 120
+        
 
     def show_dir(self):
         keys = pygame.key.get_pressed()
@@ -408,6 +425,7 @@ class GameManager:
             self.show_dir()
             self.show_info()
             self.item_interaction_text()
+            self.show_inventory()
             PAUSE.update(self.screen)
 
             if not self.level.is_pause:

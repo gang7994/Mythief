@@ -19,6 +19,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
+GREY = (128, 128, 128)
 # 프레임
 FPS = 60
 # 타일 사이즈
@@ -27,3 +28,5 @@ tile_height_size = 48
 # 이미지 경로
 current_path = os.path.dirname(__file__)
 images_path = os.path.join(current_path, "Images\\TestPix")
+
+inventory = []
