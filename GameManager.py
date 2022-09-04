@@ -334,14 +334,12 @@ class GameManager:
         pygame.draw.circle(self.screen, GREY, (390, 710), 40)
         pygame.draw.circle(self.screen, GREY, (510, 710), 40)
         for i, item in enumerate(inventory):
-            if item.name == "test_item":
-                image = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "test0_item.png")).convert_alpha(), (50, 50))
-                image_rect = image.get_rect(center=(150+i*120, 710))
-                self.screen.blit(image, image_rect)
+            if item.name == "test0_item":
+                image_rect = item.image.get_rect(center=(150+i*120, 710))
+                self.screen.blit(item.image, image_rect)
             elif item.name == "test1_item":
-                image = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "test1_item.png")).convert_alpha(), (50, 50))
-                image_rect = image.get_rect(center=(150+i*120, 710))
-                self.screen.blit(image, image_rect)
+                image_rect = item.image.get_rect(center=(150+i*120, 710))
+                self.screen.blit(item.image, image_rect)
             i+= 120
         
 

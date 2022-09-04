@@ -4,7 +4,7 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
 from Player import Player
 from Road import Road
 from Monster import LaserMonster, RushMonster
-from Item import TestItem
+from Item import Test0Item, Test1Item
 from Map import *
 
 # 레벨 클래스
@@ -48,12 +48,14 @@ class Level:
                     Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I":
+                if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I0" or col == "I1":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images])
-                if col == "I":
-                    TestItem((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.border_images])
+                if col == "I0":
+                    Test0Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.border_images])
+                if col == "I1":
+                    Test1Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.border_images])
                 if col == "P":
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y

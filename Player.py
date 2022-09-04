@@ -59,7 +59,8 @@ class Player(pygame.sprite.Sprite):
         self.max_item_gage = 100
         self.item_bar_length = 300
         self.item_ratio = self.max_item_gage / self.item_bar_length
-
+        # item inventory
+        self.inventory = []
         
     def walk_animation(self):
         if self.walk_count > 5:
@@ -318,7 +319,7 @@ class Player(pygame.sprite.Sprite):
 
     def get_item_interaction(self):
         for item in self.border_images:
-            if item.name == "test_item":
+            if item.name == "test0_item" or item.name == "test1_item":
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()
