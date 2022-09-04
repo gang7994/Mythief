@@ -18,8 +18,10 @@ def circle_surf(radius, color):
 # [loc, velocity, timer]
 particles = []
 boom_particles = []
+click_particles = []
 boom_color = [120, 200, 255]
 boom_flag = False
+click_flag = False
 
 game_display_flag = False
 new_surf = pygame.Surface((500, 500))
@@ -52,7 +54,7 @@ while True:
 
 
 # ------------------------------------------ fire effect ---------------------------------------------------------#
-    particles.append([[mx, my], [random.randint(0, 20) / 10 - 1, -5], random.randint(6, 11)])
+    """particles.append([[mx, my], [random.randint(0, 20) / 10 - 1, -5], random.randint(6, 11)])
     for particle in particles:
         particle[0][1] += particle[1][1]
         particle[2] -= 0.5
@@ -61,7 +63,7 @@ while True:
         radius = particle[2] * 2
         screen.blit(circle_surf(radius, (20, 20, 60)), (int(particle[0][0] - radius), int(particle[0][1] - radius)), special_flags=BLEND_RGB_ADD)
         if particle[2] <= 0:
-            particles.remove(particle)
+            particles.remove(particle)"""
 
 # ---------------------------------- boom effect ------------------------------------------- #
     while len(boom_particles) < 50 and not boom_flag:
@@ -83,6 +85,27 @@ while True:
                 boom_particles.remove(particle)
     if len(boom_particles) == 0:
         boom_flag = False
+    # ------------------------------------- click effect ---------------------------------------------------
+    while len(click_particles) < 50 and not click_flag:
+        click_particles.append([[mx + random.randint(-20, 20), my + random.randint(-20, 20)], [random.randint(-4, 4), random.randint(-4, 4)], random.randint(5, 8)])
+    if not click_flag:
+        for i in click_particles:
+            i[0] = [mx + random.randint(-20, 20), my + random.randint(-20, 20)]
+    if click_flag:
+        for particle in click_particles:
+            particle[0][1] += particle[1][1]
+            particle[0][0] += particle[1][0]
+            particle[2] -= 0.2
+            particle[1][1] += 0.15
+            pygame.draw.circle(screen, (255, 255, 255), [int(particle[0][0]), int(particle[0][1])], int(particle[2]))
+            radius = particle[2] * 2
+            screen.blit(circle_surf(radius, (20, 20, 60)), (int(particle[0][0] - radius), int(particle[0][1] - radius)),
+                        special_flags=BLEND_RGB_ADD)
+            if particle[2] <= 0:
+                click_particles.remove(particle)
+    if len(click_particles) == 0:
+        click_flag = False
+
     # Buttons ------------------------------------------------ #
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -94,6 +117,8 @@ while True:
                 sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             boom_flag = True
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+            click_flag = True
 
     # Update ------------------------------------------------- #
     pygame.display.update()

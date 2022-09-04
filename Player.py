@@ -12,27 +12,32 @@ class Player(pygame.sprite.Sprite):
         self.name = "Player"
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
+        # player hp var
         self.current_hp = 100
         self.max_hp = 100
         self.hp_bar_length = 500
         self.hp_ratio = self.max_hp / self.hp_bar_length
+        # player move var
         self.dir = pygame.math.Vector2()
+        self.last_x_dir = 1
+        self.last_dir = 2
         self.move_order = [0]
         self.is_horizon = False
         self.player_speed_x = 0
         self.player_speed_y = 0
+        # images group
         self.border_images = border_images
         self.damage_images = damage_images
         self.images = images
+        # player rock var
         self.rock_cool_time = 3000
         self.is_rock_ready = True
         self.rock_count = 0
         self.current_time = 0
         self.rock_time = 0
+        # damage var
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
-        self.last_x_dir = 1
-        self.last_dir = 2
         # walk animation variable 
         self.walk_count = 0
         self.walk_time = 0
