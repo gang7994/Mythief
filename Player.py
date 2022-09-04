@@ -54,7 +54,6 @@ class Player(pygame.sprite.Sprite):
         self.is_pause = False
         # item interaction flag
         self.item_interaction = False
-        self.test_item_on = False
         self.current_item_gage = 0
         self.max_item_gage = 100
         self.item_bar_length = 300
@@ -325,6 +324,7 @@ class Player(pygame.sprite.Sprite):
                 distance = (player_vec - item_vec).magnitude()
                 if distance <= item.boundary:
                     self.item_interaction = True
+                    item.is_interaction = True
                     keys = pygame.key.get_pressed()
                     if keys[pygame.K_TAB]:
                         item.item_gage += 1
@@ -332,6 +332,7 @@ class Player(pygame.sprite.Sprite):
                         if item.item_gage == 100:
                             item.is_get = True
                             self.item_interaction = False
+                            item.is_interaction = False
                             self.current_item_gage = 0
                             inventory.append(item)
                             item.kill()
@@ -339,8 +340,9 @@ class Player(pygame.sprite.Sprite):
                     elif not keys[pygame.K_TAB]:
                         item.item_gage = 0
                         self.current_item_gage = item.item_gage
-                else:
+                elif distance > item.boundary and item.is_interaction:
                     self.item_interaction = False
+                    item.is_interaction = False
 
     
 

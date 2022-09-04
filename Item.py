@@ -10,6 +10,7 @@ class Test0Item(pygame.sprite.Sprite):
         self.name = "test0_item"
         self.boundary = 50
         self.is_get = False
+        self.is_interaction = False
         self.item_gage = 0
         self.is_pause = False
 
@@ -25,6 +26,7 @@ class Test1Item(pygame.sprite.Sprite):
         self.name = "test1_item"
         self.boundary = 50
         self.is_get = False
+        self.is_interaction = False
         self.item_gage = 0
         self.is_pause = False
 
