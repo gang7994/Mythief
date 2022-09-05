@@ -13,8 +13,9 @@ class Level:
     def __init__(self, map_idx):
         self.map_idx = map_idx
         self.images = CameraGroup()
-        self.border_images = pygame.sprite.Group()
         self.monster_images = CameraGroup()
+        self.border_images = pygame.sprite.Group()
+        self.item_images = pygame.sprite.Group()
         self.damage_images = pygame.sprite.Group()
         self.fire_images = []
         self.create_map()
@@ -53,9 +54,9 @@ class Level:
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images])
                 if col == "I0":
-                    Test0Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.border_images])
+                    Test0Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.item_images])
                 if col == "I1":
-                    Test1Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.border_images])
+                    Test1Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.item_images])
                 if col == "P":
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
@@ -75,6 +76,7 @@ class Level:
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
                              self.border_images,
                              self.damage_images,
+                             self.item_images,
                              self.images)
 
     # 현재 레벨의 플레이어 반환

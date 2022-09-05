@@ -4,7 +4,7 @@ from Rock import Rock
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images, damage_images, images):
+    def __init__(self, pos, groups, border_images, damage_images, item_images, images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -28,6 +28,7 @@ class Player(pygame.sprite.Sprite):
         # images group
         self.border_images = border_images
         self.damage_images = damage_images
+        self.item_images = item_images
         self.images = images
         # player rock var
         self.rock_cool_time = 3000
@@ -322,7 +323,7 @@ class Player(pygame.sprite.Sprite):
                     self.get_damaged(10)
 
     def get_item_interaction(self):
-        for item in self.border_images:
+        for item in self.item_images:
             if item.name == "test0_item" or item.name == "test1_item":
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)

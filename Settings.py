@@ -1,9 +1,8 @@
-import os
+import os, pygame
 
 # 게임 세팅 - 시험해보기 주석
 
 # 화면 사이즈
-import pygame
 
 horizontal_margin = 200
 vertical_margin = 100
@@ -28,5 +27,5 @@ tile_height_size = 48
 # 이미지 경로
 current_path = os.path.dirname(__file__)
 images_path = os.path.join(current_path, "Images\\TestPix")
-
+# 인벤토리
 inventory = []
