@@ -4,6 +4,7 @@ from Level import *
 from Button import Button
 from Button_text import Button_text
 from Map import *
+from ParticleEffect import Particle
 
 class GameManager:
     def __init__(self):
@@ -11,6 +12,7 @@ class GameManager:
         self.screen = pygame.display.set_mode((screen_width, screen_height))
         pygame.display.set_caption("proto")
         self.clock = pygame.time.Clock()
+        self.particle = Particle()
         self.total_time = 0
         self.total_rock_count = 0
         self.total_score = 0
@@ -155,6 +157,7 @@ class GameManager:
 
     def main_menu(self):
         while True:
+            dt = self.clock.tick(FPS)
             self.screen.fill(BLACK)
             bg_image = pygame.transform.scale(
                 pygame.image.load(os.path.join(images_path, "mainBackGround.png")).convert_alpha(), (1456, 776))
@@ -162,6 +165,7 @@ class GameManager:
                 pygame.image.load(os.path.join(images_path, "mainLogo.png")).convert_alpha(), (600, 200))
             self.screen.blits([(bg_image, (0, 0)), (logo_image, (428, 20))])
             MENU_MOUSE_POS = pygame.mouse.get_pos()
+            self.particle.click_effect(self.screen, MENU_MOUSE_POS[0], MENU_MOUSE_POS[1], dt)
 
             PLAY_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(),
                                  image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(),
@@ -191,6 +195,7 @@ class GameManager:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
+                        self.particle.click_flag = True
                         if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                             self.level = Level(0)
                             self.running = True
@@ -365,7 +370,7 @@ class GameManager:
         self.start_time = pygame.time.get_ticks()
         # 메인 로직 영역
         while self.running:
-            self.clock.tick(FPS)
+            dt = self.clock.tick(FPS)
             PAUSE_MOUSE_POS = pygame.mouse.get_pos()
             if not self.level.is_pause:
                 PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause0.png")).convert_alpha(), 
@@ -395,6 +400,7 @@ class GameManager:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.particle.click_flag = True
                     if PAUSE.checkForInput(PAUSE_MOUSE_POS) and not self.level.is_pause:
                         self.level.pause("T")
                     elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
@@ -425,6 +431,7 @@ class GameManager:
             self.item_interaction_text()
             self.show_inventory()
             PAUSE.update(self.screen)
+            self.particle.click_effect(self.screen, PAUSE_MOUSE_POS[0], PAUSE_MOUSE_POS[1], dt)
 
             if not self.level.is_pause:
                 self.tem_now_time = pygame.time.get_ticks() - self.start_time
