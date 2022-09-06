@@ -13,7 +13,8 @@ class Player(pygame.sprite.Sprite):
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
         # player hp var
-        self.current_hp = 100
+        self.is_dead = False
+        self.current_hp = 10
         self.max_hp = 100
         self.hp_bar_length = 500
         self.hp_ratio = self.max_hp / self.hp_bar_length
@@ -135,7 +136,6 @@ class Player(pygame.sprite.Sprite):
                 self.is_idle = False
                 self.idle_animation()
     
-    
     # 피해 함수 (무적 시간 추가) -> 무적시 투명도 올림
     def get_damaged(self, attack):
         self.is_damaged = True
@@ -143,6 +143,7 @@ class Player(pygame.sprite.Sprite):
             self.current_hp -= attack
         if self.current_hp <= 0:
             self.current_hp = 0
+            self.is_dead = True
         self.damaged_start = pygame.time.get_ticks()
         self.image.set_alpha(200)
 
@@ -358,10 +359,11 @@ class Player(pygame.sprite.Sprite):
         if not self.is_pause:
             self.get_item_interaction()
             self.un_damaged_time()
-            self.add_rock()
-            self.re_load_rock()
-            self.damage_collision()
-            self.move(self.player_speed_x, self.player_speed_y, dt)
+            if not self.is_dead:
+                self.add_rock()
+                self.re_load_rock()
+                self.damage_collision()
+                self.move(self.player_speed_x, self.player_speed_y, dt)
             self.walk_delay()
             self.idle()
             self.idle_delay()

@@ -144,6 +144,8 @@ class Level:
             for fire in self.fire_images:
                 fire.draw_fire_glow(self.player, dt)
         self.glow.draw_display_change(dt)
+        if self.player.is_dead:
+            self.glow.draw_dead_display_change(dt)
 
 # 카메라 클래스
 class CameraGroup(pygame.sprite.Group):
@@ -207,7 +209,14 @@ class Glow:
         self.circle_pause = False
         self.loop_cnt = 0
         self.rad = 0
+        # pause var
         self.is_pause = False
+        # dead_display_change_animation
+        self.dead_display_flag = False
+        self.dead_display_surf = pygame.Surface((screen_width, screen_height))
+        self.dead_circle_pause = False
+        self.dead_loop_cnt = 0
+        self.dead_rad = 700
 
 
 
@@ -286,3 +295,20 @@ class Glow:
                     if self.pause_end - self.pause_start > 300:
                         self.circle_pause = False
             if self.rad > 700: self.game_display_flag = True
+
+    def draw_dead_display_change(self, dt):
+        if not self.dead_display_flag:
+            self.dead_display_surf.fill((0, 0, 0))
+            self.dead_display_surf.blit(self.circle_surf(self.dead_rad, (255, 255, 255)), (self.half_width - self.dead_rad, self.half_height - self.dead_rad))
+            self.display_surface.blit(self.dead_display_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
+            if not self.dead_circle_pause: self.dead_rad -= 10 * (dt // 6)
+            if self.dead_rad < 100:
+                self.dead_loop_cnt += 1
+                self.dead_circle_pause = True
+                if self.dead_loop_cnt == 1:
+                    self.pause_start = pygame.time.get_ticks()
+                else:
+                    self.pause_end = pygame.time.get_ticks()
+                    if self.pause_end - self.pause_start > 700:
+                        self.dead_circle_pause = False
+            if self.dead_rad <= 0: self.dead_display_flag = True

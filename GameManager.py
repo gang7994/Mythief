@@ -221,6 +221,20 @@ class GameManager:
 
             pygame.display.update()
 
+    def dead_surface(self, mouse_pos):
+        MAINMENU = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
+                       image1=pygame.image.load(os.path.join(images_path, "exit_icon2.png")).convert_alpha(),
+                       pos=(700, 550), scale_x=200, scale_y=200)
+        game_font = pygame.font.Font(None, 120)
+        msg = game_font.render("You are dead", True, WHITE)
+        msg_rect = msg.get_rect(center=(screen_width / 2, screen_height / 2))
+        self.screen.fill(BLACK)
+        self.screen.blit(msg, msg_rect)
+        MAINMENU.changeColor(mouse_pos)
+        MAINMENU.update(self.screen)
+
+
+
     # 시간 재기
     def draw_time(self, elapse_time):
         font = pygame.font.Font(None, 25)
@@ -415,10 +429,11 @@ class GameManager:
                     elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
                         self.level.pause("F")
 
-                    if SETTING.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:   # 음..이런 방식이면 저장된 정보를 가져올 수 없는데
+                    if SETTING.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
                         self.Option()
-                    if EXIT.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:      # 음..이런 방식이면 저장된 정보를 가져올 수 없는데
+                    if EXIT.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
                         self.running = False
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE and not self.level.is_pause:
                         self.level.pause("T")
@@ -456,7 +471,10 @@ class GameManager:
                 self.screen.blit(self.popup, (100, 100))
                 SETTING.update(self.screen)
                 EXIT.update(self.screen)
-                
+
+            if self.level.glow.dead_rad <= 0:
+                self.dead_surface(PAUSE_MOUSE_POS)
+
             # 게임 클리어 영역
             x = self.level.get_player()
             y = self.level.get_finish()

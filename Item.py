@@ -15,7 +15,7 @@ class Test0Item(pygame.sprite.Sprite):
         self.is_pause = False
 
     def update(self):
-        print(self.item_gage)
+        pass
 
 class Test1Item(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
@@ -31,5 +31,5 @@ class Test1Item(pygame.sprite.Sprite):
         self.is_pause = False
 
     def update(self):
-        print(self.item_gage)
+        pass
 
