@@ -8,13 +8,13 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0,-15)
+        self.hitbox = self.rect.inflate(0,-10)
         self.name = "Player"
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
         # player hp var
         self.is_dead = False
-        self.current_hp = 10
+        self.current_hp = 100
         self.max_hp = 100
         self.hp_bar_length = 500
         self.hp_ratio = self.max_hp / self.hp_bar_length
@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.item_images = item_images
         self.images = images
         # player rock var
-        self.rock_cool_time = 3000
+        self.rock_cool_time = 2000
         self.is_rock_ready = True
         self.rock_count = 0
         self.current_time = 0

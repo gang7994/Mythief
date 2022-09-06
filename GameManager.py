@@ -174,7 +174,6 @@ class GameManager:
                 pygame.image.load(os.path.join(images_path, "mainLogo.png")).convert_alpha(), (600, 200))
             self.screen.blits([(bg_image, (0, 0)), (logo_image, (428, 20))])
             MENU_MOUSE_POS = pygame.mouse.get_pos()
-            self.particle.click_effect(self.screen, MENU_MOUSE_POS[0], MENU_MOUSE_POS[1], dt)
 
             PLAY_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(),
                                  image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(),
@@ -198,6 +197,8 @@ class GameManager:
             for button in [PLAY_BUTTON, ENCYCLOPEDIA_BUTTON, CREDIT_BUTTON, OPTION_BUTTON, QUIT_BUTTON]:
                 button.changeColor(MENU_MOUSE_POS)
                 button.update(self.screen)
+
+            self.particle.click_effect(self.screen, MENU_MOUSE_POS[0], MENU_MOUSE_POS[1], dt)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -232,6 +233,11 @@ class GameManager:
         self.screen.blit(msg, msg_rect)
         MAINMENU.changeColor(mouse_pos)
         MAINMENU.update(self.screen)
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                self.particle.click_flag = True
+                if MAINMENU.checkForInput(mouse_pos):
+                    self.running = False
 
 
 
@@ -284,7 +290,7 @@ class GameManager:
                 pygame.draw.rect(self.screen,
                                  BLACK,
                                  (1325.5, 395.5, 32,
-                                  32 - (self.level.player.current_time - self.level.player.rock_time) / 95))
+                                  32 - (self.level.player.current_time - self.level.player.rock_time) / 63))
 
     def item_interaction_text(self):
         if self.level.player.item_interaction:
@@ -455,7 +461,6 @@ class GameManager:
             self.item_interaction_text()
             self.show_inventory()
             PAUSE.update(self.screen)
-            self.particle.click_effect(self.screen, PAUSE_MOUSE_POS[0], PAUSE_MOUSE_POS[1], dt)
 
             if not self.level.is_pause:
                 self.tem_now_time = pygame.time.get_ticks() - self.start_time
@@ -474,6 +479,7 @@ class GameManager:
 
             if self.level.glow.dead_rad <= 0:
                 self.dead_surface(PAUSE_MOUSE_POS)
+            self.particle.click_effect(self.screen, PAUSE_MOUSE_POS[0], PAUSE_MOUSE_POS[1], dt)
 
             # 게임 클리어 영역
             x = self.level.get_player()

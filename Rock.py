@@ -8,7 +8,7 @@ class Rock(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
         self.name = "Rock"
-        self.hitbox = self.rect.inflate(-31, -31)
+        self.hitbox = self.rect.inflate(-20, -20)
         self.speed = 5
         self.direction = direction
         self.border_images = border_images
@@ -29,7 +29,7 @@ class Rock(pygame.sprite.Sprite):
     # 충돌 함수
     def collision(self):
         for sprite in self.border_images:
-            if sprite.rect.colliderect(self.hitbox):
+            if sprite.hitbox.colliderect(self.hitbox):
                 if sprite.name == "Wall":
                     self.kill()
             if sprite.hitbox.colliderect(self.hitbox):
@@ -40,6 +40,7 @@ class Rock(pygame.sprite.Sprite):
     # 업데이트 영역
     def update(self):
         dt = self.clock.tick(FPS)
+        print(self.hitbox)
         if not self.is_pause:
             if self.direction == 1: self.hitbox.x += self.speed * (dt // 6)
             elif self.direction == 2: self.hitbox.x -= self.speed * (dt // 6)

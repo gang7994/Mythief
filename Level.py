@@ -166,7 +166,7 @@ class CameraGroup(pygame.sprite.Group):
         for sprite in self.sprites():
             offset_rect = sprite.rect.topleft - self.offset
             if sprite.name == "Player":
-                self.display_surface.blit(sprite.image, (offset_rect[0], offset_rect[1] - 7.5))
+                self.display_surface.blit(sprite.image, (offset_rect[0], offset_rect[1] - 5))
             else:
                 self.display_surface.blit(sprite.image, offset_rect)
 
