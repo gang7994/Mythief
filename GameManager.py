@@ -22,6 +22,7 @@ class GameManager:
     def Encyclopedia(self):
         running = True
         while running:
+            dt = self.clock.tick(FPS)
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
             self.screen.fill("Black")
             OPTIONS_TEXT = self.get_font(45).render("백과사전창", True, "White")
@@ -37,14 +38,17 @@ class GameManager:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.particle.click_flag = True
                     if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                         running = False
+            self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
             pygame.display.update()
 
     def Credit(self):
         running = True
         while running:
+            dt = self.clock.tick(FPS)
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
             self.screen.fill("Black")
             OPTIONS_TEXT = self.get_titlefont(60).render("Mythief", True, "White")
@@ -67,15 +71,18 @@ class GameManager:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.particle.click_flag = True
                     if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                         running = False
+            self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
             pygame.display.update()
 
     def Option(self):
         global bgm_vol, effect_vol
         running = True
         while running:
+            dt = self.clock.tick(FPS)
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
             self.screen.fill("Black")
             OPTIONS_TEXT = self.get_font(45).render("옵션창", True, "White")
@@ -126,7 +133,8 @@ class GameManager:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.particle.click_flag = True
                     if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                         running = False
                     if BGM_UP.checkForInput(OPTIONS_MOUSE_POS):
@@ -141,6 +149,7 @@ class GameManager:
                     if EFFECT_DOWN.checkForInput(OPTIONS_MOUSE_POS):
                         if effect_vol != 0:
                             effect_vol -= 10
+            self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
             pygame.display.update()
 
     def draw_volume_bar(self):
