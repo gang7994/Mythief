@@ -1,6 +1,6 @@
 import pygame, os, random
 from Settings import *
-from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle
+from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole
 from Player import Player
 from Road import Road
 from Monster import LaserMonster, RushMonster
@@ -83,6 +83,8 @@ class Level:
                 if col == "W1g":
                     Fire_Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.fire_images.append(Glow([tile_pos_x, tile_pos_y]))
+                if col == "W":
+                    WaterHole((tile_pos_x, tile_pos_y), [self.images, self.border_images])
 
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
