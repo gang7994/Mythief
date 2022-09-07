@@ -19,6 +19,7 @@ class Level:
         self.item_images = pygame.sprite.Group()
         self.damage_images = pygame.sprite.Group()
         self.fire_images = []
+        self.road_images = []
         # map_init
         self.create_map()
         # player_glow
@@ -28,6 +29,10 @@ class Level:
         self.is_pause = False
         # elapsed time
         self.start_time = start_time
+        # monster_auto_create var
+        self.one_per_create = 5
+        self.create_flag = False
+
 
     # 맵 생성
     def create_map(self):
@@ -57,6 +62,7 @@ class Level:
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I0" or col == "I1":
                     Road((tile_pos_x, tile_pos_y), [self.images])
+                    self.road_images.append((tile_pos_x, tile_pos_y))
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images])
                 if col == "I0":
@@ -136,16 +142,14 @@ class Level:
                     monster.is_rush = False
 
     def monster_auto_create(self, time):
-        if int(time) % 10 == 0 and int(time) != 0:
-            for row_idx, row in enumerate(map[self.map_idx]):
-                for col_idx, col in enumerate(row):
-                    tile_pos_x = col_idx * tile_width_size + horizontal_margin
-                    tile_pos_y = row_idx * tile_height_size + vertical_margin
-                    if col == 'R':
-                        if Level.remain_monster <= 30:
-                            LaserMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
-                                         self.border_images, self.damage_images, self.images)
-                            Level.remain_monster += 1  # Show_info
+        if int(time) % 10 != 0:
+            self.create_flag = False
+        if int(time) % 10 == 0 and int(time) != 0 and not self.create_flag:
+            self.create_flag = True
+            for i in random.sample(self.road_images, k=self.one_per_create):
+                LaserMonster(i, [self.monster_images, self.damage_images],
+                             self.border_images, self.damage_images, self.images)
+                Level.remain_monster += 1  # Show_info
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
