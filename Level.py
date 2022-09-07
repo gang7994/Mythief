@@ -10,18 +10,24 @@ from Map import *
 # 레벨 클래스
 class Level:
     remain_monster = 0 # Show_info
-    def __init__(self, map_idx):
+    def __init__(self, map_idx, start_time):
         self.map_idx = map_idx
+        # image_groups
         self.images = CameraGroup()
         self.monster_images = CameraGroup()
         self.border_images = pygame.sprite.Group()
         self.item_images = pygame.sprite.Group()
         self.damage_images = pygame.sprite.Group()
         self.fire_images = []
+        # map_init
         self.create_map()
+        # player_glow
         self.glow = Glow(self.player.rect.topleft)
+        # FPS, pause var
         self.clock = pygame.time.Clock()
         self.is_pause = False
+        # elapsed time
+        self.start_time = start_time
 
     # 맵 생성
     def create_map(self):
@@ -129,21 +135,42 @@ class Level:
                 else:
                     monster.is_rush = False
 
+    def monster_auto_create(self, time):
+        if int(time) % 10 == 0 and int(time) != 0:
+            for row_idx, row in enumerate(map[self.map_idx]):
+                for col_idx, col in enumerate(row):
+                    tile_pos_x = col_idx * tile_width_size + horizontal_margin
+                    tile_pos_y = row_idx * tile_height_size + vertical_margin
+                    if col == 'R':
+                        if Level.remain_monster <= 30:
+                            LaserMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
+                                         self.border_images, self.damage_images, self.images)
+                            Level.remain_monster += 1  # Show_info
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)
         self.images.custom_draw(self.player, dt)
         self.monster_images.custom_draw(self.player, dt)
+
         if not self.is_pause:
             self.get_player_distance(self.player, dt)
+            self.tem_now_time = pygame.time.get_ticks() - self.start_time
+            elapsed_time = (self.tem_now_time) / 1000
+            self.monster_auto_create(elapsed_time)
+        else:
+            self.start_time = pygame.time.get_ticks() - self.tem_now_time
+
         self.monster_images.update()
         self.images.update()
+
         if self.map_idx == 2:
             self.glow.draw_player_glow()
             for fire in self.fire_images:
                 fire.draw_fire_glow(self.player, dt)
+
         self.glow.draw_display_change(dt)
+
         if self.player.is_dead:
             self.glow.draw_dead_display_change(dt)
 
@@ -198,6 +225,7 @@ class Glow:
         self.half_height = self.display_surface.get_size()[1] // 2
         self.new_surf = pygame.Surface((screen_width, screen_height))
         self.camera_move_flag = False
+        # glow var
         self.player_glow = []
         self.fire_glow = []
         self.pos = pos
@@ -251,8 +279,7 @@ class Glow:
         for glow in self.player_glow:
             self.new_surf.blit(glow[0], (self.half_width - glow[1], self.half_height - glow[1]))
         self.display_surface.blit(self.new_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
-    
-    # 버그 존재 - 고쳐야함
+
     def draw_fire_glow(self, player, dt):
         pos = []
         pos.append(self.pos[0])

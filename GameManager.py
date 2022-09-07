@@ -207,7 +207,7 @@ class GameManager:
                     if event.button == 1:
                         self.particle.click_flag = True
                         if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                            self.level = Level(0)
+                            self.level = Level(0, pygame.time.get_ticks())
                             self.running = True
                             self.Run()
                         if ENCYCLOPEDIA_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -487,7 +487,7 @@ class GameManager:
             if x.hitbox.colliderect(y.rect):
                 if self.level.map_idx < len(map) - 1:
                     Level.remain_monster = 0 # Show_info
-                    self.level = Level(self.level.map_idx + 1)
+                    self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks())
                 else:
                     self.clear(int(elapse_time))
 
