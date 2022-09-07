@@ -6,12 +6,14 @@ from Road import Road
 from Monster import LaserMonster, RushMonster
 from Item import Test0Item, Test1Item
 from Map import *
+from ParticleEffect import Particle
 
 # 레벨 클래스
 class Level:
     remain_monster = 0 # Show_info
     def __init__(self, map_idx, start_time):
         self.map_idx = map_idx
+        self.display_surface = pygame.display.get_surface()
         # image_groups
         self.images = CameraGroup()
         self.monster_images = CameraGroup()
@@ -141,7 +143,7 @@ class Level:
                 else:
                     monster.is_rush = False
 
-    def monster_auto_create(self, time):
+    def monster_auto_create(self, time, dt):
         if int(time) % 10 != 0:
             self.create_flag = False
         if int(time) % 10 == 0 and int(time) != 0 and not self.create_flag:
@@ -156,17 +158,16 @@ class Level:
         dt = self.clock.tick(FPS)
         self.images.custom_draw(self.player, dt)
         self.monster_images.custom_draw(self.player, dt)
+        self.monster_images.update()
+        self.images.update()
 
         if not self.is_pause:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
             elapsed_time = (self.tem_now_time) / 1000
-            self.monster_auto_create(elapsed_time)
+            self.monster_auto_create(elapsed_time, dt)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
-
-        self.monster_images.update()
-        self.images.update()
 
         if self.map_idx == 2:
             self.glow.draw_player_glow()
@@ -249,9 +250,9 @@ class Glow:
         self.dead_circle_pause = False
         self.dead_loop_cnt = 0
         self.dead_rad = 700
-
-
-
+        # monster_create_particle
+        self.monster_create_particles = []
+        self.monster_particle_flag = False
 
     def camera_move(self, pos, dt):
         keys = pygame.key.get_pressed()
@@ -343,3 +344,28 @@ class Glow:
                     if self.pause_end - self.pause_start > 700:
                         self.dead_circle_pause = False
             if self.dead_rad <= 0: self.dead_display_flag = True
+
+    def monster_create_effect(self, player, pos, dt):
+        if not self.camera_move_flag:
+            self.offset.x = player.rect.centerx - self.half_width
+            self.offset.y = player.rect.centery - self.half_height
+        self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
+        while len(self.monster_create_particles) < 30 and not self.monster_particle_flag:
+            self.monster_create_particles.append(
+                [[pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)], [random.randint(0, 20) / 10 - 1, -5],
+                 random.randint(10, 15)])
+        if not self.monster_particle_flag:
+            for i in self.monster_create_particles:
+                i[0] = [pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)]
+                self.monster_particle_flag = True
+        if self.monster_particle_flag:
+            for particle in self.monster_create_particles:
+                particle[0][1] += particle[1][1] * (dt // 6)
+                particle[0][0] += particle[1][0] * (dt // 6)
+                particle[2] -= 1 * (dt // 6)
+                particle[1][1] += 0.25 * (dt // 6)
+                pygame.draw.circle(self.display_surface, (255, 255, 255), [int(particle[0][0]) - self.offset.x, int(particle[0][1]) - self.offset.y], int(particle[2]))
+                if particle[2] <= 0:
+                    self.monster_create_particles.remove(particle)
+        if len(self.monster_create_particles) == 0:
+            self.monster_particle_flag = False

@@ -5,8 +5,6 @@ class Particle():
     def __init__(self):
         self.click_particles = []
         self.click_flag = False
-        self.monster_create_particles = []
-        self.monster_particle_flag = False
 
     def circle_surf(self, radius, color):
         surf = pygame.Surface((radius * 2, radius * 2))
@@ -38,24 +36,3 @@ class Particle():
                     self.click_particles.remove(particle)
         if len(self.click_particles) == 0:
             self.click_flag = False
-
-    def monster_create_effect(self, screen, pos, dt):
-        while len(self.monster_create_particles) < 30 and not self.monster_particle_flag:
-            self.monster_create_particles.append(
-                [[pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)], [random.randint(0, 20) / 10 - 1, -5],
-                 random.randint(10, 15)])
-        if not self.monster_particle_flag:
-            for i in self.monster_create_particles:
-                i[0] = [pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)]
-        if self.monster_particle_flag:
-            for particle in self.monster_create_particles:
-                particle[0][1] += particle[1][1]
-                particle[0][0] += particle[1][0]
-                particle[2] -= 0.5
-                particle[1][1] += 0.15
-                pygame.draw.circle(screen, (0, 0, 0), [int(particle[0][0]), int(particle[0][1])], int(particle[2]))
-                radius = particle[2] * 2
-                if particle[2] <= 0:
-                    self.monster_create_particles.remove(particle)
-        if len(self.monster_create_particles) == 0:
-            self.monster_particle_flag = False
