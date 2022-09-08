@@ -18,6 +18,7 @@ class GameManager:
         self.total_score = 0
         self.running = True
         self.level = None
+        self.use_rope = False
 
     def Encyclopedia(self):
         running = True
@@ -165,6 +166,7 @@ class GameManager:
         return pygame.font.SysFont('malgungothic', size)
 
     def main_menu(self):
+        global rope_item
         while True:
             dt = self.clock.tick(FPS)
             self.screen.fill(BLACK)
@@ -210,6 +212,8 @@ class GameManager:
                             self.level = Level(0, pygame.time.get_ticks())
                             self.running = True
                             self.Run()
+                            inventory.clear()
+                            rope_item = 2
                         if ENCYCLOPEDIA_BUTTON.checkForInput(MENU_MOUSE_POS):
                             self.Encyclopedia()
                         if CREDIT_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -376,6 +380,18 @@ class GameManager:
                 self.screen.blit(item.image, image_rect)
             i+= 120
         
+    def show_item(self):
+        pygame.draw.circle(self.screen, GREY, (1370, 480), 40) #기믹아이템
+        pygame.draw.circle(self.screen, GREY, (1370, 600), 40) #패스권
+        game_font = pygame.font.Font(None, 50)
+        rope_count = game_font.render(f"{rope_item}/2", True, WHITE)
+        self.screen.blit(rope_count, (1350, 580))
+        self.screen.blit(pygame.transform.scale(pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha(), (50, 50)), (1345, 690))
+        pygame.draw.rect(self.screen, WHITE, (1341, 690, 55, 55), 2)
+        if self.level.player.current_time != 0 and self.level.player.rock_time != 0:
+            if self.level.player.current_time - self.level.player.rock_time <= self.level.player.rock_cool_time:
+                pygame.draw.rect(self.screen, BLACK,(1341, 690, 55, 55 - (self.level.player.current_time - self.level.player.rock_time) / 40))
+
 
     def show_dir(self):
         keys = pygame.key.get_pressed()
@@ -395,6 +411,7 @@ class GameManager:
     
     # 게임 로직
     def Run(self):
+        global rope_item
         # 프레임 영역
         self.start_time = pygame.time.get_ticks()
         # 메인 로직 영역
@@ -445,14 +462,20 @@ class GameManager:
                         self.level.pause("T")
                     elif event.key == pygame.K_ESCAPE and self.level.is_pause:
                         self.level.pause("F")
+                    if event.key == pygame.K_r:
+                        if rope_item != 0 and not self.use_rope:
+                            rope_item -= 1
+                            self.use_rope = True
+
 
             # 이미지 영역
             self.screen.fill(BLACK)
             self.level.run()
             self.draw_frame()
             self.draw_rock_count()
-            self.draw_rock_image()
-            self.draw_rock_cool_time()
+            #self.draw_rock_image()
+            #self.draw_rock_cool_time()
+            self.show_item()
             self.draw_hp()
             self.current_stage()
             self.draw_current_stage(self.level.map_idx)
@@ -484,6 +507,13 @@ class GameManager:
             # 게임 클리어 영역
             x = self.level.get_player()
             y = self.level.get_finish()
+            if self.use_rope:
+                if self.level.map_idx < len(map) - 1:
+                    self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks())
+                else:
+                    self.clear(int(elapse_time))
+                self.use_rope = False
+
             if x.hitbox.colliderect(y.rect):
                 if self.level.map_idx < len(map) - 1:
                     Level.remain_monster = 0 # Show_info

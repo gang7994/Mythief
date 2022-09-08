@@ -65,8 +65,6 @@ class Player(pygame.sprite.Sprite):
         self.max_item_gage = 100
         self.item_bar_length = 300
         self.item_ratio = self.max_item_gage / self.item_bar_length
-        # item inventory
-        self.inventory = []
         
     def walk_animation(self):
         if self.walk_count > 5:

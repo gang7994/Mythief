@@ -26,6 +26,9 @@ tile_width_size = 48
 tile_height_size = 48
 # 이미지 경로
 current_path = os.path.dirname(__file__)
-images_path = os.path.join(current_path, "Images\\TestPix")
+images_path = os.path.join(current_path, "Images/TestPix")
+
 # 인벤토리
 inventory = []
+# 로프(패스권)
+rope_item = 2
