@@ -4,7 +4,7 @@ from Rock import Rock
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images, damage_images, item_images, images):
+    def __init__(self, pos, groups, border_images, damage_images, item_images, images, road_images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -31,6 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.damage_images = damage_images
         self.item_images = item_images
         self.images = images
+        self.road_images = road_images
         # player rock var
         self.rock_cool_time = 2000
         self.is_rock_ready = True
@@ -267,13 +268,13 @@ class Player(pygame.sprite.Sprite):
     def throw_rock(self):
         self.rock_count += 1
         if self.last_dir == 2:
-            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 1, self.border_images))
+            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 1, self.border_images, self.road_images))
         elif self.last_dir == 1:
-            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 2, self.border_images))
+            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 2, self.border_images, self.road_images))
         elif self.last_dir == 4:
-            self.images.add(Rock(self.rect.center, 3, self.border_images))
+            self.images.add(Rock(self.rect.center, 3, self.border_images, self.road_images))
         elif self.last_dir == 3:
-            self.images.add(Rock(self.rect.center, 4, self.border_images))
+            self.images.add(Rock(self.rect.center, 4, self.border_images, self.road_images))
 
     # 재장전 함수
     def re_load_rock(self):

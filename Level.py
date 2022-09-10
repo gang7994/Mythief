@@ -34,6 +34,7 @@ class Level:
         # monster_auto_create var
         self.one_per_create = 5
         self.create_flag = False
+        self.create_effects = [Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0])]
 
 
     # 맵 생성
@@ -93,7 +94,8 @@ class Level:
                              self.border_images,
                              self.damage_images,
                              self.item_images,
-                             self.images)
+                             self.images,
+                             self.road_images)
 
     # 현재 레벨의 플레이어 반환
     def get_player(self):
@@ -146,12 +148,15 @@ class Level:
                     monster.is_rush = False
 
     def monster_auto_create(self, time, dt):
+        for i in self.create_effects:
+            i.get_create_effects(i.pos)
         if int(time) % 10 != 0:
             self.create_flag = False
         if int(time) % 10 == 0 and int(time) != 0 and not self.create_flag:
             self.create_flag = True
-            for i in random.sample(self.road_images, k=self.one_per_create):
-                LaserMonster(i, [self.monster_images, self.damage_images],
+            for idx, sample in enumerate(random.sample(self.road_images, k=self.one_per_create)):
+                self.create_effects[idx].monster_create_effect(self.player, sample, dt)
+                LaserMonster(sample, [self.monster_images, self.damage_images],
                              self.border_images, self.damage_images, self.images)
                 Level.remain_monster += 1  # Show_info
 
@@ -171,6 +176,7 @@ class Level:
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 
+        # 어두운 맵은 따로 확인이 가능한 변수를 두는 것이 좋을듯 합니다. 이부분 수정해야겠네요
         if self.map_idx == 2:
             self.glow.draw_player_glow()
             for fire in self.fire_images:
@@ -254,7 +260,6 @@ class Glow:
         self.dead_rad = 700
         # monster_create_particle
         self.monster_create_particles = []
-        self.monster_particle_flag = False
 
     def camera_move(self, pos, dt):
         keys = pygame.key.get_pressed()
@@ -347,20 +352,20 @@ class Glow:
                         self.dead_circle_pause = False
             if self.dead_rad <= 0: self.dead_display_flag = True
 
+    def get_create_effects(self, pos):
+        while len(self.monster_create_particles) < 30:
+            self.monster_create_particles.append(
+                [[pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)], [random.randint(0, 20) / 10 - 1, -5],
+                 random.randint(10, 15)])
+
     def monster_create_effect(self, player, pos, dt):
         if not self.camera_move_flag:
             self.offset.x = player.rect.centerx - self.half_width
             self.offset.y = player.rect.centery - self.half_height
         self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
-        while len(self.monster_create_particles) < 30 and not self.monster_particle_flag:
-            self.monster_create_particles.append(
-                [[pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)], [random.randint(0, 20) / 10 - 1, -5],
-                 random.randint(10, 15)])
-        if not self.monster_particle_flag:
-            for i in self.monster_create_particles:
-                i[0] = [pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)]
-                self.monster_particle_flag = True
-        if self.monster_particle_flag:
+        for i in self.monster_create_particles:
+            i[0] = [pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)]
+        while len(self.monster_create_particles) != 0:
             for particle in self.monster_create_particles:
                 particle[0][1] += particle[1][1] * (dt // 6)
                 particle[0][0] += particle[1][0] * (dt // 6)
@@ -369,5 +374,3 @@ class Glow:
                 pygame.draw.circle(self.display_surface, (255, 255, 255), [int(particle[0][0]) - self.offset.x, int(particle[0][1]) - self.offset.y], int(particle[2]))
                 if particle[2] <= 0:
                     self.monster_create_particles.remove(particle)
-        if len(self.monster_create_particles) == 0:
-            self.monster_particle_flag = False

@@ -3,7 +3,7 @@ from Settings import *
 
 # 벽 이미지
 class Rock(pygame.sprite.Sprite):
-    def __init__(self, pos, direction, border_images):
+    def __init__(self, pos, direction, border_images, road_images):
         super().__init__()
         self.image = pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
@@ -14,6 +14,7 @@ class Rock(pygame.sprite.Sprite):
         self.border_images = border_images
         self.clock = pygame.time.Clock()
         self.is_pause = False
+        self.road_images = road_images
 
     # 영역 밖에서 오브젝트 삭제
     def destroy(self):
@@ -36,6 +37,7 @@ class Rock(pygame.sprite.Sprite):
                 if sprite.name == "NoneRoad":
                     self.border_images.remove(sprite)
                     sprite.image = pygame.image.load(os.path.join(images_path, "WSC_0.png")).convert_alpha()
+                    self.road_images.append([sprite.rect.left,sprite.rect.top])
 
     # 업데이트 영역
     def update(self):
