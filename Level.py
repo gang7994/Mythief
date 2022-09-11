@@ -1,6 +1,6 @@
 import pygame, os, random
 from Settings import *
-from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole
+from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5
 from Player import Player
 from Road import Road
 from Monster import LaserMonster, RushMonster
@@ -97,6 +97,18 @@ class Level:
                     self.fire_images.append(Glow([tile_pos_x, tile_pos_y]))
                 if col == "W":
                     WaterHole((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "S0":
+                    self.finish.append(Stage0((tile_pos_x, tile_pos_y), [self.images]))
+                if col == "S1":
+                    self.finish.append(Stage1((tile_pos_x, tile_pos_y), [self.images]))
+                if col == "S2":
+                    self.finish.append(Stage2((tile_pos_x, tile_pos_y), [self.images]))
+                if col == "S3":
+                    self.finish.append(Stage3((tile_pos_x, tile_pos_y), [self.images]))
+                if col == "S4":
+                    self.finish.append(Stage4((tile_pos_x, tile_pos_y), [self.images]))
+                if col == "S5":
+                    self.finish.append(Stage5((tile_pos_x, tile_pos_y), [self.images]))
 
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
