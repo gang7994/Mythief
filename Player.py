@@ -288,18 +288,20 @@ class Player(pygame.sprite.Sprite):
     def collision(self, direction):
         if direction == "horizontal":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.hitbox):
-                    if self.dir.x > 0:
-                        self.hitbox.right = sprite.rect.left
-                    elif self.dir.x < 0:
-                        self.hitbox.left = sprite.rect.right
+                if sprite.name != "Finish":
+                    if sprite.rect.colliderect(self.hitbox):
+                        if self.dir.x > 0:
+                            self.hitbox.right = sprite.rect.left
+                        elif self.dir.x < 0:
+                            self.hitbox.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.hitbox):
-                    if self.dir.y > 0:
-                        self.hitbox.bottom = sprite.rect.top
-                    elif self.dir.y < 0:
-                        self.hitbox.top = sprite.rect.bottom
+                if sprite.name != "Finish":
+                    if sprite.rect.colliderect(self.hitbox):
+                        if self.dir.y > 0:
+                            self.hitbox.bottom = sprite.rect.top
+                        elif self.dir.y < 0:
+                            self.hitbox.top = sprite.rect.bottom
 
     # 데미지를 주는 충돌을 따로 만듦
     def damage_collision(self):

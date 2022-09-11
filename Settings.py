@@ -13,6 +13,9 @@ bgm_vol = 100
 effect_vol = 100
 vol_ratio = 0.25
 
+# 텍스트 속도
+text_speed = 1
+
 # 색
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

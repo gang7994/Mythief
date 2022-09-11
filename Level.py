@@ -38,6 +38,8 @@ class Level:
         self.one_per_create = 5
         self.create_flag = False
         self.create_effects = [Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0])]
+        # text var
+        self.text = None
 
 
     # 맵 생성
@@ -75,7 +77,7 @@ class Level:
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.road_images.append((tile_pos_x, tile_pos_y))
                 if col == "F":
-                    self.finish.append(Finish((tile_pos_x, tile_pos_y), [self.images]))
+                    self.finish.append(Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images]))
                 if col == "I0":
                     Test0Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.item_images])
                 if col == "I1":

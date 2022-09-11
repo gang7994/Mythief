@@ -21,7 +21,9 @@ class GameManager:
         self.level = None
         self.use_rope = False
         self.is_tutorial = False
-        self.tutorial = None
+        self.scene_key = "Opening"
+        self.text = TextManager(self.scene_key)
+        self.is_opening = False
 
     def Encyclopedia(self):
         running = True
@@ -217,6 +219,9 @@ class GameManager:
                     if event.button == 1:
                         self.particle.click_flag = True
                         if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            if not self.is_opening:
+                                self.text.draw_text(0, self.screen)
+                                self.is_opening = True
                             self.level = Level(0, pygame.time.get_ticks(), self.is_tutorial)
                             self.running = True
                             self.Run()
@@ -433,6 +438,7 @@ class GameManager:
         while self.running:
             dt = self.clock.tick(FPS)
             PAUSE_MOUSE_POS = pygame.mouse.get_pos()
+            print(PAUSE_MOUSE_POS)
             if not self.level.is_pause:
                 PAUSE = Button(image0=pygame.image.load(os.path.join(images_path, "pause0.png")).convert_alpha(), 
                                 image1=pygame.image.load(os.path.join(images_path, "pause1.png")).convert_alpha(), 

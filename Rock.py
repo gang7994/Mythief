@@ -31,7 +31,7 @@ class Rock(pygame.sprite.Sprite):
     def collision(self):
         for sprite in self.border_images:
             if sprite.hitbox.colliderect(self.hitbox):
-                if sprite.name == "Wall":
+                if sprite.name == "Wall" or sprite.name == "Finish":
                     self.kill()
             if sprite.hitbox.colliderect(self.hitbox):
                 if sprite.name == "NoneRoad":
