@@ -12,11 +12,10 @@ from ParticleEffect import Particle
 # 레벨 클래스
 class Level:
     remain_monster = 0 # Show_info
-    def __init__(self, map_idx, start_time, is_tutorial):
+    def __init__(self, stage_num, map_idx, start_time):
+        self.stage_number = stage_num
         self.map_idx = map_idx
         self.display_surface = pygame.display.get_surface()
-        self.is_tutorial = is_tutorial
-        self.finish = []
         # image_groups
         self.images = CameraGroup()
         self.monster_images = CameraGroup()
@@ -27,6 +26,7 @@ class Level:
         self.road_images = []
         # map_init
         self.create_map()
+        self.cur_map = map[0]
         # player_glow
         self.glow = Glow(self.player.rect.topleft)
         # FPS, pause var
@@ -38,18 +38,18 @@ class Level:
         self.one_per_create = 5
         self.create_flag = False
         self.create_effects = [Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0])]
-        # text var
-        self.text = None
 
 
     # 맵 생성
     def create_map(self):
-        if self.is_tutorial:
-            cur_map = map
-        else:
-            cur_map = tutorial_map
+        if self.stage_number == 0:
+            self.cur_map = map[0]
+        elif self.stage_number == 1:
+            self.cur_map = map[1]
+        elif self.stage_number == 2:
+            self.cur_map = map[2]
 
-        for row_idx, row in enumerate(cur_map[self.map_idx]):
+        for row_idx, row in enumerate(self.cur_map[self.map_idx]):
             for col_idx, col in enumerate(row):
                 tile_pos_x = col_idx * tile_width_size + horizontal_margin
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
@@ -77,7 +77,7 @@ class Level:
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.road_images.append((tile_pos_x, tile_pos_y))
                 if col == "F":
-                    self.finish.append(Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images]))
+                    self.finish = Finish((tile_pos_x, tile_pos_y), [self.images])
                 if col == "I0":
                     Test0Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.item_images])
                 if col == "I1":
@@ -101,18 +101,17 @@ class Level:
                 if col == "W":
                     WaterHole((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "S0":
-                    self.finish.append(Stage0((tile_pos_x, tile_pos_y), [self.images]))
+                    self.stage0 = Stage0((tile_pos_x, tile_pos_y), [self.images])
                 if col == "S1":
-                    self.finish.append(Stage1((tile_pos_x, tile_pos_y), [self.images]))
+                    self.stage1 = Stage1((tile_pos_x, tile_pos_y), [self.images])
                 if col == "S2":
-                    self.finish.append(Stage2((tile_pos_x, tile_pos_y), [self.images]))
+                    self.stage2 = Stage2((tile_pos_x, tile_pos_y), [self.images])
                 if col == "S3":
-                    self.finish.append(Stage3((tile_pos_x, tile_pos_y), [self.images]))
+                    self.stage3 = Stage3((tile_pos_x, tile_pos_y), [self.images])
                 if col == "S4":
-                    self.finish.append(Stage4((tile_pos_x, tile_pos_y), [self.images]))
+                    self.stage4 = Stage4((tile_pos_x, tile_pos_y), [self.images])
                 if col == "S5":
-                    self.finish.append(Stage5((tile_pos_x, tile_pos_y), [self.images]))
-
+                    self.stage5 = Stage5((tile_pos_x, tile_pos_y), [self.images])
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
                              self.border_images,
@@ -128,6 +127,21 @@ class Level:
     # 현재 레벨의 도착지 반환
     def get_finish(self):
         return self.finish
+
+    def get_stage0(self):
+        return self.stage0
+
+    def get_stage1(self):
+        return self.stage1
+        
+    def get_stage2(self):
+        return self.stage2
+    def get_stage3(self):
+        return self.stage3
+    def get_stage4(self):
+        return self.stage4
+    def get_stage5(self):
+        return self.stage5
 
     def pause(self, str):
         if str == "T":
@@ -196,8 +210,10 @@ class Level:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
             elapsed_time = (self.tem_now_time) / 1000
+            '''
             if self.is_tutorial:
                 self.monster_auto_create(elapsed_time, dt)
+            '''
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 

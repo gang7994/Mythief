@@ -20,7 +20,6 @@ class GameManager:
         self.running = True
         self.level = None
         self.use_rope = False
-        self.is_tutorial = False
         self.scene_key = "Opening"
         self.text = TextManager(self.scene_key)
         self.is_opening = False
@@ -222,7 +221,7 @@ class GameManager:
                             if not self.is_opening:
                                 self.text.draw_text(0, self.screen)
                                 self.is_opening = True
-                            self.level = Level(0, pygame.time.get_ticks(), self.is_tutorial)
+                            self.level = Level(0, 0, pygame.time.get_ticks())
                             self.running = True
                             self.Run()
                             inventory.clear()
@@ -526,37 +525,42 @@ class GameManager:
 
             # 게임 클리어 영역
             x = self.level.get_player()
-            for y in self.level.get_finish():
-                if self.level.is_tutorial:
-                    if self.use_rope:
-                        if self.level.map_idx < len(map) - 1:
-                            self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
-                        else:
-                            self.clear(int(elapse_time))
-                        self.use_rope = False
+            y = self.level.get_finish()
 
-                    if x.hitbox.colliderect(y.rect):
-                        if self.level.map_idx < len(map) - 1:
-                            Level.remain_monster = 0 # Show_info
-                            self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
-                        else:
-                            self.clear(int(elapse_time))
+            if self.use_rope:
+                if self.level.map_idx < len(map[self.level.stage_number]) - 1:
+
+                    self.level = Level(self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
+                elif self.level.stage_number < len(self.level.cur_map) - 1:
+                    self.level = Level(self.level.stage_number + 1, 0, pygame.time.get_ticks())
                 else:
-                    if self.use_rope:
-                        if self.level.map_idx < len(tutorial_map) - 1:
-                            self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
-                        else:
-                            self.level.is_tutorial = True
-                            self.level.map_idx = -1
-                        self.use_rope = False
+                    self.clear(int(elapse_time))
+                self.use_rope = False
 
-                    if x.hitbox.colliderect(y.rect):
-                        if self.level.map_idx < len(tutorial_map) - 1:
-                            Level.remain_monster = 0  # Show_info
-                            self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
-                        else:
-                            self.level.is_tutorial = True
-                            self.level.map_idx = -1
+            if x.hitbox.colliderect(y.rect):
+                print("len")
+                print(len(map[self.level.stage_number]) - 1)
+                print("idx")
+                print(self.level.map_idx)
+                
+
+                if self.level.map_idx < len(map[self.level.stage_number]) - 1: #map 넘어가기
+                    Level.remain_monster = 0 # Show_info
+                    self.level = Level(self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
+                else:
+                    self.level = Level(self.level.stage_number + 1, self.level.map_idx, pygame.time.get_ticks())
+                    #self.clear(int(elapse_time))
+            if self.level.stage_number == 0:
+                s0 = self.level.get_stage0() 
+                s1 = self.level.get_stage1() 
+                if x.hitbox.colliderect(s0.rect):
+                    self.level.stage_number = 1
+                    self.level = Level(self.level.stage_number, 0, pygame.time.get_ticks())
+
+                if x.hitbox.colliderect(s1.rect):
+                    self.level.stage_number = 2
+                    self.level = Level(self.level.stage_number, 0, pygame.time.get_ticks())
+
 
             # 화면 업데이트
             pygame.display.update()
