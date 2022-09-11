@@ -74,7 +74,7 @@ class Level:
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.road_images.append((tile_pos_x, tile_pos_y))
                 if col == "F":
-                    self.finish = Finish((tile_pos_x, tile_pos_y), [self.images])
+                    self.finish.append(Finish((tile_pos_x, tile_pos_y), [self.images]))
                 if col == "I0":
                     Test0Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.item_images])
                 if col == "I1":
