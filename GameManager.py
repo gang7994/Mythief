@@ -5,6 +5,7 @@ from Button import Button
 from Button_text import Button_text
 from Map import *
 from ParticleEffect import Particle
+from TextScene import *
 
 class GameManager:
     def __init__(self):
@@ -19,6 +20,8 @@ class GameManager:
         self.running = True
         self.level = None
         self.use_rope = False
+        self.is_tutorial = False
+        self.tutorial = None
 
     def Encyclopedia(self):
         running = True
@@ -44,6 +47,7 @@ class GameManager:
                     if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                         running = False
             self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
+            self.particle.mouse_cursor(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1])
             pygame.display.update()
 
     def Credit(self):
@@ -77,6 +81,7 @@ class GameManager:
                     if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
                         running = False
             self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
+            self.particle.mouse_cursor(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1])
             pygame.display.update()
 
     def Option(self):
@@ -151,6 +156,7 @@ class GameManager:
                         if effect_vol != 0:
                             effect_vol -= 10
             self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
+            self.particle.mouse_cursor(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1])
             pygame.display.update()
 
     def draw_volume_bar(self):
@@ -176,6 +182,7 @@ class GameManager:
                 pygame.image.load(os.path.join(images_path, "mainLogo.png")).convert_alpha(), (600, 200))
             self.screen.blits([(bg_image, (0, 0)), (logo_image, (428, 20))])
             MENU_MOUSE_POS = pygame.mouse.get_pos()
+            pygame.mouse.set_visible(False)
 
             PLAY_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(),
                                  image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(),
@@ -201,6 +208,7 @@ class GameManager:
                 button.update(self.screen)
 
             self.particle.click_effect(self.screen, MENU_MOUSE_POS[0], MENU_MOUSE_POS[1], dt)
+            self.particle.mouse_cursor(self.screen, MENU_MOUSE_POS[0], MENU_MOUSE_POS[1])
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -209,7 +217,7 @@ class GameManager:
                     if event.button == 1:
                         self.particle.click_flag = True
                         if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                            self.level = Level(0, pygame.time.get_ticks())
+                            self.level = Level(0, pygame.time.get_ticks(), self.is_tutorial)
                             self.running = True
                             self.Run()
                             inventory.clear()
@@ -225,6 +233,10 @@ class GameManager:
                             sys.exit()
 
             pygame.display.update()
+
+    def opening_scene(self):
+        self.screen.fill(BLACK)
+
 
     def dead_surface(self, mouse_pos):
         MAINMENU = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
@@ -298,8 +310,8 @@ class GameManager:
 
     def item_interaction_text(self):
         if self.level.player.item_interaction:
-            font = pygame.font.Font(None, 25)
-            tap_key = font.render("Press Tap", True, WHITE)
+            font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 15)
+            tap_key = font.render("Tap을 누르시오", True, WHITE)
             self.screen.blit(tap_key, (680, 690))
             keys = pygame.key.get_pressed()
             if keys[pygame.K_TAB]:
@@ -377,6 +389,9 @@ class GameManager:
                 self.screen.blit(item.image, image_rect)
             elif item.name == "test1_item":
                 image_rect = item.image.get_rect(center=(150+i*120, 710))
+                self.screen.blit(item.image, image_rect)
+            elif item.name == "test2_item":
+                image_rect = item.image.get_rect(center=(150 + i * 120, 710))
                 self.screen.blit(item.image, image_rect)
             i+= 120
         
@@ -473,8 +488,6 @@ class GameManager:
             self.level.run()
             self.draw_frame()
             self.draw_rock_count()
-            #self.draw_rock_image()
-            #self.draw_rock_cool_time()
             self.show_item()
             self.draw_hp()
             self.current_stage()
@@ -499,6 +512,7 @@ class GameManager:
                 self.screen.blit(self.popup, (100, 100))
                 SETTING.update(self.screen)
                 EXIT.update(self.screen)
+                self.particle.mouse_cursor(self.screen, PAUSE_MOUSE_POS[0], PAUSE_MOUSE_POS[1])
 
             if self.level.glow.dead_rad <= 0:
                 self.dead_surface(PAUSE_MOUSE_POS)
@@ -507,19 +521,37 @@ class GameManager:
             # 게임 클리어 영역
             x = self.level.get_player()
             y = self.level.get_finish()
-            if self.use_rope:
-                if self.level.map_idx < len(map) - 1:
-                    self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks())
-                else:
-                    self.clear(int(elapse_time))
-                self.use_rope = False
 
-            if x.hitbox.colliderect(y.rect):
-                if self.level.map_idx < len(map) - 1:
-                    Level.remain_monster = 0 # Show_info
-                    self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks())
-                else:
-                    self.clear(int(elapse_time))
+            if self.level.is_tutorial:
+                if self.use_rope:
+                    if self.level.map_idx < len(map) - 1:
+                        self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
+                    else:
+                        self.clear(int(elapse_time))
+                    self.use_rope = False
+
+                if x.hitbox.colliderect(y.rect):
+                    if self.level.map_idx < len(map) - 1:
+                        Level.remain_monster = 0 # Show_info
+                        self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
+                    else:
+                        self.clear(int(elapse_time))
+            else:
+                if self.use_rope:
+                    if self.level.map_idx < len(tutorial_map) - 1:
+                        self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
+                    else:
+                        self.level.is_tutorial = True
+                        self.level.map_idx = -1
+                    self.use_rope = False
+
+                if x.hitbox.colliderect(y.rect):
+                    if self.level.map_idx < len(tutorial_map) - 1:
+                        Level.remain_monster = 0  # Show_info
+                        self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
+                    else:
+                        self.level.is_tutorial = True
+                        self.level.map_idx = -1
 
             # 화면 업데이트
             pygame.display.update()

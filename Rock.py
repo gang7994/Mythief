@@ -42,7 +42,6 @@ class Rock(pygame.sprite.Sprite):
     # 업데이트 영역
     def update(self):
         dt = self.clock.tick(FPS)
-        print(self.hitbox)
         if not self.is_pause:
             if self.direction == 1: self.hitbox.x += self.speed * (dt // 6)
             elif self.direction == 2: self.hitbox.x -= self.speed * (dt // 6)

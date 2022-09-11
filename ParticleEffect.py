@@ -5,6 +5,7 @@ class Particle():
     def __init__(self):
         self.click_particles = []
         self.click_flag = False
+        self.mouse_particles = []
 
     def circle_surf(self, radius, color):
         surf = pygame.Surface((radius * 2, radius * 2))
@@ -36,3 +37,16 @@ class Particle():
                     self.click_particles.remove(particle)
         if len(self.click_particles) == 0:
             self.click_flag = False
+
+    def mouse_cursor(self, screen, mx, my):
+        self.mouse_particles.append([[mx, my], [random.randint(0, 20) / 10 - 1, -5], random.randint(6, 11)])
+        for particle in self.mouse_particles:
+            particle[0][1] += particle[1][1]
+            particle[2] -= 0.5
+            particle[1][1] += 0.15
+            pygame.draw.circle(screen, (255, 255, 255), [int(particle[0][0]), int(particle[0][1])], int(particle[2]))
+            radius = particle[2] * 2
+            screen.blit(self.circle_surf(radius, (20, 20, 60)), (int(particle[0][0] - radius), int(particle[0][1] - radius)),
+                        special_flags=pygame.BLEND_RGB_ADD)
+            if particle[2] <= 0:
+                self.mouse_particles.remove(particle)

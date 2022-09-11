@@ -245,15 +245,6 @@ class Player(pygame.sprite.Sprite):
             self.hitbox.top += y * speed_y * (dt // 6)
             self.collision("vertical")
         self.rect.center = self.hitbox.center
-        # 화면 밖 안나가게
-        if self.rect.left < 0:
-            self.rect.left = 0
-        elif self.rect.left > screen_width - self.rect.size[0]:
-            self.rect.left = screen_width - self.rect.size[0]
-        if self.rect.top < 0:
-            self.rect.top = 0
-        elif self.rect.top > screen_height - self.rect.size[1]:
-            self.rect.top = screen_height - self.rect.size[1]
 
     # 무기 입력 확인 함수
     def add_rock(self):
@@ -324,7 +315,7 @@ class Player(pygame.sprite.Sprite):
 
     def get_item_interaction(self):
         for item in self.item_images:
-            if item.name == "test0_item" or item.name == "test1_item":
+            if item.name == "test0_item" or item.name == "test1_item" or item.name == "test2_item":
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()

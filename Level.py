@@ -4,16 +4,18 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
 from Player import Player
 from Road import Road
 from Monster import LaserMonster, RushMonster
-from Item import Test0Item, Test1Item
+from Item import Test0Item, Test1Item, Test2Item
 from Map import *
+from TextScene import *
 from ParticleEffect import Particle
 
 # 레벨 클래스
 class Level:
     remain_monster = 0 # Show_info
-    def __init__(self, map_idx, start_time):
+    def __init__(self, map_idx, start_time, is_tutorial):
         self.map_idx = map_idx
         self.display_surface = pygame.display.get_surface()
+        self.is_tutorial = is_tutorial
         # image_groups
         self.images = CameraGroup()
         self.monster_images = CameraGroup()
@@ -39,7 +41,12 @@ class Level:
 
     # 맵 생성
     def create_map(self):
-        for row_idx, row in enumerate(map[self.map_idx]):
+        if self.is_tutorial:
+            cur_map = map
+        else:
+            cur_map = tutorial_map
+
+        for row_idx, row in enumerate(cur_map[self.map_idx]):
             for col_idx, col in enumerate(row):
                 tile_pos_x = col_idx * tile_width_size + horizontal_margin
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
@@ -63,7 +70,7 @@ class Level:
                     Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I0" or col == "I1":
+                if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I0" or col == "I1" or col == "I2":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.road_images.append((tile_pos_x, tile_pos_y))
                 if col == "F":
@@ -72,6 +79,8 @@ class Level:
                     Test0Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.item_images])
                 if col == "I1":
                     Test1Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.item_images])
+                if col == "I2":
+                    Test2Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.item_images])
                 if col == "P":
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
@@ -172,15 +181,16 @@ class Level:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
             elapsed_time = (self.tem_now_time) / 1000
-            self.monster_auto_create(elapsed_time, dt)
+            if self.is_tutorial:
+                self.monster_auto_create(elapsed_time, dt)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 
         # 어두운 맵은 따로 확인이 가능한 변수를 두는 것이 좋을듯 합니다. 이부분 수정해야겠네요
-        if self.map_idx == 2:
+        """if self.map_idx == 2:
             self.glow.draw_player_glow()
             for fire in self.fire_images:
-                fire.draw_fire_glow(self.player, dt)
+                fire.draw_fire_glow(self.player, dt)"""
 
         self.glow.draw_display_change(dt)
 
