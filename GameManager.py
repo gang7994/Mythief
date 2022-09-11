@@ -520,38 +520,37 @@ class GameManager:
 
             # 게임 클리어 영역
             x = self.level.get_player()
-            y = self.level.get_finish()
+            for y in self.level.get_finish():
+                if self.level.is_tutorial:
+                    if self.use_rope:
+                        if self.level.map_idx < len(map) - 1:
+                            self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
+                        else:
+                            self.clear(int(elapse_time))
+                        self.use_rope = False
 
-            if self.level.is_tutorial:
-                if self.use_rope:
-                    if self.level.map_idx < len(map) - 1:
-                        self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
-                    else:
-                        self.clear(int(elapse_time))
-                    self.use_rope = False
+                    if x.hitbox.colliderect(y.rect):
+                        if self.level.map_idx < len(map) - 1:
+                            Level.remain_monster = 0 # Show_info
+                            self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
+                        else:
+                            self.clear(int(elapse_time))
+                else:
+                    if self.use_rope:
+                        if self.level.map_idx < len(tutorial_map) - 1:
+                            self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
+                        else:
+                            self.level.is_tutorial = True
+                            self.level.map_idx = -1
+                        self.use_rope = False
 
-                if x.hitbox.colliderect(y.rect):
-                    if self.level.map_idx < len(map) - 1:
-                        Level.remain_monster = 0 # Show_info
-                        self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
-                    else:
-                        self.clear(int(elapse_time))
-            else:
-                if self.use_rope:
-                    if self.level.map_idx < len(tutorial_map) - 1:
-                        self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
-                    else:
-                        self.level.is_tutorial = True
-                        self.level.map_idx = -1
-                    self.use_rope = False
-
-                if x.hitbox.colliderect(y.rect):
-                    if self.level.map_idx < len(tutorial_map) - 1:
-                        Level.remain_monster = 0  # Show_info
-                        self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
-                    else:
-                        self.level.is_tutorial = True
-                        self.level.map_idx = -1
+                    if x.hitbox.colliderect(y.rect):
+                        if self.level.map_idx < len(tutorial_map) - 1:
+                            Level.remain_monster = 0  # Show_info
+                            self.level = Level(self.level.map_idx + 1, pygame.time.get_ticks(), self.level.is_tutorial)
+                        else:
+                            self.level.is_tutorial = True
+                            self.level.map_idx = -1
 
             # 화면 업데이트
             pygame.display.update()

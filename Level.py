@@ -16,6 +16,7 @@ class Level:
         self.map_idx = map_idx
         self.display_surface = pygame.display.get_surface()
         self.is_tutorial = is_tutorial
+        self.finish = []
         # image_groups
         self.images = CameraGroup()
         self.monster_images = CameraGroup()
