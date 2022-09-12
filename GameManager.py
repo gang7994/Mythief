@@ -324,6 +324,24 @@ class GameManager:
                                  (570, 710, self.level.player.current_item_gage / self.level.player.item_ratio, 10))
                 pygame.draw.rect(self.screen, WHITE, (570, 710, self.level.player.item_bar_length, 10), 2)
 
+    def door_interaction_text(self):
+        font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 30)
+        door_text = font.render("", True, WHITE)
+        if self.level.player.stage0_interaction:
+            door_text = font.render("Tutorial", True, WHITE)
+        elif self.level.player.stage1_interaction:
+            door_text = font.render("STAGE 1", True, WHITE)
+        elif self.level.player.stage2_interaction:
+            door_text = font.render("STAGE 2", True, WHITE)
+        elif self.level.player.stage3_interaction:
+            door_text = font.render("STAGE 3", True, WHITE)
+        elif self.level.player.stage4_interaction:
+            door_text = font.render("STAGE 4", True, WHITE)
+        elif self.level.player.stage5_interaction:
+            door_text = font.render("STAGE 5", True, WHITE)
+        self.screen.blit(door_text, (680, 690))
+            
+
     # 클리어 함수
     # def total_score_update(self, score): 수정시 수정 필요
     def clear(self, elapsed_time):
@@ -505,6 +523,7 @@ class GameManager:
             self.show_dir()
             self.show_info()
             self.item_interaction_text()
+            self.door_interaction_text()
             self.show_inventory()
             PAUSE.update(self.screen)
 

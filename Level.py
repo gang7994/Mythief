@@ -2,7 +2,7 @@ import pygame, os, random
 from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5
 from Player import Player
-from Road import Road
+from Road import Road, Road_Horizontal, Road_Vertical
 from Monster import LaserMonster, RushMonster
 from Item import Test0Item, Test1Item, Test2Item
 from Map import *
@@ -21,6 +21,7 @@ class Level:
         self.monster_images = CameraGroup()
         self.border_images = pygame.sprite.Group()
         self.item_images = pygame.sprite.Group()
+        self.door_images = pygame.sprite.Group()
         self.damage_images = pygame.sprite.Group()
         self.fire_images = []
         self.road_images = []
@@ -111,22 +112,27 @@ class Level:
                 if col == "W":
                     WaterHole((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "S0":
-                    self.stage0 = Stage0((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.stage0 = Stage0((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
                 if col == "S1":
-                    self.stage1 = Stage1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.stage1 = Stage1((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
                 if col == "S2":
-                    self.stage2 = Stage2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.stage2 = Stage2((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
                 if col == "S3":
-                    self.stage3 = Stage3((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.stage3 = Stage3((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
                 if col == "S4":
-                    self.stage4 = Stage4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.stage4 = Stage4((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
                 if col == "S5":
-                    self.stage5 = Stage5((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.stage5 = Stage5((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
+                if col == "RH":
+                    Road_Horizontal((tile_pos_x, tile_pos_y), [self.images])
+                if col == "RV":
+                    Road_Vertical((tile_pos_x, tile_pos_y), [self.images])
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
                              self.border_images,
                              self.damage_images,
                              self.item_images,
+                             self.door_images,
                              self.images,
                              self.road_images)
 

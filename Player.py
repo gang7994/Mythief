@@ -4,7 +4,7 @@ from Rock import Rock
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images, damage_images, item_images, images, road_images):
+    def __init__(self, pos, groups, border_images, damage_images, item_images, door_images, images, road_images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -30,6 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.border_images = border_images
         self.damage_images = damage_images
         self.item_images = item_images
+        self.door_images = door_images
         self.images = images
         self.road_images = road_images
         # player rock var
@@ -69,6 +70,15 @@ class Player(pygame.sprite.Sprite):
         # is wave?
         self.is_wave = False
         self.is_road = True
+        # stage door interaction flag
+        self.stage0_interaction = False
+        self.stage1_interaction = False
+        self.stage2_interaction = False
+        self.stage3_interaction = False
+        self.stage4_interaction = False
+        self.stage5_interaction = False
+        
+
         
     def walk_animation(self):
         if self.walk_count > 5:
@@ -369,13 +379,37 @@ class Player(pygame.sprite.Sprite):
                     self.item_interaction = False
                     item.is_interaction = False
 
-    
+    def get_door_interaction(self):
+        for door in self.door_images:
+            item_vec = pygame.math.Vector2(door.rect.center)
+            player_vec = pygame.math.Vector2(self.rect.center)
+            distance = (player_vec - item_vec).magnitude()
+            if door.name == "Stage0":
+                if distance <= 50: self.stage0_interaction = True
+                else: self.stage0_interaction = False
+            elif door.name == "Stage1":
+                if distance <= 50: self.stage1_interaction = True
+                else: self.stage1_interaction = False
+            elif door.name == "Stage2":
+                if distance <= 50: self.stage2_interaction = True
+                else: self.stage2_interaction = False
+            elif door.name == "Stage3":
+                if distance <= 50: self.stage3_interaction = True
+                else: self.stage3_interaction = False
+            elif door.name == "Stage4":
+                if distance <= 50: self.stage4_interaction = True
+                else: self.stage4_interaction = False
+            elif door.name == "Stage5":
+                if distance <= 50: self.stage5_interaction = True
+                else: self.stage5_interaction = False
+
 
     # 업데이트 영역 -> 무적 시간 함수 추가
     def update(self):
         dt = self.clock.tick(FPS)
         if not self.is_pause:
             self.get_item_interaction()
+            self.get_door_interaction()
             self.un_damaged_time()
             if not self.is_dead:
                 self.add_rock()
