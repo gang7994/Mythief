@@ -7,5 +7,5 @@ class Road(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "tile_N.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(-2, -2)
+        self.hitbox = self.rect.inflate(-3, -3)
         self.name = "Road"

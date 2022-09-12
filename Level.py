@@ -211,6 +211,7 @@ class Level:
             self.tile_mix_flag = False
         if int(time) % 5 == 0 and int(time) != 0 and not self.tile_mix_flag:
             self.tile_mix_flag = True
+            self.player.is_wave = True
             random.shuffle(self.random_group)
             for idx, tile in enumerate(self.tile_group):
                 tile.rect, self.random_group[idx].rect = self.random_group[idx].rect, tile.rect
@@ -219,10 +220,6 @@ class Level:
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)
-        self.images.custom_draw(self.player, dt)
-        self.monster_images.custom_draw(self.player, dt)
-        self.monster_images.update()
-        self.images.update()
 
         if not self.is_pause:
             self.get_player_distance(self.player, dt)
@@ -233,6 +230,11 @@ class Level:
             self.tile_random_mix(elapsed_time)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
+
+        self.images.custom_draw(self.player, dt)
+        self.monster_images.custom_draw(self.player, dt)
+        self.monster_images.update()
+        self.images.update()
 
         # 어두운 맵은 따로 확인이 가능한 변수를 두는 것이 좋을듯 합니다. 이부분 수정해야겠네요
         """if self.map_idx == 2:

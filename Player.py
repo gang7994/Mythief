@@ -66,6 +66,9 @@ class Player(pygame.sprite.Sprite):
         self.max_item_gage = 100
         self.item_bar_length = 300
         self.item_ratio = self.max_item_gage / self.item_bar_length
+        # is wave?
+        self.is_wave = False
+        self.is_road = True
         
     def walk_animation(self):
         if self.walk_count > 5:
@@ -286,6 +289,7 @@ class Player(pygame.sprite.Sprite):
 
     # 충돌 함수
     def collision(self, direction):
+        self.is_road = True
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.name != "Finish" and \
@@ -296,10 +300,14 @@ class Player(pygame.sprite.Sprite):
                    sprite.name != "Stage4" and \
                    sprite.name != "Stage5":
                     if sprite.rect.colliderect(self.hitbox):
-                        if self.dir.x > 0:
-                            self.hitbox.right = sprite.rect.left
-                        elif self.dir.x < 0:
-                            self.hitbox.left = sprite.rect.right
+                        self.is_road = False
+                        if not self.is_wave or sprite.name == "Wall":
+                            if self.dir.x > 0:
+                                self.hitbox.right = sprite.rect.left
+                            elif self.dir.x < 0:
+                                self.hitbox.left = sprite.rect.right
+                        elif self.is_wave and not self.is_damaged:
+                            self.get_damaged(10)
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.name != "Finish" and \
@@ -310,10 +318,16 @@ class Player(pygame.sprite.Sprite):
                         sprite.name != "Stage4" and \
                         sprite.name != "Stage5":
                     if sprite.rect.colliderect(self.hitbox):
-                        if self.dir.y > 0:
-                            self.hitbox.bottom = sprite.rect.top
-                        elif self.dir.y < 0:
-                            self.hitbox.top = sprite.rect.bottom
+                        self.is_road = False
+                        if not self.is_wave or sprite.name == "Wall":
+                            if self.dir.y > 0:
+                                self.hitbox.bottom = sprite.rect.top
+                            elif self.dir.y < 0:
+                                self.hitbox.top = sprite.rect.bottom
+                        elif self.is_wave and not self.is_damaged:
+                            self.get_damaged(10)
+        if self.is_road:
+            self.is_wave = False
 
     # 데미지를 주는 충돌을 따로 만듦
     def damage_collision(self):
