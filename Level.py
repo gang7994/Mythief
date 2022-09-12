@@ -24,6 +24,10 @@ class Level:
         self.damage_images = pygame.sprite.Group()
         self.fire_images = []
         self.road_images = []
+        # tile random_mix
+        self.tile_group = []
+        self.random_group = []
+        self.tile_mix_flag = False
         # map_init
         self.create_map()
         self.cur_map = map[0]
@@ -54,7 +58,9 @@ class Level:
                 tile_pos_x = col_idx * tile_width_size + horizontal_margin
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
                 if col == ".":
-                    NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    tem = NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.tile_group.append(tem)
+                    self.random_group.append(tem)
                 if col == "W1":
                     Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "W2":
@@ -72,12 +78,16 @@ class Level:
                 if col == "C4":
                     Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "O":
-                    Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    tem = Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.tile_group.append(tem)
+                    self.random_group.append(tem)
                 if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I0" or col == "I1" or col == "I2":
-                    Road((tile_pos_x, tile_pos_y), [self.images])
+                    tem = Road((tile_pos_x, tile_pos_y), [self.images])
+                    self.tile_group.append(tem)
+                    self.random_group.append(tem)
                     self.road_images.append((tile_pos_x, tile_pos_y))
                 if col == "F":
-                    self.finish = Finish((tile_pos_x, tile_pos_y), [self.images])
+                    self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "I0":
                     Test0Item((tile_pos_x + tile_width_size // 2 - 8, tile_pos_y + tile_height_size // 2 - 8), [self.images, self.item_images])
                 if col == "I1":
@@ -101,17 +111,17 @@ class Level:
                 if col == "W":
                     WaterHole((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "S0":
-                    self.stage0 = Stage0((tile_pos_x, tile_pos_y), [self.images])
+                    self.stage0 = Stage0((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "S1":
-                    self.stage1 = Stage1((tile_pos_x, tile_pos_y), [self.images])
+                    self.stage1 = Stage1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "S2":
-                    self.stage2 = Stage2((tile_pos_x, tile_pos_y), [self.images])
+                    self.stage2 = Stage2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "S3":
-                    self.stage3 = Stage3((tile_pos_x, tile_pos_y), [self.images])
+                    self.stage3 = Stage3((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "S4":
-                    self.stage4 = Stage4((tile_pos_x, tile_pos_y), [self.images])
+                    self.stage4 = Stage4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "S5":
-                    self.stage5 = Stage5((tile_pos_x, tile_pos_y), [self.images])
+                    self.stage5 = Stage5((tile_pos_x, tile_pos_y), [self.images, self.border_images])
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
                              self.border_images,
@@ -198,6 +208,16 @@ class Level:
                              self.border_images, self.damage_images, self.images)
                 Level.remain_monster += 1  # Show_info
 
+    def tile_random_mix(self, time):
+        if int(time) % 5 != 0:
+            self.tile_mix_flag = False
+        if int(time) % 5 == 0 and int(time) != 0 and not self.tile_mix_flag:
+            self.tile_mix_flag = True
+            random.shuffle(self.random_group)
+            for idx, tile in enumerate(self.tile_group):
+                tile.rect, self.random_group[idx].rect = self.random_group[idx].rect, tile.rect
+                tile.hitbox, self.random_group[idx].hitbox = self.random_group[idx].hitbox, tile.hitbox
+
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)
@@ -210,10 +230,9 @@ class Level:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
             elapsed_time = (self.tem_now_time) / 1000
-            '''
-            if self.is_tutorial:
+            if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(elapsed_time, dt)
-            '''
+            self.tile_random_mix(elapsed_time)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 

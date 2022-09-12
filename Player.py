@@ -288,7 +288,13 @@ class Player(pygame.sprite.Sprite):
     def collision(self, direction):
         if direction == "horizontal":
             for sprite in self.border_images:
-                if sprite.name != "Finish":
+                if sprite.name != "Finish" and \
+                   sprite.name != "Stage0" and \
+                   sprite.name != "Stage1" and \
+                   sprite.name != "Stage2" and \
+                   sprite.name != "Stage3" and \
+                   sprite.name != "Stage4" and \
+                   sprite.name != "Stage5":
                     if sprite.rect.colliderect(self.hitbox):
                         if self.dir.x > 0:
                             self.hitbox.right = sprite.rect.left
@@ -296,7 +302,13 @@ class Player(pygame.sprite.Sprite):
                             self.hitbox.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
-                if sprite.name != "Finish":
+                if sprite.name != "Finish" and \
+                        sprite.name != "Stage0" and \
+                        sprite.name != "Stage1" and \
+                        sprite.name != "Stage2" and \
+                        sprite.name != "Stage3" and \
+                        sprite.name != "Stage4" and \
+                        sprite.name != "Stage5":
                     if sprite.rect.colliderect(self.hitbox):
                         if self.dir.y > 0:
                             self.hitbox.bottom = sprite.rect.top

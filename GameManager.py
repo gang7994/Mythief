@@ -258,6 +258,7 @@ class GameManager:
                 self.particle.click_flag = True
                 if MAINMENU.checkForInput(mouse_pos):
                     self.running = False
+        self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
 
 
 

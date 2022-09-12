@@ -31,13 +31,12 @@ class Rock(pygame.sprite.Sprite):
     def collision(self):
         for sprite in self.border_images:
             if sprite.hitbox.colliderect(self.hitbox):
-                if sprite.name == "Wall" or sprite.name == "Finish":
-                    self.kill()
-            if sprite.hitbox.colliderect(self.hitbox):
                 if sprite.name == "NoneRoad":
                     self.border_images.remove(sprite)
-                    sprite.image = pygame.image.load(os.path.join(images_path, "WSC_0.png")).convert_alpha()
+                    sprite.image = pygame.image.load(os.path.join(images_path, "re_bridge.png")).convert_alpha()
                     self.road_images.append([sprite.rect.left,sprite.rect.top])
+                elif sprite.name != "WaterHole":
+                    self.kill()
 
     # 업데이트 영역
     def update(self):
