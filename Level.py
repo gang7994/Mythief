@@ -140,10 +140,8 @@ class Level:
 
     def get_stage0(self):
         return self.stage0
-
     def get_stage1(self):
         return self.stage1
-        
     def get_stage2(self):
         return self.stage2
     def get_stage3(self):

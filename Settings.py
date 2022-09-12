@@ -35,3 +35,5 @@ images_path = os.path.join(current_path, "Images/TestPix")
 inventory = []
 # 로프(패스권)
 rope_item = 2
+# 스테이지 클리어 여부
+stage_clear = [True, False, False, False, False, False]
