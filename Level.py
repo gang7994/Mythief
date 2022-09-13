@@ -12,7 +12,7 @@ from ParticleEffect import Particle
 # 레벨 클래스
 class Level:
     remain_monster = 0 # Show_info
-    def __init__(self, stage_num, map_idx, start_time):
+    def __init__(self, idx, stage_num, map_idx, start_time):
         self.stage_number = stage_num
         self.map_idx = map_idx
         self.display_surface = pygame.display.get_surface()
@@ -43,6 +43,9 @@ class Level:
         self.one_per_create = 5
         self.create_flag = False
         self.create_effects = [Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0])]
+        # text var
+        self.text = TextManager(self.stage_number + 1)
+        self.text_idx = idx
 
 
     # 맵 생성
@@ -241,6 +244,8 @@ class Level:
         self.monster_images.custom_draw(self.player, dt)
         self.monster_images.update()
         self.images.update()
+
+        self.text.draw_ui_text(self.text_idx, self.display_surface)
 
         # 어두운 맵은 따로 확인이 가능한 변수를 두는 것이 좋을듯 합니다. 이부분 수정해야겠네요
         """if self.map_idx == 2:
