@@ -200,3 +200,8 @@ class WaterHole(pygame.sprite.Sprite):
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "WaterHole"
         self.is_pause = False
+
+class Wave(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        
