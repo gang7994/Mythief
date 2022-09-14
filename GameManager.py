@@ -310,14 +310,22 @@ class GameManager:
 
     def item_interaction_text(self):
         if self.level.player.item_interaction:
-            font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 15)
+            font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 20)
             tap_key = font.render("Tap을 누르시오", True, WHITE)
-            self.screen.blit(tap_key, (680, 690))
+            txt_w, txt_h = tap_key.get_size()
+            self.screen.blit(tap_key, (screen_width // 2 - txt_w // 2, screen_height // 2 - 45))
             keys = pygame.key.get_pressed()
             if keys[pygame.K_TAB]:
                 pygame.draw.rect(self.screen, YELLOW,
-                                 (570, 710, self.level.player.current_item_gage / self.level.player.item_ratio, 10))
-                pygame.draw.rect(self.screen, WHITE, (570, 710, self.level.player.item_bar_length, 10), 2)
+                                 (screen_width // 2 - self.level.player.item_bar_length // 2,
+                                  screen_height // 2 + 30,
+                                  self.level.player.current_item_gage / self.level.player.item_ratio,
+                                  10))
+                pygame.draw.rect(self.screen, WHITE,
+                                 (screen_width // 2 - self.level.player.item_bar_length // 2,
+                                  screen_height // 2 + 30,
+                                  self.level.player.item_bar_length,
+                                  10), 2)
 
     def door_interaction_text(self):
         font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 30)
@@ -525,6 +533,8 @@ class GameManager:
             self.item_interaction_text()
             self.door_interaction_text()
             self.show_inventory()
+            if not text_flag[self.level.stage_number + 1]:
+                self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
             PAUSE.update(self.screen)
 
             if not self.level.is_pause:
@@ -566,6 +576,7 @@ class GameManager:
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                 else:
                     stage_clear[self.level.stage_number] = True
+                    text_flag[self.level.stage_number + 1] = True
                     self.level = Level(0, 0, 0, pygame.time.get_ticks())
                     #self.clear(int(elapse_time))
 
@@ -579,6 +590,7 @@ class GameManager:
 
                 if x.hitbox.colliderect(s0.rect): #튜토리얼
                     self.level.stage_number = 1
+                    text_flag[1] = True
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
 
                 if x.hitbox.colliderect(s1.rect) and stage_clear[1]: #스테이지 1

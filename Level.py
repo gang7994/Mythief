@@ -44,8 +44,10 @@ class Level:
         self.create_flag = False
         self.create_effects = [Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0])]
         # text var
-        self.text = TextManager(self.stage_number + 1)
-        self.text_idx = idx
+        if not text_flag[self.stage_number + 1]:
+            self.text = TextManager(self.stage_number + 1)
+            self.text_idx = idx
+        self.event = False
 
 
     # 맵 생성
@@ -236,7 +238,9 @@ class Level:
             elapsed_time = (self.tem_now_time) / 1000
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(elapsed_time, dt)
-            self.tile_random_mix(elapsed_time)
+
+            # 파도 스크립트 제작 후 거기에 사용할 함수임
+            """self.tile_random_mix(elapsed_time)"""        
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 
@@ -244,8 +248,6 @@ class Level:
         self.monster_images.custom_draw(self.player, dt)
         self.monster_images.update()
         self.images.update()
-
-        self.text.draw_ui_text(self.text_idx, self.display_surface)
 
         # 어두운 맵은 따로 확인이 가능한 변수를 두는 것이 좋을듯 합니다. 이부분 수정해야겠네요
         """if self.map_idx == 2:
