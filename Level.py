@@ -1,6 +1,6 @@
 import pygame, os, random
 from Settings import *
-from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5
+from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical
 from Monster import LaserMonster, RushMonster
@@ -132,6 +132,9 @@ class Level:
                     Road_Horizontal((tile_pos_x, tile_pos_y), [self.images])
                 if col == "RV":
                     Road_Vertical((tile_pos_x, tile_pos_y), [self.images])
+                if col == "WA":
+                    Wave((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
                              self.border_images,

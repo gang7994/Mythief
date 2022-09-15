@@ -204,4 +204,24 @@ class WaterHole(pygame.sprite.Sprite):
 class Wave(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
+        self.animation_array = ["waveAnim_0.png", "waveAnim_1.png", "waveAnim_2.png", "waveAnim_3.png"]
+        self.image = pygame.image.load(os.path.join(images_path, self.animation_array[0])).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
+        self.name = "Wave"
+        self.animation_idx = 0
+        self.animation_frame = 300
+        self.start_time = pygame.time.get_ticks()
+        self.current_time = pygame.time.get_ticks()
+        self.is_pause = False
+
+    def animation(self):
+        self.current_time = pygame.time.get_ticks()
+        if self.current_time - self.start_time > self.animation_frame and self.animation_idx < 3:
+            self.animation_idx += 1
+            self.image = pygame.image.load(os.path.join(images_path, self.animation_array[self.animation_idx])).convert_alpha()
+            self.start_time = self.current_time
+
+    def update(self):
+        self.animation()
         

@@ -22,6 +22,7 @@ class GameManager:
         self.use_rope = False
         self.text = TextManager(0)
         self.is_opening = False
+        self.interaction_UI = pygame.image.load(os.path.join(images_path, "interaction_UI.png")).convert_alpha()
 
     def Encyclopedia(self):
         running = True
@@ -311,9 +312,10 @@ class GameManager:
     def item_interaction_text(self):
         if self.level.player.item_interaction:
             font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 20)
-            tap_key = font.render("Tap을 누르시오", True, WHITE)
+            tap_key = font.render("Tap을 누르시오", True, BLACK)
             txt_w, txt_h = tap_key.get_size()
-            self.screen.blit(tap_key, (screen_width // 2 - txt_w // 2, screen_height // 2 - 45))
+            self.screen.blit(self.interaction_UI,(screen_width // 2 - 149 // 2, screen_height // 2 - 75))
+            self.screen.blit(tap_key, (screen_width // 2 - txt_w // 2, screen_height // 2 - 65))
             keys = pygame.key.get_pressed()
             if keys[pygame.K_TAB]:
                 pygame.draw.rect(self.screen, YELLOW,
