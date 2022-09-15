@@ -26,9 +26,13 @@ class Level:
         self.fire_images = []
         self.road_images = []
         # tile random_mix
+        self.wave_start_position = []
+        self.wave = []
+        self.wave_flag = False
+        self.wave_cool_time = True
+        self.wave_cnt = 0
         self.tile_group = []
         self.random_group = []
-        self.tile_mix_flag = False
         # map_init
         self.create_map()
         self.cur_map = map[0]
@@ -63,10 +67,10 @@ class Level:
             for col_idx, col in enumerate(row):
                 tile_pos_x = col_idx * tile_width_size + horizontal_margin
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
-                if col == ".":
-                    tem = NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                    self.tile_group.append(tem)
-                    self.random_group.append(tem)
+                if col == "." or col == "WA":   # 파도 실험중
+                    NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    if col == "WA":
+                        self.wave_start_position.append((tile_pos_x, tile_pos_y))
                 if col == "W1":
                     Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "W2":
@@ -84,13 +88,9 @@ class Level:
                 if col == "C4":
                     Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "O":
-                    tem = Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                    self.tile_group.append(tem)
-                    self.random_group.append(tem)
+                    Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I0" or col == "I1" or col == "I2":
-                    tem = Road((tile_pos_x, tile_pos_y), [self.images])
-                    self.tile_group.append(tem)
-                    self.random_group.append(tem)
+                    Road((tile_pos_x, tile_pos_y), [self.images])
                     self.road_images.append((tile_pos_x, tile_pos_y))
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -132,8 +132,6 @@ class Level:
                     Road_Horizontal((tile_pos_x, tile_pos_y), [self.images])
                 if col == "RV":
                     Road_Vertical((tile_pos_x, tile_pos_y), [self.images])
-                if col == "WA":
-                    Wave((tile_pos_x, tile_pos_y), [self.images, self.border_images])
 
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
@@ -220,16 +218,38 @@ class Level:
                              self.border_images, self.damage_images, self.images)
                 Level.remain_monster += 1  # Show_info
 
-    def tile_random_mix(self, time):
-        if int(time) % 5 != 0:
-            self.tile_mix_flag = False
-        if int(time) % 5 == 0 and int(time) != 0 and not self.tile_mix_flag:
-            self.tile_mix_flag = True
-            self.player.is_wave = True
-            random.shuffle(self.random_group)
-            for idx, tile in enumerate(self.tile_group):
-                tile.rect, self.random_group[idx].rect = self.random_group[idx].rect, tile.rect
-                tile.hitbox, self.random_group[idx].hitbox = self.random_group[idx].hitbox, tile.hitbox
+    def tile_random_mix(self):
+        self.player.is_wave = True
+        random.shuffle(self.random_group)
+        for idx, tile in enumerate(self.tile_group):
+            tile.rect, self.random_group[idx].rect = self.random_group[idx].rect, tile.rect
+            tile.hitbox, self.random_group[idx].hitbox = self.random_group[idx].hitbox, tile.hitbox
+
+    def create_wave(self, time, wave_idx):
+        if int(time) % 3 != 0:
+            self.wave_flag = False
+        if int(time) % 3 == 0 and int(time) != 0 and not self.wave_flag and not self.wave_cool_time:
+            self.wave.append(Wave((self.wave_start_position[wave_idx][0], self.wave_start_position[wave_idx][1] + self.wave_cnt), [self.images]))
+            self.wave_cnt += 48
+            self.wave_flag = True
+            self.wave_collision(self.wave[-1].rect)
+            if len(self.wave) == 0:
+                self.wave_cool_time = True
+                self.tile_random_mix()
+                self.tile_group.clear()
+                self.random_group.clear()
+
+    def wave_collision(self, wave_rect):
+        for sprite in self.images:
+            if sprite.rect.colliderect(wave_rect):
+                if sprite.rect.colliderect(wave_rect):
+                    if sprite.name == "Wall":
+                        for i in self.wave:
+                            self.images.remove(i)
+                        self.wave.clear()
+                if sprite.name == "Road" or sprite.name == "NoneRoad" or sprite.name == "WaterHole":
+                    self.tile_group.append(sprite)
+                    self.random_group.append(sprite)
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
@@ -242,8 +262,12 @@ class Level:
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(elapsed_time, dt)
 
-            # 파도 스크립트 제작 후 거기에 사용할 함수임
-            """self.tile_random_mix(elapsed_time)"""        
+            if self.stage_number == 0:
+                if self.wave_cool_time:
+                    self.wave_idx = random.randint(0, len(self.wave_start_position) - 1)
+                    self.wave_cool_time = False
+                    self.wave_cnt = 0
+                self.create_wave(elapsed_time * 10, self.wave_idx)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 

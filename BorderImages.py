@@ -98,7 +98,7 @@ class Obstacle(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join(images_path, "obstacle1.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
-        self.name = "Wall"
+        self.name = "Wall"   # 이름 수정 필요할거 같음 (파도 스크립트 때문)
         self.is_pause = False
 
 # 도착 이미지
@@ -210,7 +210,7 @@ class Wave(pygame.sprite.Sprite):
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wave"
         self.animation_idx = 0
-        self.animation_frame = 300
+        self.animation_frame = 100
         self.start_time = pygame.time.get_ticks()
         self.current_time = pygame.time.get_ticks()
         self.is_pause = False
