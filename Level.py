@@ -62,6 +62,12 @@ class Level:
             self.cur_map = map[1]
         elif self.stage_number == 2:
             self.cur_map = map[2]
+        elif self.stage_number == 3:
+            self.cur_map = map[3]
+        elif self.stage_number == 4:
+            self.cur_map = map[4]
+        elif self.stage_number == 5:
+            self.cur_map = map[5]
 
         for row_idx, row in enumerate(self.cur_map[self.map_idx]):
             for col_idx, col in enumerate(row):
