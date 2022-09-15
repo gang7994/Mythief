@@ -576,6 +576,10 @@ class GameManager:
                     Level.remain_monster = 0 # Show_info
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                 else:
+
+                    if self.level.stage_number == 1: 
+                        inventory.clear()
+                        rope_item = 2
                     stage_clear[self.level.stage_number] = True
                     text_flag[self.level.stage_number + 1] = True
                     self.level = Level(0, 0, 0, pygame.time.get_ticks())
