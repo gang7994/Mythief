@@ -353,7 +353,8 @@ class Player(pygame.sprite.Sprite):
 
     def get_item_interaction(self):
         for item in self.item_images:
-            if item.name == "test0_item" or item.name == "test1_item" or item.name == "test2_item":
+            if item.name in ["test0_item", "test1_item", "test2_item", \
+                "test_general_item0", "test_general_item1", "test_general_item2", "test_general_item3", "test_general_item4", "test_general_item5"]:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()
@@ -369,14 +370,16 @@ class Player(pygame.sprite.Sprite):
                             self.item_interaction = False
                             item.is_interaction = False
                             self.current_item_gage = 0
-                            theme_inventory.append(item)
-                            is_fill = True
-                            for tmp in general_inventory:
-                                if tmp[0].name == item.name:
-                                    if tmp[1] < 6: tmp[1] += 1
-                                    is_fill = False
-                            if is_fill:
-                                general_inventory.append([item, 1])
+                            if item.name in ["test0_item", "test1_item", "test2_item"]:
+                                theme_inventory.append(item)
+                            else:
+                                is_fill = True
+                                for tmp in general_inventory:
+                                    if tmp[0].name == item.name:
+                                        if tmp[1] < 6: tmp[1] += 1
+                                        is_fill = False
+                                if is_fill:
+                                    general_inventory.append([item, 1])
                             item.kill()
                             
                     elif not keys[pygame.K_TAB]:

@@ -23,6 +23,7 @@ class GameManager:
         self.text = TextManager(0)
         self.is_opening = False
         self.interaction_UI = pygame.image.load(os.path.join(images_path, "interaction_UI.png")).convert_alpha()
+        self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
 
     def Encyclopedia(self):
         running = True
@@ -404,17 +405,19 @@ class GameManager:
         elif n ==9:
             self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage9.png")).convert_alpha(), (1150, 70))
             self.screen.blit(self.stage, (153, 70))
-    '''
+    '''                             
     def show_general_inventory(self):
         for i in range(12):
             pygame.draw.circle(self.screen, GREY, (150+i*105, 100), 40)
         for i, item in enumerate(general_inventory):
-            if item[0].name == "test0_item":                    
+            if item[0].name in ["test_general_item0", "test_general_item1", "test_general_item2", "test_general_item3", "test_general_item4", "test_general_item5"]:
                 image_rect = item[0].image.get_rect(center=(150+i*105, 100))                                       
                 self.screen.blit(item[0].image, image_rect)
-                pygame.draw.rect(self.screen,BLACK, (130+i*105, 90, 30,30-(item[1]*5)))
-    
-    
+                self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
+                self.item_cover = pygame.transform.scale(self.item_cover, (30,30-item[1]*5))
+                self.item_cover.set_alpha(200)                                          
+                self.screen.blit(self.item_cover,(135+i*105, 85))
+
     def show_info(self):
         font = pygame.font.Font(None, 25)
         pos = font.render(f"Player_pos: {self.level.player.rect.centerx, self.level.player.rect.centery,}", True, WHITE)
