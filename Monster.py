@@ -47,7 +47,7 @@ class LaserMonster(pygame.sprite.Sprite):
         if self.is_moving:
             self.rect.left += self.dir.x * speed * (dt // 6)
             self.collision("horizontal")
-            self.rect.top += self.dir.y * speed* (dt // 6)
+            self.rect.top += self.dir.y * speed * (dt // 6)
             self.collision("vertical")
         
     # 몬스터 충돌 (여기에 플레이어 충돌을 만들까 고민중)

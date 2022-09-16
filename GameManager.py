@@ -514,7 +514,7 @@ class GameManager:
                             rope_item -= 1
                             self.use_rope = True
                     if event.key == pygame.K_f:
-                        if self.level.text.text_idx < len(self.level.text.texts[0]) - 1:
+                        if self.level.text.text_idx < len(self.level.text.texts[0]) - 1:    # 여기 고쳐야함
                             self.level.text.text_idx += 1
                         else:
                             self.level.text.ui_flag = False
@@ -562,6 +562,7 @@ class GameManager:
             x = self.level.get_player() # 캐릭터
             y = self.level.get_finish() # Finish 타일
 
+            # 이부분 고쳐야함
             if self.use_rope:
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1:
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())

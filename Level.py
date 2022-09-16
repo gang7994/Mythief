@@ -48,7 +48,7 @@ class Level:
         self.create_flag = False
         self.create_effects = [Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0])]
         # text var
-        if not text_flag[self.stage_number + 1]:
+        if not text_flag[self.stage_number + 1]:                 # 이부분 고쳐야함
             self.text = TextManager(self.stage_number + 1)
             self.text_idx = idx
         self.event = False
@@ -225,7 +225,7 @@ class Level:
                 Level.remain_monster += 1  # Show_info
 
     def tile_random_mix(self):
-        self.player.is_wave = True
+        self.player.is_wave = True     # 이부분 고쳐야함
         random.shuffle(self.random_group)
         for idx, tile in enumerate(self.tile_group):
             tile.rect, self.random_group[idx].rect = self.random_group[idx].rect, tile.rect
