@@ -532,7 +532,7 @@ class GameManager:
                                 rope_item -= 1
                                 self.use_rope = True
                     if event.key == pygame.K_f:
-                        if self.level.text.text_idx < len(self.level.text.texts[0]) - 1:    # 여기 고쳐야함
+                        if self.level.text.text_idx < len(self.level.text.texts[self.level.map_idx]) - 1:
                             self.level.text.text_idx += 1
                         else:
                             self.level.text.ui_flag = False

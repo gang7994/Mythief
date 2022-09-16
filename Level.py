@@ -240,7 +240,6 @@ class Level:
                 Level.remain_monster += 1  # Show_info
 
     def tile_random_mix(self):
-        self.player.is_wave = True     # 이부분 고쳐야함
         random.shuffle(self.random_group)
         for idx, tile in enumerate(self.tile_group):
             tile.rect, self.random_group[idx].rect = self.random_group[idx].rect, tile.rect
@@ -256,6 +255,8 @@ class Level:
             self.wave_collision(self.wave[-1].rect)
             if len(self.wave) == 0:
                 self.wave_cool_time = True
+                if self.player.player_in_wave:
+                    self.player.is_tile_mix = True
                 self.tile_random_mix()
                 self.tile_group.clear()
                 self.random_group.clear()
@@ -263,19 +264,23 @@ class Level:
     def wave_collision(self, wave_rect):
         for sprite in self.images:
             if sprite.rect.colliderect(wave_rect):
-                if sprite.rect.colliderect(wave_rect):
-                    if sprite.name == "Wall":
-                        for i in self.wave:
-                            self.images.remove(i)
-                        self.wave.clear()
+                if sprite.name == "Wall":
+                    for i in self.wave:
+                        self.images.remove(i)
+                    self.wave.clear()
                 if sprite.name == "Road" or sprite.name == "NoneRoad" or sprite.name == "WaterHole":
                     self.tile_group.append(sprite)
                     self.random_group.append(sprite)
+    def wave_player_collision_check(self):
+        self.player.player_in_wave = False
+        for wave in self.wave:
+            if wave.rect.colliderect(self.player.hitbox):
+                self.player.player_in_wave = True
+
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)
-
         if not self.is_pause:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
@@ -288,6 +293,7 @@ class Level:
                     self.wave_idx = random.randint(0, len(self.wave_start_position) - 1)
                     self.wave_cool_time = False
                     self.wave_cnt = 0
+                self.wave_player_collision_check()
                 self.create_wave(elapsed_time * 10, self.wave_idx)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time

@@ -68,7 +68,8 @@ class Player(pygame.sprite.Sprite):
         self.item_bar_length = 300
         self.item_ratio = self.max_item_gage / self.item_bar_length
         # is wave?
-        self.is_wave = False
+        self.is_tile_mix = False
+        self.player_in_wave = False
         self.is_road = True
         # stage door interaction flag
         self.stage0_interaction = False
@@ -311,12 +312,12 @@ class Player(pygame.sprite.Sprite):
                    sprite.name != "Stage5":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
-                        if not self.is_wave or sprite.name == "Wall":
+                        if not self.is_tile_mix or sprite.name == "Wall":
                             if self.dir.x > 0:
                                 self.hitbox.right = sprite.rect.left
                             elif self.dir.x < 0:
                                 self.hitbox.left = sprite.rect.right
-                        elif self.is_wave and not self.is_damaged:
+                        elif self.is_tile_mix and not self.is_damaged:
                             self.get_damaged(10)
         if direction == "vertical":
             for sprite in self.border_images:
@@ -329,15 +330,15 @@ class Player(pygame.sprite.Sprite):
                         sprite.name != "Stage5":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
-                        if not self.is_wave or sprite.name == "Wall":
+                        if not self.is_tile_mix or sprite.name == "Wall":
                             if self.dir.y > 0:
                                 self.hitbox.bottom = sprite.rect.top
                             elif self.dir.y < 0:
                                 self.hitbox.top = sprite.rect.bottom
-                        elif self.is_wave and not self.is_damaged:
+                        elif self.is_tile_mix and not self.is_damaged:
                             self.get_damaged(10)
         if self.is_road:
-            self.is_wave = False
+            self.is_tile_mix = False
 
     # 데미지를 주는 충돌을 따로 만듦
     def damage_collision(self):
@@ -353,8 +354,15 @@ class Player(pygame.sprite.Sprite):
 
     def get_item_interaction(self):       # 이부분 수정해야함 -> tap을 누른채로 아이템 사정권을 나가면 아이템 게이지가 저장된 채임
         for item in self.item_images:
-            if item.name in ["test0_item", "test1_item", "test2_item", \
-                "test_general_item0", "test_general_item1", "test_general_item2", "test_general_item3", "test_general_item4", "test_general_item5"]:
+            if item.name in ["test0_item",
+                             "test1_item",
+                             "test2_item",
+                             "test_general_item0",
+                             "test_general_item1",
+                             "test_general_item2",
+                             "test_general_item3",
+                             "test_general_item4",
+                             "test_general_item5"]:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()
@@ -390,6 +398,7 @@ class Player(pygame.sprite.Sprite):
                         self.item_interaction = False
                         item.is_interaction = False
                     self.current_item_gage = 0
+                    item.item_gage = 0
 
     def get_door_interaction(self):
         for door in self.door_images:
