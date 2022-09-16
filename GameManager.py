@@ -511,7 +511,9 @@ class GameManager:
                         self.level.pause("F")
                     if event.key == pygame.K_r and self.level.stage_number != 0:
                         if rope_item != 0 and not self.use_rope:
-                            if (not self.level.stage_number == 1) or (self.level.stage_number == 1 and self.level.map_idx == 3):
+                            if(self.level.map_idx == 3 or self.level.map_idx == 7 or self.level.map_idx == 8):
+                                pass
+                            elif (not self.level.stage_number == 1) or (self.level.stage_number == 1 and self.level.map_idx == 3):
                                 rope_item -= 1
                                 self.use_rope = True
                     if event.key == pygame.K_f:

@@ -51,6 +51,8 @@ class Level:
         if not text_flag[self.stage_number + 1]:
             self.text = TextManager(self.stage_number + 1)
             self.text_idx = idx
+        else:
+            self.text_idx = 0
         self.event = False
 
 
