@@ -1,5 +1,5 @@
 
-text_flag = {1: False, 2: False, 3: True}   # 자동으로 생성되는 텍스트는 그 스테이지가 끝나면 다시 못보도록 한다.
+text_flag = {1: False, 2: False, 3: True, 4: True, 5: True, 6: True}   # 자동으로 생성되는 텍스트는 그 스테이지가 끝나면 다시 못보도록 한다.
 
 # 자동 생성 텍스트
 texts = {0: [["흐음......",

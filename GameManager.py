@@ -224,7 +224,7 @@ class GameManager:
                             self.level = Level(0, 0, 0, pygame.time.get_ticks())
                             self.running = True
                             self.Run()
-                            inventory.clear()
+                            theme_inventory.clear()
                             rope_item = 2
                         if ENCYCLOPEDIA_BUTTON.checkForInput(MENU_MOUSE_POS):
                             self.Encyclopedia()
@@ -370,6 +370,8 @@ class GameManager:
         elif stage == 6: text = font.render(f"[ STAGE 5]", True, WHITE)
         self.screen.blit(text, (660, 15))
         
+    
+    '''
     # 현재 스테이지 그림으로 표시
     def draw_current_stage(self, n):
         if n == 0:
@@ -402,7 +404,17 @@ class GameManager:
         elif n ==9:
             self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage9.png")).convert_alpha(), (1150, 70))
             self.screen.blit(self.stage, (153, 70))
-            
+    '''
+    def show_general_inventory(self):
+        for i in range(12):
+            pygame.draw.circle(self.screen, GREY, (150+i*105, 100), 40)
+        for i, item in enumerate(general_inventory):
+            if item[0].name == "test0_item":                    
+                image_rect = item[0].image.get_rect(center=(150+i*105, 100))                                       
+                self.screen.blit(item[0].image, image_rect)
+                pygame.draw.rect(self.screen,BLACK, (130+i*105, 90, 30,30-(item[1]*5)))
+    
+    
     def show_info(self):
         font = pygame.font.Font(None, 25)
         pos = font.render(f"Player_pos: {self.level.player.rect.centerx, self.level.player.rect.centery,}", True, WHITE)
@@ -410,12 +422,12 @@ class GameManager:
         fps = font.render(f"FPS: {str(int(self.clock.get_fps()))}", True, WHITE)
         self.screen.blits([(pos, (10, 560)),(remain_monster, (10, 590)), (fps, (10, 620))])
         
-    def show_inventory(self):
+    def show_theme_inventory(self):
         pygame.draw.circle(self.screen, GREY, (150, 710), 40)
         pygame.draw.circle(self.screen, GREY, (270, 710), 40)
         pygame.draw.circle(self.screen, GREY, (390, 710), 40)
         pygame.draw.circle(self.screen, GREY, (510, 710), 40)
-        for i, item in enumerate(inventory):
+        for i, item in enumerate(theme_inventory):
             if item.name == "test0_item":
                 image_rect = item.image.get_rect(center=(150+i*120, 710))
                 self.screen.blit(item.image, image_rect)
@@ -513,7 +525,7 @@ class GameManager:
                         if rope_item != 0 and not self.use_rope:
                             if(self.level.map_idx == 3 or self.level.map_idx == 7 or self.level.map_idx == 8):
                                 pass
-                            elif (not self.level.stage_number == 1) or (self.level.stage_number == 1 and self.level.map_idx == 3):
+                            if (not self.level.stage_number == 1) or (self.level.stage_number == 1 and self.level.map_idx == 3):
                                 rope_item -= 1
                                 self.use_rope = True
                     if event.key == pygame.K_f:
@@ -531,12 +543,13 @@ class GameManager:
             self.show_item()
             self.draw_hp()
             self.current_stage()
-            self.draw_current_stage(self.level.map_idx)
+            self.show_general_inventory()
+            #self.draw_current_stage(self.level.map_idx)
             self.show_dir()
             self.show_info()
             self.item_interaction_text()
             self.door_interaction_text()
-            self.show_inventory()
+            self.show_theme_inventory()
             if not text_flag[self.level.stage_number + 1]:
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
             PAUSE.update(self.screen)
@@ -580,7 +593,7 @@ class GameManager:
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                 else: #다음 방이 없으면 메인 스테이지로 넘어가기
                     if self.level.stage_number == 1: #튜토리얼 스테이지 마지막 방에서 나왔을때 초기화
-                        inventory.clear()
+                        theme_inventory.clear()
                         rope_item = 2
                     elif self.level.stage_number == 6: # 마지막 스테이지 
                         self.clear(int(elapse_time))

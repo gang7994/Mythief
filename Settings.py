@@ -32,7 +32,8 @@ current_path = os.path.dirname(__file__)
 images_path = os.path.join(current_path, "Images/TestPix")
 
 # 인벤토리
-inventory = []
+theme_inventory = []
+general_inventory = []
 # 로프(패스권)
 rope_item = 2
 # 스테이지 클리어 여부
