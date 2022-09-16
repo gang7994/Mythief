@@ -369,7 +369,14 @@ class Player(pygame.sprite.Sprite):
                             self.item_interaction = False
                             item.is_interaction = False
                             self.current_item_gage = 0
-                            inventory.append(item)
+                            theme_inventory.append(item)
+                            is_fill = True
+                            for tmp in general_inventory:
+                                if tmp[0].name == item.name:
+                                    if tmp[1] < 6: tmp[1] += 1
+                                    is_fill = False
+                            if is_fill:
+                                general_inventory.append([item, 1])
                             item.kill()
                             
                     elif not keys[pygame.K_TAB]:
