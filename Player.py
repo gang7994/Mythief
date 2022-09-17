@@ -1,3 +1,5 @@
+import random
+
 import pygame, os
 from Settings import *
 from Rock import Rock
@@ -78,6 +80,10 @@ class Player(pygame.sprite.Sprite):
         self.stage3_interaction = False
         self.stage4_interaction = False
         self.stage5_interaction = False
+        # player_drunken
+        self.is_player_drunken = False
+        self.drunken_time = 3000
+        self.drunken_start_time = 0
         
 
         
@@ -177,6 +183,8 @@ class Player(pygame.sprite.Sprite):
             self.last_x_dir = -1
             self.last_dir = 1
             self.player_speed_x = 2
+            if self.is_player_drunken:
+                self.player_speed_x = 1
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
@@ -189,6 +197,8 @@ class Player(pygame.sprite.Sprite):
             self.last_x_dir = 1
             self.last_dir = 2
             self.player_speed_x = 2
+            if self.is_player_drunken:
+                self.player_speed_x = 1
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
@@ -209,6 +219,8 @@ class Player(pygame.sprite.Sprite):
             self.dir.y = -1
             self.last_dir = 3
             self.player_speed_y = 2
+            if self.is_player_drunken:
+                self.player_speed_y = 1
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
@@ -221,6 +233,8 @@ class Player(pygame.sprite.Sprite):
             self.dir.y = 1
             self.last_dir = 4
             self.player_speed_y = 2
+            if self.is_player_drunken:
+                self.player_speed_y = 1
             if self.is_walk:
                 self.walk_time = pygame.time.get_ticks()
                 self.walk_count+=1
@@ -272,13 +286,18 @@ class Player(pygame.sprite.Sprite):
     # 무기 발사 함수
     def throw_rock(self):
         self.rock_count += 1
-        if self.last_dir == 2:
+        if self.is_player_drunken:
+            dir = random.randint(1, 4)
+        else:
+            dir = self.last_dir
+
+        if dir == 2:
             self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 1, self.border_images, self.road_images))
-        elif self.last_dir == 1:
+        elif dir == 1:
             self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 2, self.border_images, self.road_images))
-        elif self.last_dir == 4:
+        elif dir == 4:
             self.images.add(Rock(self.rect.center, 3, self.border_images, self.road_images))
-        elif self.last_dir == 3:
+        elif dir:
             self.images.add(Rock(self.rect.center, 4, self.border_images, self.road_images))
 
     # 재장전 함수
@@ -296,7 +315,17 @@ class Player(pygame.sprite.Sprite):
                 self.is_damaged = False
                 self.image.set_alpha(255)
 
+    def player_drunken(self):
+        self.is_player_drunken = True
+        self.drunken_start_time = pygame.time.get_ticks()
 
+    def drunken_cool_time(self):
+        if self.is_player_drunken:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.drunken_start_time > self.drunken_time:
+                self.is_player_drunken = False
+                self.player_speed_x = 2
+                self.player_speed_y = 2
 
     # 충돌 함수
     def collision(self, direction):
@@ -312,7 +341,9 @@ class Player(pygame.sprite.Sprite):
                    sprite.name != "Stage5":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
-                        if not self.is_tile_mix or sprite.name == "Wall":
+                        if sprite.name == "alcoholRoad":
+                            self.player_drunken()
+                        elif not self.is_tile_mix or sprite.name == "Wall":
                             if self.dir.x > 0:
                                 self.hitbox.right = sprite.rect.left
                             elif self.dir.x < 0:
@@ -330,7 +361,9 @@ class Player(pygame.sprite.Sprite):
                         sprite.name != "Stage5":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
-                        if not self.is_tile_mix or sprite.name == "Wall":
+                        if sprite.name == "alcoholRoad":
+                            self.player_drunken()
+                        elif not self.is_tile_mix or sprite.name == "Wall":
                             if self.dir.y > 0:
                                 self.hitbox.bottom = sprite.rect.top
                             elif self.dir.y < 0:
@@ -432,6 +465,7 @@ class Player(pygame.sprite.Sprite):
             self.get_item_interaction()
             self.get_door_interaction()
             self.un_damaged_time()
+            self.drunken_cool_time()
             if not self.is_dead:
                 self.add_rock()
                 self.re_load_rock()

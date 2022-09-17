@@ -14,6 +14,7 @@ class Rock(pygame.sprite.Sprite):
         self.border_images = border_images
         self.clock = pygame.time.Clock()
         self.is_pause = False
+        self.is_on_alcohol = False
         self.road_images = road_images
 
     # 영역 밖에서 오브젝트 삭제
@@ -31,11 +32,18 @@ class Rock(pygame.sprite.Sprite):
     def collision(self):
         for sprite in self.border_images:
             if sprite.hitbox.colliderect(self.hitbox):
+                if sprite.name == "alcoholRoad":
+                    self.is_on_alcohol = True
                 if sprite.name == "NoneRoad":
-                    self.border_images.remove(sprite)
-                    sprite.image = pygame.image.load(os.path.join(images_path, "re_bridge.png")).convert_alpha()
-                    self.road_images.append([sprite.rect.left,sprite.rect.top])
-                elif sprite.name != "WaterHole":
+                    if self.is_on_alcohol:
+                        sprite.image = pygame.image.load(os.path.join(images_path, "alcohol_bridge.png")).convert_alpha()
+                        sprite.name = "alcoholRoad"
+                        self.road_images.append([sprite.rect.left, sprite.rect.top])
+                    else:
+                        self.border_images.remove(sprite)
+                        sprite.image = pygame.image.load(os.path.join(images_path, "re_bridge.png")).convert_alpha()
+                        self.road_images.append([sprite.rect.left,sprite.rect.top])
+                elif sprite.name != "WaterHole" and sprite.name != "alcoholRoad":
                     self.kill()
 
     # 업데이트 영역

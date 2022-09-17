@@ -2,7 +2,7 @@ import pygame, os, random
 from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave
 from Player import Player
-from Road import Road, Road_Horizontal, Road_Vertical
+from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad
 from Monster import LaserMonster, RushMonster
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5
 from Map import *
@@ -101,6 +101,8 @@ class Level:
                     col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.road_images.append((tile_pos_x, tile_pos_y))
+                if col == "AR":
+                    AlcoholRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "I0":
