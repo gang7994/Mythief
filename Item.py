@@ -47,7 +47,7 @@ class Test2Item(pygame.sprite.Sprite):
         pass
     
 
-class GeneralItem0(pygame.sprite.Sprite):
+class GeneralItem0(pygame.sprite.Sprite): # 로프권 1개 추가
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item0.png")).convert_alpha()

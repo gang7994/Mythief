@@ -470,6 +470,14 @@ class GameManager:
             elif self.level.player.last_dir == 4:
                 image = pygame.image.load(os.path.join(images_path, "arr3.png")).convert_alpha()
                 self.screen.blit(image, (715, 400))
+                
+    def general_item_effect(self):
+        global rope_item, use_item0
+        for tmp in general_inventory:
+            if tmp[1] == 6:
+                if tmp[0].name == "test_general_item0" and not use_item0:
+                    rope_item +=1
+                    use_item0 = True
     
     # 게임 로직
     def Run(self):
@@ -547,6 +555,7 @@ class GameManager:
             self.draw_hp()
             self.current_stage()
             self.show_general_inventory()
+            self.general_item_effect()
             #self.draw_current_stage(self.level.map_idx)
             self.show_dir()
             self.show_info()
