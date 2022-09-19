@@ -385,7 +385,7 @@ class Player(pygame.sprite.Sprite):
                 if sprite.name == "rush_Monster" and not self.is_damaged:
                     self.get_damaged(10)
 
-    def get_item_interaction(self):       # 이부분 수정해야함 -> tap을 누른채로 아이템 사정권을 나가면 아이템 게이지가 저장된 채임
+    def get_item_interaction(self):
         for item in self.item_images:
             if item.name in ["test0_item",
                              "test1_item",
@@ -422,16 +422,15 @@ class Player(pygame.sprite.Sprite):
                                 if is_fill:
                                     general_inventory.append([item, 1])
                             item.kill()
-                            
                     elif not keys[pygame.K_TAB]:
                         item.item_gage = 0
                         self.current_item_gage = item.item_gage
                 elif distance > item.boundary:
                     if item.is_interaction:
+                        self.current_item_gage = 0
+                        item.item_gage = 0
                         self.item_interaction = False
                         item.is_interaction = False
-                    self.current_item_gage = 0
-                    item.item_gage = 0
 
     def get_door_interaction(self):
         for door in self.door_images:
