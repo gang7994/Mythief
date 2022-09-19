@@ -1,6 +1,6 @@
 import pygame, os, random
 from Settings import *
-from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave
+from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave, Flood
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad
 from Monster import LaserMonster, RushMonster
@@ -24,7 +24,14 @@ class Level:
         self.door_images = pygame.sprite.Group()
         self.damage_images = pygame.sprite.Group()
         self.fire_images = []
-        self.road_images = []
+        self.monster_respawn_position = []
+        # flood var
+        self.flooding_tile = []
+        self.flood = []
+        self.flooding_time = 10
+        self.flooding_flag = False
+        self.alpha = 50
+        self.flood_cnt = 0
         # tile random_mix
         self.wave_start_position = []
         self.wave = []
@@ -48,6 +55,7 @@ class Level:
         self.create_flag = False
         self.create_effects = [Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0])]
         # text var
+        self.text = None
         if not text_flag[self.stage_number + 1]:                 # 이부분 고쳐야함
             self.text = TextManager(self.stage_number + 1)
             self.text_idx = idx
@@ -77,6 +85,8 @@ class Level:
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
                 if col == "." or col == "WA":   # 파도 실험중
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
                     if col == "WA":
                         self.wave_start_position.append((tile_pos_x, tile_pos_y))
                 if col == "W1":
@@ -97,10 +107,12 @@ class Level:
                     Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I0" or col == "I1" or col == "I2" or \
                     col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5":
                     Road((tile_pos_x, tile_pos_y), [self.images])
-                    self.road_images.append((tile_pos_x, tile_pos_y))
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if col == "AR":
                     AlcoholRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "F":
@@ -139,6 +151,7 @@ class Level:
                     self.fire_images.append(Glow([tile_pos_x, tile_pos_y]))
                 if col == "W":
                     WaterHole((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if col == "S0":
                     self.stage0 = Stage0((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
                 if col == "S1":
@@ -153,8 +166,10 @@ class Level:
                     self.stage5 = Stage5((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
                 if col == "RH":
                     Road_Horizontal((tile_pos_x, tile_pos_y), [self.images])
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if col == "RV":
                     Road_Vertical((tile_pos_x, tile_pos_y), [self.images])
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
 
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
@@ -162,8 +177,7 @@ class Level:
                              self.damage_images,
                              self.item_images,
                              self.door_images,
-                             self.images,
-                             self.road_images)
+                             self.images)
 
     # 현재 레벨의 플레이어 반환
     def get_player(self):
@@ -229,14 +243,11 @@ class Level:
                     monster.is_rush = False
 
     def monster_auto_create(self, time, dt):
-        for i in self.create_effects:
-            i.get_create_effects(i.pos)
         if int(time) % 10 != 0:
             self.create_flag = False
         if int(time) % 10 == 0 and int(time) != 0 and not self.create_flag:
             self.create_flag = True
-            for idx, sample in enumerate(random.sample(self.road_images, k=self.one_per_create)):
-                self.create_effects[idx].monster_create_effect(self.player, sample, dt)
+            for idx, sample in enumerate(random.sample(self.monster_respawn_position, k=self.one_per_create)):
                 LaserMonster(sample, [self.monster_images, self.damage_images],
                              self.border_images, self.damage_images, self.images)
                 Level.remain_monster += 1  # Show_info
@@ -279,6 +290,21 @@ class Level:
             if wave.rect.colliderect(self.player.hitbox):
                 self.player.player_in_wave = True
 
+    def flooding(self, time):
+        if int(time) % 3 != 0:
+            self.flooding_flag = False
+        if int(time) % 3 == 0 and int(time) != 0 and not self.flooding_flag:
+            self.flooding_flag = True
+            if self.flood_cnt == 0:
+                for pos in self.flooding_tile:
+                    self.flood.append(Flood(pos, [self.images]))
+            elif self.flood_cnt < 4:
+                for sprite in self.flood:
+                    sprite.image.set_alpha(self.alpha)
+            else:
+                self.player.is_dead = True
+            self.alpha += 50
+            self.flood_cnt += 1
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
@@ -290,13 +316,15 @@ class Level:
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(elapsed_time, dt)
 
-            if self.stage_number == 0:
+            if self.stage_number == 2 and len(self.wave_start_position) != 0:
                 if self.wave_cool_time:
                     self.wave_idx = random.randint(0, len(self.wave_start_position) - 1)
                     self.wave_cool_time = False
                     self.wave_cnt = 0
                 self.wave_player_collision_check()
                 self.create_wave(elapsed_time * 10, self.wave_idx)
+            elif self.stage_number == 2 and (self.map_idx == 2 or self.map_idx == 3):
+                self.flooding(elapsed_time)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 
@@ -387,8 +415,6 @@ class Glow:
         self.dead_circle_pause = False
         self.dead_loop_cnt = 0
         self.dead_rad = 700
-        # monster_create_particle
-        self.monster_create_particles = []
 
     def camera_move(self, pos, dt):
         keys = pygame.key.get_pressed()
@@ -480,26 +506,3 @@ class Glow:
                     if self.pause_end - self.pause_start > 700:
                         self.dead_circle_pause = False
             if self.dead_rad <= 0: self.dead_display_flag = True
-
-    def get_create_effects(self, pos):
-        while len(self.monster_create_particles) < 30:
-            self.monster_create_particles.append(
-                [[pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)], [random.randint(0, 20) / 10 - 1, -5],
-                 random.randint(10, 15)])
-
-    def monster_create_effect(self, player, pos, dt):
-        if not self.camera_move_flag:
-            self.offset.x = player.rect.centerx - self.half_width
-            self.offset.y = player.rect.centery - self.half_height
-        self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
-        for i in self.monster_create_particles:
-            i[0] = [pos[0] + random.randint(-10, 10), pos[1] + random.randint(0, 10)]
-        while len(self.monster_create_particles) != 0:
-            for particle in self.monster_create_particles:
-                particle[0][1] += particle[1][1] * (dt // 6)
-                particle[0][0] += particle[1][0] * (dt // 6)
-                particle[2] -= 1 * (dt // 6)
-                particle[1][1] += 0.25 * (dt // 6)
-                pygame.draw.circle(self.display_surface, (255, 255, 255), [int(particle[0][0]) - self.offset.x, int(particle[0][1]) - self.offset.y], int(particle[2]))
-                if particle[2] <= 0:
-                    self.monster_create_particles.remove(particle)
