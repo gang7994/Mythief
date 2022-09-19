@@ -36,7 +36,7 @@ class Rock(pygame.sprite.Sprite):
                     self.is_on_alcohol = True
                 if sprite.name == "NoneRoad":
                     if self.is_on_alcohol:
-                        sprite.image = pygame.image.load(os.path.join(images_path, "alcohol_bridge.png")).convert_alpha()
+                        sprite.image = pygame.image.load(os.path.join(images_path, "purple_tile_1.png")).convert_alpha()
                         sprite.name = "alcoholRoad"
                         self.road_images.append([sprite.rect.left, sprite.rect.top])
                     else:

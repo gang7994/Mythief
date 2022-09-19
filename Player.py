@@ -91,45 +91,81 @@ class Player(pygame.sprite.Sprite):
         if self.walk_count > 5:
             self.walk_count = 0
         self.walk_current_time = pygame.time.get_ticks()
-        if self.walk_count == 0:
-            self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
-        elif self.walk_count == 1:
-            self.image = pygame.image.load(os.path.join(images_path, "sprite_1.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
-        elif self.walk_count == 2:
-            self.image = pygame.image.load(os.path.join(images_path, "sprite_2.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
-        elif self.walk_count == 3:
-            self.image = pygame.image.load(os.path.join(images_path, "sprite_3.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
-        elif self.walk_count == 4:
-            self.image = pygame.image.load(os.path.join(images_path, "sprite_4.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
-        elif self.walk_count == 5:
-            self.image = pygame.image.load(os.path.join(images_path, "sprite_5.png")).convert_alpha()
-            if self.is_damaged: self.image.set_alpha(200)
+        if self.is_player_drunken:
+            if self.walk_count == 0:
+                self.image = pygame.image.load(os.path.join(images_path, "runb_drunken0.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 1:
+                self.image = pygame.image.load(os.path.join(images_path, "runb_drunken1.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 2:
+                self.image = pygame.image.load(os.path.join(images_path, "runb_drunken2.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 3:
+                self.image = pygame.image.load(os.path.join(images_path, "runb_drunken3.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 4:
+                self.image = pygame.image.load(os.path.join(images_path, "runb_drunken4.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 5:
+                self.image = pygame.image.load(os.path.join(images_path, "runb_drunken5.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+        else:
+            if self.walk_count == 0:
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 1:
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_1.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 2:
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_2.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 3:
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_3.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 4:
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_4.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
+            elif self.walk_count == 5:
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_5.png")).convert_alpha()
+                if self.is_damaged: self.image.set_alpha(200)
         
     def idle_animation(self):
         if self.idle_count > 2:
             self.idle_count = 0
         self.idle_current_time = pygame.time.get_ticks()
-        if self.idle_count == 0:
-            self.image = pygame.image.load(os.path.join(images_path, "sprite_idle0.png")).convert_alpha()
-        elif self.idle_count == 1:
-            self.image = pygame.image.load(os.path.join(images_path, "sprite_idle1.png")).convert_alpha()
-        elif self.idle_count == 2:
-            self.image = pygame.image.load(os.path.join(images_path, "sprite_idle2.png")).convert_alpha()
+        if self.is_player_drunken:
+            if self.idle_count == 0:
+                self.image = pygame.image.load(os.path.join(images_path, "idle_drunken0.png")).convert_alpha()
+            elif self.idle_count == 1:
+                self.image = pygame.image.load(os.path.join(images_path, "idle_drunken0.png")).convert_alpha()
+            elif self.idle_count == 2:
+                self.image = pygame.image.load(os.path.join(images_path, "idle_drunken1.png")).convert_alpha()
+        else:
+            if self.idle_count == 0:
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_idle0.png")).convert_alpha()
+            elif self.idle_count == 1:
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_idle1.png")).convert_alpha()
+            elif self.idle_count == 2:
+                self.image = pygame.image.load(os.path.join(images_path, "sprite_idle2.png")).convert_alpha()
         if self.last_x_dir == -1: self.image = pygame.transform.flip(self.image, True, False)
         if self.is_damaged: self.image.set_alpha(200)
     
     def throw_animation(self):
-        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw0.png")).convert_alpha())
-        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw1.png")).convert_alpha())
-        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw2.png")).convert_alpha())
-        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw3.png")).convert_alpha())
-        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw4.png")).convert_alpha())
-        self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw5.png")).convert_alpha())
+        if self.is_player_drunken:
+            self.throw.append(pygame.image.load(os.path.join(images_path, "throw_drunken0.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "throw_drunken1.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "throw_drunken2.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "throw_drunken3.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "throw_drunken4.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "throw_drunken5.png")).convert_alpha())
+        else:
+            self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw0.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw1.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw2.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw3.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw4.png")).convert_alpha())
+            self.throw.append(pygame.image.load(os.path.join(images_path, "sprite_throw5.png")).convert_alpha())
         for i in self.throw:
             self.image = i
             if self.last_x_dir == -1:
