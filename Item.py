@@ -60,7 +60,7 @@ class GeneralItem0(pygame.sprite.Sprite): # 로프권 1개 추가
         self.item_gage = 0
         self.is_pause = False
         
-class GeneralItem1(pygame.sprite.Sprite):
+class GeneralItem1(pygame.sprite.Sprite): # 이동속도 증가
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item1.png")).convert_alpha()

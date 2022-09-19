@@ -38,7 +38,7 @@ general_inventory = []
 # 로프(패스권)
 rope_item = 2
 # 스테이지 클리어 여부
-stage_clear = [True, False, False, False, False, False]
+stage_clear = [True, True, False, False, False, False]
 
 # player use item
 use_item0 = False

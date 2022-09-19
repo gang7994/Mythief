@@ -472,12 +472,16 @@ class GameManager:
                 self.screen.blit(image, (715, 400))
                 
     def general_item_effect(self):
-        global rope_item, use_item0
+        global rope_item, use_item0, use_item1
         for tmp in general_inventory:
             if tmp[1] == 6:
-                if tmp[0].name == "test_general_item0" and not use_item0:
+                if tmp[0].name == "test_general_item0" and not use_item0: #로프 1개 추가
                     rope_item +=1
                     use_item0 = True
+                elif tmp[0].name == "test_general_item1" and not use_item1: #플레이어 이동 속도 증가
+                    self.level.player.player_speed_x+=1
+                    self.level.player.player_speed_y+=1
+                    use_item1 = True
     
     # 게임 로직
     def Run(self):

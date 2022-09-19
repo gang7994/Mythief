@@ -53,7 +53,7 @@ Mythief
 |이미지|코드(명칭)|클래스|비고|
 |:------:|:---:|:---:|:---:|
 |![img](/Images/Item/test_general_item0.png)|"GI0"(test_general_item0)|GeneralItem0( )|로프권 1회 추가|
-|![img](/Images/Item/test_general_item1.png)|"GI1"(test_general_item1)|GeneralItem1( )|.|
+|![img](/Images/Item/test_general_item1.png)|"GI1"(test_general_item1)|GeneralItem1( )|플레이어 이동속도 증가|
 |![img](/Images/Item/test_general_item2.png)|"GI2"(test_general_item2)|GeneralItem2( )|.|
 |![img](/Images/Item/test_general_item3.png)|"GI3"(test_general_item3)|GeneralItem3( )|.|
 |![img](/Images/Item/test_general_item4.png)|"GI4"(test_general_item4)|GeneralItem4( )|.|
