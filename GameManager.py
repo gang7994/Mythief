@@ -174,7 +174,7 @@ class GameManager:
         return pygame.font.SysFont('malgungothic', size)
 
     def main_menu(self):
-        global rope_item
+        global rope_item, current_hp
         while True:
             dt = self.clock.tick(FPS)
             self.screen.fill(BLACK)
@@ -219,6 +219,7 @@ class GameManager:
                     if event.button == 1:
                         self.particle.click_flag = True
                         if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            current_hp = max_hp
                             if not self.is_opening:
                                 self.text.draw_text(0, self.screen)
                                 self.is_opening = True
@@ -289,7 +290,7 @@ class GameManager:
 
     # 체력 그리기
     def draw_hp(self):
-        pygame.draw.rect(self.screen, RED, (10, 15, self.level.player.current_hp / (max_hp / hp_bar_length), 30))
+        pygame.draw.rect(self.screen, RED, (10, 15, current_hp / (max_hp / hp_bar_length), 30))
         pygame.draw.rect(self.screen, WHITE, (10, 15, hp_bar_length, 30), 2)
 
     # 무기 이미지 그리기
@@ -371,41 +372,6 @@ class GameManager:
         elif stage == 6: text = font.render(f"[ STAGE 5]", True, WHITE)
         self.screen.blit(text, (660, 15))
         
-    
-    '''
-    # 현재 스테이지 그림으로 표시
-    def draw_current_stage(self, n):
-        if n == 0:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage0.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-        elif n ==1:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage1.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-        elif n ==2:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage2.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-        elif n ==3:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage3.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-        elif n ==4:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage4.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-        elif n ==5:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage5.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-        elif n ==6:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage6.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-        elif n ==7:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage7.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-        elif n ==8:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage8.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-        elif n ==9:
-            self.stage = pygame.transform.scale(pygame.image.load(os.path.join(images_path, "stage9.png")).convert_alpha(), (1150, 70))
-            self.screen.blit(self.stage, (153, 70))
-    '''                             
     def show_general_inventory(self):
         for i in range(12):
             pygame.draw.circle(self.screen, GREY, (150+i*105, 100), 40)
@@ -485,7 +451,20 @@ class GameManager:
                 elif tmp[0].name == "test_general_item2" and not use_item2: 
                     max_hp += 30
                     use_item2 = True
-    
+                    
+    def player_hp(self):
+        global current_hp
+        if current_hp > 0:
+            if self.level.player.is_damage5:
+                current_hp -= 5
+                self.level.player.is_damage5 = False
+            if self.level.player.is_damage10:
+                current_hp -= 10
+                self.level.player.is_damage10 = False
+        else:
+            current_hp = 0
+            self.level.player.is_dead = True
+            
     # 게임 로직
     def Run(self):
         global rope_item
@@ -560,6 +539,7 @@ class GameManager:
             self.draw_frame()
             self.draw_rock_count()
             self.show_item()
+            self.player_hp()
             self.draw_hp()
             self.current_stage()
             self.show_general_inventory()

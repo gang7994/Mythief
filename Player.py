@@ -16,7 +16,6 @@ class Player(pygame.sprite.Sprite):
         self.character_height = self.rect.size[1]
         # player hp var
         self.is_dead = False
-        self.current_hp = 100
         # player move var
         self.dir = pygame.math.Vector2()
         self.last_x_dir = 1
@@ -40,6 +39,8 @@ class Player(pygame.sprite.Sprite):
         # damage var
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
+        self.is_damage5 = False
+        self.is_damage10 = False
         # walk animation variable 
         self.walk_count = 0
         self.walk_time = 0
@@ -188,13 +189,8 @@ class Player(pygame.sprite.Sprite):
                 self.idle_animation()
     
     # 피해 함수 (무적 시간 추가) -> 무적시 투명도 올림
-    def get_damaged(self, attack):
+    def get_damaged(self):
         self.is_damaged = True
-        if self.current_hp > 0:
-            self.current_hp -= attack
-        if self.current_hp <= 0:
-            self.current_hp = 0
-            self.is_dead = True
         self.damaged_start = pygame.time.get_ticks()
         self.image.set_alpha(200)
 
@@ -381,7 +377,8 @@ class Player(pygame.sprite.Sprite):
                             elif self.dir.x < 0:
                                 self.hitbox.left = sprite.rect.right
                         elif self.is_tile_mix and not self.is_damaged:
-                            self.get_damaged(10)
+                            self.get_damaged()
+                            self.is_damage10 = True
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.name != "Finish" and \
@@ -401,7 +398,8 @@ class Player(pygame.sprite.Sprite):
                             elif self.dir.y < 0:
                                 self.hitbox.top = sprite.rect.bottom
                         elif self.is_tile_mix and not self.is_damaged:
-                            self.get_damaged(10)
+                            self.get_damaged()
+                            self.is_damage10 = True
         if self.is_road:
             self.is_tile_mix = False
 
@@ -410,12 +408,15 @@ class Player(pygame.sprite.Sprite):
         for sprite in self.damage_images:
             if sprite.rect.colliderect(self.hitbox):
                 if sprite.name == "laser_Monster" and not self.is_damaged:
-                    self.get_damaged(10)
+                    self.get_damaged()
+                    self.is_damage10 = True
                 if sprite.name == "monster_laser" and not self.is_damaged:
-                    self.get_damaged(5)
+                    self.get_damaged()
+                    self.is_damage5 = True
                     sprite.kill()
                 if sprite.name == "rush_Monster" and not self.is_damaged:
-                    self.get_damaged(10)
+                    self.get_damaged()
+                    self.is_damage10 = True
 
     def get_item_interaction(self):
         for item in self.item_images:
