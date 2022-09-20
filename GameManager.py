@@ -289,8 +289,8 @@ class GameManager:
 
     # 체력 그리기
     def draw_hp(self):
-        pygame.draw.rect(self.screen, RED, (10, 15, self.level.player.current_hp / self.level.player.hp_ratio, 30))
-        pygame.draw.rect(self.screen, WHITE, (10, 15, self.level.player.hp_bar_length, 30), 2)
+        pygame.draw.rect(self.screen, RED, (10, 15, self.level.player.current_hp / (max_hp / hp_bar_length), 30))
+        pygame.draw.rect(self.screen, WHITE, (10, 15, hp_bar_length, 30), 2)
 
     # 무기 이미지 그리기
     def draw_rock_image(self):
@@ -472,7 +472,7 @@ class GameManager:
                 self.screen.blit(image, (715, 400))
                 
     def general_item_effect(self):
-        global rope_item, use_item0, use_item1
+        global rope_item, max_hp, use_item0, use_item1, use_item2
         for tmp in general_inventory:
             if tmp[1] == 6:
                 if tmp[0].name == "test_general_item0" and not use_item0: #로프 1개 추가
@@ -482,6 +482,9 @@ class GameManager:
                     self.level.player.player_speed_x+=1
                     self.level.player.player_speed_y+=1
                     use_item1 = True
+                elif tmp[0].name == "test_general_item2" and not use_item2: 
+                    max_hp += 30
+                    use_item2 = True
     
     # 게임 로직
     def Run(self):

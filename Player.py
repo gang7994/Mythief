@@ -17,9 +17,6 @@ class Player(pygame.sprite.Sprite):
         # player hp var
         self.is_dead = False
         self.current_hp = 100
-        self.max_hp = 100
-        self.hp_bar_length = 500
-        self.hp_ratio = self.max_hp / self.hp_bar_length
         # player move var
         self.dir = pygame.math.Vector2()
         self.last_x_dir = 1
