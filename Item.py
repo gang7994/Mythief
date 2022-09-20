@@ -4,47 +4,114 @@ from Settings import *
 class Test0Item(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test0_item.png")).convert_alpha()
+        self.animation_array = ["rotatingEXP_0.png",
+                          "rotatingEXP_1.png",
+                          "rotatingEXP_2.png",
+                          "rotatingEXP_3.png",
+                          "rotatingEXP_4.png",
+                          "rotatingEXP_5.png",
+                          "rotatingEXP_6.png",
+                          "rotatingEXP_7.png"]
+        self.image = pygame.image.load(os.path.join(item_path, self.animation_array[0])).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(-2,-2)
+        self.hitbox = self.rect.inflate(5,5)
         self.name = "test0_item"
         self.boundary = 50
         self.is_get = False
         self.is_interaction = False
         self.item_gage = 0
+        self.animation_idx = 0
+        self.animation_frame = 200
+        self.start_time = pygame.time.get_ticks()
+        self.current_time = pygame.time.get_ticks()
+        self.effect_idx = 0
         self.is_pause = False
 
+    def animation(self):
+        self.current_time = pygame.time.get_ticks()
+        if self.current_time - self.start_time > self.animation_frame:
+            self.animation_idx += 1
+            self.animation_idx %= 8
+            self.image = pygame.image.load(os.path.join(item_path, self.animation_array[self.animation_idx])).convert_alpha()
+            self.start_time = self.current_time
+
     def update(self):
-        pass
+        self.animation()
+        print(self.rect, self.hitbox)
 
 class Test1Item(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test1_item.png")).convert_alpha()
+        self.animation_array = ["rotatingEXP2_0.png",
+                          "rotatingEXP2_1.png",
+                          "rotatingEXP2_2.png",
+                          "rotatingEXP2_3.png",
+                          "rotatingEXP2_4.png",
+                          "rotatingEXP2_5.png",
+                          "rotatingEXP2_6.png",
+                          "rotatingEXP2_7.png"]
+        self.image = pygame.image.load(os.path.join(item_path, self.animation_array[0])).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(-2,-2)
+        self.hitbox = self.rect.inflate(5,5)
         self.name = "test1_item"
         self.boundary = 50
         self.is_get = False
         self.is_interaction = False
         self.item_gage = 0
+        self.animation_idx = 0
+        self.animation_frame = 200
+        self.start_time = pygame.time.get_ticks()
+        self.current_time = pygame.time.get_ticks()
+        self.effect_idx = 0
         self.is_pause = False
+
+    def animation(self):
+        self.current_time = pygame.time.get_ticks()
+        if self.current_time - self.start_time > self.animation_frame:
+            self.animation_idx += 1
+            self.animation_idx %= 8
+            self.image = pygame.image.load(os.path.join(item_path, self.animation_array[self.animation_idx])).convert_alpha()
+            self.start_time = self.current_time
+
+    def update(self):
+        self.animation()
 
 class Test2Item(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test2_item.png")).convert_alpha()
+        self.animation_array = ["rotatingEXP3_0.png",
+                                "rotatingEXP3_1.png",
+                                "rotatingEXP3_2.png",
+                                "rotatingEXP3_3.png",
+                                "rotatingEXP3_4.png",
+                                "rotatingEXP3_5.png",
+                                "rotatingEXP3_6.png",
+                                "rotatingEXP3_7.png"]
+        self.image = pygame.image.load(os.path.join(item_path, self.animation_array[0])).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(-2,-2)
+        self.hitbox = self.rect.inflate(5,5)
         self.name = "test2_item"
         self.boundary = 50
         self.is_get = False
         self.is_interaction = False
         self.item_gage = 0
+        self.animation_idx = 0
+        self.animation_frame = 200
+        self.start_time = pygame.time.get_ticks()
+        self.current_time = pygame.time.get_ticks()
+        self.effect_idx = 0
         self.is_pause = False
 
+    def animation(self):
+        self.current_time = pygame.time.get_ticks()
+        if self.current_time - self.start_time > self.animation_frame:
+            self.animation_idx += 1
+            self.animation_idx %= 8
+            self.image = pygame.image.load(os.path.join(item_path, self.animation_array[self.animation_idx])).convert_alpha()
+            self.start_time = self.current_time
+
     def update(self):
-        pass
+        self.animation()
     
 
 class GeneralItem0(pygame.sprite.Sprite): # 패스권 1개 추가

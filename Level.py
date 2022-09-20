@@ -118,11 +118,11 @@ class Level:
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "I0":
-                    Test0Item((tile_pos_x + tile_width_size // 2 - 15, tile_pos_y + tile_height_size // 2 - 15), [self.images, self.item_images])
+                    Test0Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
                 if col == "I1":
-                    Test1Item((tile_pos_x + tile_width_size // 2 - 15, tile_pos_y + tile_height_size // 2 - 15), [self.images, self.item_images])
+                    Test1Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
                 if col == "I2":
-                    Test2Item((tile_pos_x + tile_width_size // 2 - 15, tile_pos_y + tile_height_size // 2 - 15), [self.images, self.item_images])
+                    Test2Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
                 if col == "GI0":
                     GeneralItem0((tile_pos_x + tile_width_size // 2 - 15, tile_pos_y + tile_height_size // 2 - 15), [self.images, self.item_images])
                 if col == "GI1":
