@@ -47,7 +47,7 @@ class Test2Item(pygame.sprite.Sprite):
         pass
     
 
-class GeneralItem0(pygame.sprite.Sprite): # 로프권 1개 추가
+class GeneralItem0(pygame.sprite.Sprite): # 패스권 1개 추가
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item0.png")).convert_alpha()
@@ -73,7 +73,7 @@ class GeneralItem1(pygame.sprite.Sprite): # 이동속도 증가
         self.item_gage = 0
         self.is_pause = False
 
-class GeneralItem2(pygame.sprite.Sprite):
+class GeneralItem2(pygame.sprite.Sprite): #최대 체력 증가
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item2.png")).convert_alpha()
@@ -86,7 +86,7 @@ class GeneralItem2(pygame.sprite.Sprite):
         self.item_gage = 0
         self.is_pause = False
         
-class GeneralItem3(pygame.sprite.Sprite):
+class GeneralItem3(pygame.sprite.Sprite): #스테이지마다 플레이어가 받는 피해를 최대 2회까지 방어
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item3.png")).convert_alpha()
@@ -99,7 +99,7 @@ class GeneralItem3(pygame.sprite.Sprite):
         self.item_gage = 0
         self.is_pause = False
         
-class GeneralItem4(pygame.sprite.Sprite):
+class GeneralItem4(pygame.sprite.Sprite): #패스권 1개 감소
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item4.png")).convert_alpha()
@@ -112,7 +112,7 @@ class GeneralItem4(pygame.sprite.Sprite):
         self.item_gage = 0
         self.is_pause = False
         
-class GeneralItem5(pygame.sprite.Sprite):
+class GeneralItem5(pygame.sprite.Sprite): #
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item5.png")).convert_alpha()

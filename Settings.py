@@ -44,8 +44,12 @@ stage_clear = [True, True, False, False, False, False]
 use_item0 = False
 use_item1 = False
 use_item2 = False
+use_item3 = False
+use_item4 = False
+use_item5 = False
 
-# 플레이어 체력
+# 플레이어
 current_hp = 100
 max_hp = 100
 hp_bar_length = 500
+shield = 0

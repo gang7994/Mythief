@@ -16,7 +16,7 @@ Mythief
 |![img](/Images/TestPix/corner1.png)|"C2"(Wall)|Corner2( )|.|
 |![img](/Images/TestPix/corner2.png)|"C3"(Wall)|Corner3( )|.|
 |![img](/Images/TestPix/corner3.png)|"C4"(Wall)|Corner4( )|.|
-|![img](/Images/TestPix/obstacle1.png)|"O"(Wall)|Obstacle( )|명칭 수정 필요|
+
 
 ### [출입구]
 |이미지|코드(명칭)|클래스|비고|
@@ -52,11 +52,11 @@ Mythief
 ### [일반 아이템]
 |이미지|코드(명칭)|클래스|비고|
 |:------:|:---:|:---:|:---:|
-|![img](/Images/Item/test_general_item0.png)|"GI0"(test_general_item0)|GeneralItem0( )|로프권 1회 추가|
-|![img](/Images/Item/test_general_item1.png)|"GI1"(test_general_item1)|GeneralItem1( )|플레이어 이동속도 증가|
-|![img](/Images/Item/test_general_item2.png)|"GI2"(test_general_item2)|GeneralItem2( )|.|
-|![img](/Images/Item/test_general_item3.png)|"GI3"(test_general_item3)|GeneralItem3( )|.|
-|![img](/Images/Item/test_general_item4.png)|"GI4"(test_general_item4)|GeneralItem4( )|.|
+|![img](/Images/Item/test_general_item0.png)|"GI0"(test_general_item0)|GeneralItem0( )|여분로프(로프권 1회 추가)|
+|![img](/Images/Item/test_general_item1.png)|"GI1"(test_general_item1)|GeneralItem1( )|헤르메스의 날개 신(플레이어 이동속도 증가)|
+|![img](/Images/Item/test_general_item2.png)|"GI2"(test_general_item2)|GeneralItem2( )|보존식(최대 체력 증가)|
+|![img](/Images/Item/test_general_item3.png)|"GI3"(test_general_item3)|GeneralItem3( )|영혼석(스테이지 마다 최대 2회 방어)|
+|![img](/Images/Item/test_general_item4.png)|"GI4"(test_general_item4)|GeneralItem4( )|패스권을 하나 덜 소지|
 |![img](/Images/Item/test_general_item5.png)|"GI5"(test_general_item5)|GeneralItem5( )|.|
 
 ### [미분류]
@@ -65,3 +65,4 @@ Mythief
 |![img](/Images/TestPix/void_checked.png)|"."(NoneRoad)|NoneRoad( )|.|
 |![img](/Images/TestPix/wTile00.png)|"W"(WaterHole)|WaterHole( )|.|
 |![img](/Images/TestPix/waveAnim_0.png)|"WA"(Wave)|Wave( )|애니메이션 형태|
+|![img](/Images/TestPix/obstacle1.png)|"O"(obstacle)|Obstacle( )|.|

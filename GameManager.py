@@ -438,7 +438,7 @@ class GameManager:
                 self.screen.blit(image, (715, 400))
                 
     def general_item_effect(self):
-        global rope_item, max_hp, use_item0, use_item1, use_item2
+        global rope_item, max_hp, shield, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5
         for tmp in general_inventory:
             if tmp[1] == 6:
                 if tmp[0].name == "test_general_item0" and not use_item0: #로프 1개 추가
@@ -448,26 +448,40 @@ class GameManager:
                     self.level.player.player_speed_x+=1
                     self.level.player.player_speed_y+=1
                     use_item1 = True
-                elif tmp[0].name == "test_general_item2" and not use_item2: 
+                elif tmp[0].name == "test_general_item2" and not use_item2: #최대 체력 증가
                     max_hp += 30
                     use_item2 = True
+                elif tmp[0].name == "test_general_item3" and not use_item3: #스테이지 마다 2회방어
+                    shield = 2
+                    use_item3 = True
+                elif tmp[0].name == "test_general_item4" and not use_item4: #로프 1개 감소
+                    if rope_item > 0:
+                        rope_item -= 1
+                    use_item4 = True
+                elif tmp[0].name == "test_general_item5":
+                    
+                    use_item5 = True
                     
     def player_hp(self):
-        global current_hp
+        global current_hp, shield
         if current_hp > 0:
-            if self.level.player.is_damage5:
+            if self.level.player.is_damage5 and shield == 0:
                 current_hp -= 5
                 self.level.player.is_damage5 = False
-            if self.level.player.is_damage10:
+            if self.level.player.is_damage10 and shield == 0:
                 current_hp -= 10
                 self.level.player.is_damage10 = False
+            elif (self.level.player.is_damage5 or self.level.player.is_damage10) and shield !=0:
+                shield -= 1
+                self.level.player.is_damage5 = False
+                self.level.player.is_damage10 = False
         else:
-            current_hp = 0
+            current_hp = 0                          
             self.level.player.is_dead = True
             
     # 게임 로직
     def Run(self):
-        global rope_item
+        global rope_item, shield
         # 프레임 영역
         self.start_time = pygame.time.get_ticks()
         # 메인 로직 영역
@@ -617,22 +631,32 @@ class GameManager:
 
                 if x.hitbox.colliderect(s1.rect) and stage_clear[1]: #스테이지 1 입구로 들어 갔을때
                     self.level.stage_number = 2
+                    if use_item3:
+                        shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
 
                 if x.hitbox.colliderect(s2.rect) and stage_clear[2]: #스테이지 2 입구로 들어 갔을때
                     self.level.stage_number = 3
+                    if use_item3:
+                        shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
                 
                 if x.hitbox.colliderect(s3.rect) and stage_clear[3]: #스테이지 3 입구로 들어 갔을때
                     self.level.stage_number = 4
+                    if use_item3:
+                        shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
 
                 if x.hitbox.colliderect(s4.rect) and stage_clear[4]: #스테이지 4 입구로 들어 갔을때
                     self.level.stage_number = 5
+                    if use_item3:
+                        shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
                 
                 if x.hitbox.colliderect(s5.rect) and stage_clear[5]: #스테이지 5 입구로 들어 갔을때
                     self.level.stage_number = 6
+                    if use_item3:
+                        shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
 
 
