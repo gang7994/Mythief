@@ -540,11 +540,18 @@ class GameManager:
                                 rope_item -= 1
                                 self.use_rope = True
                     if event.key == pygame.K_f:
-                        if self.level.text is not None:
-                            if self.level.text.text_idx < len(self.level.text.texts[self.level.map_idx]) - 1:
-                                self.level.text.text_idx += 1
+                        if not text_flag[self.level.stage_number + 1]:
+                            if len(self.level.text.texts[self.level.map_idx]) != 0:
+                                if self.level.text.text_idx < len(self.level.text.texts[self.level.map_idx]) - 1:
+                                    self.level.text.text_idx += 1
+                                else:
+                                    self.level.text.ui_flag = False
+                        if self.level.player.event_handler:
+                            if self.level.text.event_text_idx < len(self.level.text.event_texts) - 1:
+                                self.level.text.event_text_idx += 1
                             else:
-                                self.level.text.ui_flag = False
+                                self.level.player.event_handler = False
+                                self.level.text.event_text_idx = 0
 
 
             # 이미지 영역
@@ -564,8 +571,11 @@ class GameManager:
             self.item_interaction_text()
             self.door_interaction_text()
             self.show_theme_inventory()
-            if not text_flag[self.level.stage_number + 1]:
+            if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]):
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
+            if self.level.player.event_handler:
+                if self.level.player.event_code is not None:
+                    self.level.text.draw_event_text(self.screen, self.level.player.event_code)
             PAUSE.update(self.screen)
 
             if not self.level.is_pause:

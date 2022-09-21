@@ -33,3 +33,12 @@ class AlcoholRoad(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "alcoholRoad"
+
+class EventTile(pygame.sprite.Sprite):
+    def __init__(self, pos, groups, event_code):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "tile_N.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "eventRoad"
+        self.event_code = event_code
