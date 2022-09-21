@@ -53,3 +53,7 @@ current_hp = 100
 max_hp = 100
 hp_bar_length = 500
 shield = 0
+
+# score
+stage_score = [0,0,0,0,100]
+bonus = 0

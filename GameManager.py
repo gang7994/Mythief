@@ -24,6 +24,7 @@ class GameManager:
         self.is_opening = False
         self.interaction_UI = pygame.image.load(os.path.join(images_path, "interaction_UI.png")).convert_alpha()
         self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
+        self.finish = False
 
     def Encyclopedia(self):
         running = True
@@ -351,13 +352,39 @@ class GameManager:
 
     # 클리어 함수
     # def total_score_update(self, score): 수정시 수정 필요
-    def clear(self, elapsed_time):
-        game_font = pygame.font.Font(None, 120)
-        msg = game_font.render(f"Your score is {self.total_score_update(self.total_time_update(elapsed_time))}", True, WHITE)
-        msg_rect = msg.get_rect(center=(screen_width / 2, screen_height / 2))
+    def clear(self, elapsed_time, mouse_pos):
+        global bonus
+        MAINMENU = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
+                       image1=pygame.image.load(os.path.join(images_path, "exit_icon2.png")).convert_alpha(),
+                       pos=(700, 650), scale_x=200, scale_y=200)
+        title_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 120)
+        game_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 80)
+        #msg = game_font.render(f"Your score is {self.total_score_update(self.total_time_update(elapsed_time))}", True, WHITE)
+        total = sum(stage_score) + len(theme_inventory) + bonus
+        msg0 = title_font.render(f"[ Your Score ]", True, WHITE)
+        msg0_rect = msg0.get_rect(center=(screen_width / 2, screen_height / 2 - 250))
+        msg1 = game_font.render(f"스테이지 : {sum(stage_score)}", True, WHITE)
+        msg1_rect = msg1.get_rect(center=(screen_width / 2, screen_height / 2 - 150))
+        msg2 = game_font.render(f"테마유물 : {len(theme_inventory)}", True, WHITE)
+        msg2_rect = msg2.get_rect(center=(screen_width / 2, screen_height / 2 -50))
+        msg3 = game_font.render(f"보너스 : {bonus}", True, WHITE)
+        msg3_rect = msg3.get_rect(center=(screen_width / 2, screen_height / 2 + 50))
+        msg4 = game_font.render(f"TOTAL : {total}", True, WHITE)
+        msg4_rect = msg4.get_rect(center=(screen_width / 2, screen_height / 2 + 150))
         self.screen.fill(BLACK)
-        self.screen.blit(msg, msg_rect)
-        self.running = False
+        self.screen.blits([(msg0, msg0_rect), (msg1, msg1_rect), (msg2, msg2_rect), (msg3, msg3_rect), (msg4, msg4_rect)])
+        MAINMENU.changeColor(mouse_pos)
+        MAINMENU.update(self.screen)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                self.particle.click_flag = True
+                if MAINMENU.checkForInput(mouse_pos):
+                    self.running = False
+        self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
+    
     
     # 현재 스테이지 글자로 표시
     def current_stage(self):
@@ -597,6 +624,9 @@ class GameManager:
             if self.level.glow.dead_rad <= 0:
                 self.dead_surface(PAUSE_MOUSE_POS)
             self.particle.click_effect(self.screen, PAUSE_MOUSE_POS[0], PAUSE_MOUSE_POS[1], dt)
+            
+            if self.finish:
+                self.clear(int(elapse_time), PAUSE_MOUSE_POS)
 
             # 게임 클리어 영역
             x = self.level.get_player() # 캐릭터
@@ -608,8 +638,6 @@ class GameManager:
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                 elif self.level.stage_number < len(self.level.cur_map) - 1: #추후 보스맵에서는 로프권 사용 못하게 할 예정
                     self.level = Level(0, self.level.stage_number + 1, 0, pygame.time.get_ticks())
-                else:
-                    self.clear(int(elapse_time))
                 self.use_rope = False
 
             if x.hitbox.colliderect(y.rect):
@@ -620,11 +648,12 @@ class GameManager:
                     if self.level.stage_number == 1: #튜토리얼 스테이지 마지막 방에서 나왔을때 초기화
                         theme_inventory.clear()
                         rope_item = 2
-                    elif self.level.stage_number == 6: # 마지막 스테이지 
-                        self.clear(int(elapse_time))
-                    stage_clear[self.level.stage_number] = True
-                    text_flag[self.level.stage_number + 1] = True
-                    self.level = Level(0, 0, 0, pygame.time.get_ticks())
+                    if self.level.stage_number == 6: # 마지막 스테이지 
+                        self.finish = True
+                    else:
+                        stage_clear[self.level.stage_number] = True
+                        text_flag[self.level.stage_number + 1] = True
+                        self.level = Level(0, 0, 0, pygame.time.get_ticks())
 
             if self.level.stage_number == 0: #메인 스테이지 
                 s0 = self.level.get_stage0() #스테이지 입구 타일
