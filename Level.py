@@ -3,7 +3,7 @@ from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave, Flood
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad
-from Monster import LaserMonster, RushMonster
+from Monster import LaserMonster, RushMonster, Cerberus
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5
 from Map import *
 from TextScene import *
@@ -108,7 +108,7 @@ class Level:
                 if col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                if col == "R" or col == "P" or col == "M" or col == "JM" or col == "I0" or col == "I1" or col == "I2" or \
+                if col == "R" or col == "P" or col == "M" or col == "RM" or col == "I0" or col == "I1" or col == "I2" or \
                     col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
@@ -142,9 +142,13 @@ class Level:
                     LaserMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
                             self.border_images, self.damage_images, self.images)
                     Level.remain_monster+=1 # Show_info
-                if col == "JM":
+                if col == "RM":
                     RushMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
-                            self.border_images, self.damage_images)
+                            self.border_images)
+                    Level.remain_monster+=1 # Show_info
+                if col == "CR":
+                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
+                            self.border_images)
                     Level.remain_monster+=1 # Show_info
                 if col == "W1g":
                     Fire_Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -221,7 +225,7 @@ class Level:
     # 플레이어 , 적 거리 계산
     def get_player_distance(self, player, dt):
         for monster in self.monster_images:
-            if monster.name == "rush_Monster":
+            if monster.name == "rush_Monster" or monster.name == "cerberus":
                 monster_vec = pygame.math.Vector2(monster.rect.center)
                 player_vec = pygame.math.Vector2(player.rect.center)
                 distance = (player_vec - monster_vec).magnitude()
@@ -248,8 +252,12 @@ class Level:
         if int(time) % 10 == 0 and int(time) != 0 and not self.create_flag:
             self.create_flag = True
             for idx, sample in enumerate(random.sample(self.monster_respawn_position, k=self.one_per_create)):
-                LaserMonster(sample, [self.monster_images, self.damage_images],
-                             self.border_images, self.damage_images, self.images)
+                if idx % 2 == 0:
+                    LaserMonster(sample, [self.monster_images, self.damage_images],
+                                self.border_images, self.damage_images, self.images)
+                elif idx % 2 != 0:
+                    RushMonster(sample, [self.monster_images, self.damage_images],
+                                self.border_images)
                 Level.remain_monster += 1  # Show_info
 
     def tile_random_mix(self):

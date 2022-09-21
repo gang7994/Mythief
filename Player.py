@@ -66,6 +66,8 @@ class Player(pygame.sprite.Sprite):
         self.max_item_gage = 100
         self.item_bar_length = 300
         self.item_ratio = self.max_item_gage / self.item_bar_length
+        # event item handler var
+        self.event_item_interaction = False
         # is wave?
         self.is_tile_mix = False
         self.player_in_wave = False
@@ -420,9 +422,9 @@ class Player(pygame.sprite.Sprite):
 
     def get_item_interaction(self):
         for item in self.item_images:
-            if item.name in ["test0_item",
-                             "test1_item",
-                             "test2_item",
+            if item.name in ["event_item1",
+                             "event_item2",
+                             "event_item3",
                              "test_general_item0",
                              "test_general_item1",
                              "test_general_item2",
@@ -444,7 +446,7 @@ class Player(pygame.sprite.Sprite):
                             self.item_interaction = False
                             item.is_interaction = False
                             self.current_item_gage = 0
-                            if item.name in ["test0_item", "test1_item", "test2_item"]:
+                            if item.name in ["event_item1", "event_item2", "event_item3"]:
                                 theme_inventory.append(item)
                             else:
                                 is_fill = True

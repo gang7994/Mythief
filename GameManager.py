@@ -397,13 +397,13 @@ class GameManager:
         pygame.draw.circle(self.screen, GREY, (390, 710), 40)
         pygame.draw.circle(self.screen, GREY, (510, 710), 40)
         for i, item in enumerate(theme_inventory):
-            if item.name == "test0_item":
+            if item.name == "event_item1":
                 image_rect = item.image.get_rect(center=(150+i*120, 710))
                 self.screen.blit(item.image, image_rect)
-            elif item.name == "test1_item":
+            elif item.name == "event_item2":
                 image_rect = item.image.get_rect(center=(150+i*120, 710))
                 self.screen.blit(item.image, image_rect)
-            elif item.name == "test2_item":
+            elif item.name == "event_item3":
                 image_rect = item.image.get_rect(center=(150 + i * 120, 710))
                 self.screen.blit(item.image, image_rect)
             i+= 120

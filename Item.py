@@ -14,8 +14,8 @@ class Test0Item(pygame.sprite.Sprite):
                           "rotatingEXP_7.png"]
         self.image = pygame.image.load(os.path.join(item_path, self.animation_array[0])).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(5,5)
-        self.name = "test0_item"
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "event_item1"
         self.boundary = 50
         self.is_get = False
         self.is_interaction = False
@@ -37,7 +37,6 @@ class Test0Item(pygame.sprite.Sprite):
 
     def update(self):
         self.animation()
-        print(self.rect, self.hitbox)
 
 class Test1Item(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
@@ -52,8 +51,8 @@ class Test1Item(pygame.sprite.Sprite):
                           "rotatingEXP2_7.png"]
         self.image = pygame.image.load(os.path.join(item_path, self.animation_array[0])).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(5,5)
-        self.name = "test1_item"
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "event_item2"
         self.boundary = 50
         self.is_get = False
         self.is_interaction = False
@@ -89,8 +88,8 @@ class Test2Item(pygame.sprite.Sprite):
                                 "rotatingEXP3_7.png"]
         self.image = pygame.image.load(os.path.join(item_path, self.animation_array[0])).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(5,5)
-        self.name = "test2_item"
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "event_item3"
         self.boundary = 50
         self.is_get = False
         self.is_interaction = False

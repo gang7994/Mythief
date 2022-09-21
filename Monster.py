@@ -106,14 +106,13 @@ class LaserMonster(pygame.sprite.Sprite):
             self.re_load_laser()
 
 class RushMonster(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images, damage_images):
+    def __init__(self, pos, groups, border_images):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "monster.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.name = "rush_Monster"
         self.dir = pygame.math.Vector2()
         self.border_images = border_images
-        self.damage_images = damage_images
         self.monster_speed = 1
         self.is_moving = False
         self.monster_order_wait_time = 1000
@@ -151,7 +150,7 @@ class RushMonster(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name == "Wall":
+                    if sprite.name != "NoneRoad":
                         if self.dir.x > 0:
                             self.rect.right = sprite.rect.left
                         elif self.dir.x < 0:
@@ -159,20 +158,21 @@ class RushMonster(pygame.sprite.Sprite):
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name == "Wall":
+                    if sprite.name != "NoneRoad":
                         if self.dir.y > 0:
                             self.rect.bottom = sprite.rect.top
                         elif self.dir.y < 0:
                             self.rect.top = sprite.rect.bottom
 
-    # 돌진 함수 - 버그 있음
     def rush(self, direction, dt):
         self.is_rush = True
         self.rect.left += direction[0] * self.monster_speed * (dt // 6)
         self.dir.x = direction[0]
+        self.collision("horizontal")
         if not direction[0]:
             self.rect.top += direction[1] * self.monster_speed * (dt // 6)
             self.dir.y = direction[1]
+            self.collision("vertical")
 
 
     def update(self):
@@ -181,6 +181,96 @@ class RushMonster(pygame.sprite.Sprite):
             self.move_order()
             self.move(self.monster_speed, dt)
             self.move_wait()
+
+class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
+    def __init__(self, pos, groups, border_images):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "cerberus.png")).convert_alpha()
+        self.image_origin = pygame.image.load(os.path.join(images_path, "cerberus.png")).convert_alpha()
+        self.image_flip = pygame.transform.flip(self.image_origin, True, False)
+        self.rect = self.image.get_rect(topleft=pos)
+        self.name = "cerberus"
+        self.dir = pygame.math.Vector2()
+        self.border_images = border_images
+        self.monster_speed = 1
+        self.is_moving = False
+        self.monster_order_wait_time = 1000
+        self.monster_move = [[1, 0], [0, 1], [0, 0], [-1, 0], [0, -1]]
+        self.last_x_dir = -1
+        self.boundary = 150
+        self.is_rush = False
+        self.clock = pygame.time.Clock()
+        self.is_pause = False
+
+        # 적 움직임 랜덤으로 얻기
+
+    def move_order(self):
+        if not self.is_moving:
+            self.is_moving = True
+            move_idx = random.randint(0, 4)
+            self.dir.x = self.monster_move[move_idx][0]
+            if self.dir.x != 0:
+                self.last_x_dir = self.dir.x
+            self.dir.y = self.monster_move[move_idx][1]
+            self.monster_move_start = pygame.time.get_ticks()
+
+        # 첫 이동 입력 이후 1초간 그 움직임 사용
+
+    def move_wait(self):
+        if self.is_moving:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.monster_move_start > self.monster_order_wait_time:
+                self.is_moving = False
+
+        # 입력받은 움직임으로 이동
+
+    def move(self, speed, dt):
+        if self.is_moving:
+            self.rect.left += self.dir.x * speed * (dt // 6)
+            self.collision("horizontal")
+            self.rect.top += self.dir.y * speed * (dt // 6)
+            self.collision("vertical")
+
+    def collision(self, direction):
+        if direction == "horizontal":
+            for sprite in self.border_images:
+                if sprite.rect.colliderect(self.rect):
+                    if sprite.name != "NoneRoad":
+                        if self.dir.x > 0:
+                            self.rect.right = sprite.rect.left
+                        elif self.dir.x < 0:
+                            self.rect.left = sprite.rect.right
+        if direction == "vertical":
+            for sprite in self.border_images:
+                if sprite.rect.colliderect(self.rect):
+                    if sprite.name != "NoneRoad":
+                        if self.dir.y > 0:
+                            self.rect.bottom = sprite.rect.top
+                        elif self.dir.y < 0:
+                            self.rect.top = sprite.rect.bottom
+
+    def rush(self, direction, dt):
+        self.is_rush = True
+        self.rect.left += direction[0] * self.monster_speed
+        self.dir.x = direction[0]
+        if self.dir.x != 0:
+            self.last_x_dir = self.dir.x
+        self.collision("horizontal")
+        if not direction[0]:
+            self.rect.top += direction[1] * self.monster_speed
+            self.dir.y = direction[1]
+            self.collision("vertical")
+
+    def update(self):
+        dt = self.clock.tick(FPS)
+        if not self.is_rush and not self.is_pause:
+            self.move_order()
+            self.move(self.monster_speed, dt)
+            self.move_wait()
+        if self.last_x_dir == 1:
+            self.image = self.image_flip
+        elif self.last_x_dir == -1:
+            self.image = self.image_origin
 
 
 
