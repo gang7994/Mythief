@@ -41,8 +41,8 @@ class Level:
         self.tile_group = []
         self.random_group = []
         # map_init
-        self.create_map()
         self.cur_map = map[0]
+        self.create_map()
         # player_glow
         self.glow = Glow(self.player.rect.topleft)
         # FPS, pause var
@@ -78,6 +78,8 @@ class Level:
             self.cur_map = map[4]
         elif self.stage_number == 5:
             self.cur_map = map[5]
+        elif self.stage_number == 6:
+            self.cur_map = map[6]
 
         for row_idx, row in enumerate(self.cur_map[self.map_idx]):
             for col_idx, col in enumerate(row):
