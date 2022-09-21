@@ -3,6 +3,7 @@ import random
 import pygame, os
 from Settings import *
 from Rock import Rock
+from TextGroup import *
 
 
 class Player(pygame.sprite.Sprite):
@@ -67,7 +68,8 @@ class Player(pygame.sprite.Sprite):
         self.item_bar_length = 300
         self.item_ratio = self.max_item_gage / self.item_bar_length
         # event item handler var
-        self.event_item_interaction = False
+        self.event_handler = False
+        self.event_code = None
         # is wave?
         self.is_tile_mix = False
         self.player_in_wave = False
@@ -491,6 +493,16 @@ class Player(pygame.sprite.Sprite):
                 if distance <= 50: self.stage5_interaction = True
                 else: self.stage5_interaction = False
 
+    def eventTrigger(self):
+        global random_event_item_text, event_texts
+        for event in self.images:
+            if event.rect.colliderect(self.hitbox) and not self.event_handler:
+                if event.name == "eventRoad":
+                    if event.event_code == "000":
+                        self.event_code = "000"
+                    self.event_handler = True
+
+
 
     # 업데이트 영역 -> 무적 시간 함수 추가
     def update(self):
@@ -500,6 +512,7 @@ class Player(pygame.sprite.Sprite):
             self.get_door_interaction()
             self.un_damaged_time()
             self.drunken_cool_time()
+            self.eventTrigger()
             if not self.is_dead:
                 self.add_rock()
                 self.re_load_rock()

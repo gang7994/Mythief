@@ -2,7 +2,7 @@ import pygame, os, random
 from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave, Flood
 from Player import Player
-from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad
+from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile
 from Monster import LaserMonster, RushMonster, Cerberus
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5
 from Map import *
@@ -55,17 +55,13 @@ class Level:
         self.create_flag = False
         self.create_effects = [Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0])]
         # text var
-        self.text = None
-        if not text_flag[self.stage_number + 1]:                 # 이부분 고쳐야함
-            self.text = TextManager(self.stage_number + 1)
-            self.text_idx = idx
-        else:
-            self.text_idx = 0
-        self.event = False
-
+        self.text = TextManager(self.stage_number + 1)
+        self.text_idx = idx
 
     # 맵 생성
     def create_map(self):
+        global random_event_item_text, event_texts
+
         if self.stage_number == 0:
             self.cur_map = map[0]
         elif self.stage_number == 1:
@@ -113,6 +109,12 @@ class Level:
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                if col == "E000R":
+                    EventTile((tile_pos_x, tile_pos_y), [self.images], "000")
+                    random_event_item_text = random.sample(event_item_text, k=3)
+                    event_texts["000"] = [random_event_item_text[0],
+                                          random_event_item_text[1],
+                                          random_event_item_text[2]]
                 if col == "AR":
                     AlcoholRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "F":
