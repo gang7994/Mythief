@@ -390,14 +390,15 @@ class GameManager:
     def current_stage(self):
         font = pygame.font.Font(None, 40)
         stage = self.level.stage_number
+        map_num = self.level.map_idx + 1
         if stage == 0: text = font.render(f"[ MAIN ]", True, WHITE)
         elif stage == 1: text = font.render(f"[ TUTORIAL ]", True, WHITE)
-        elif stage == 2: text = font.render(f"[ STAGE 1 ]", True, WHITE)
-        elif stage == 3: text = font.render(f"[ STAGE 2 ]", True, WHITE)
-        elif stage == 4: text = font.render(f"[ STAGE 3 ]", True, WHITE)
-        elif stage == 5: text = font.render(f"[ STAGE 4 ]", True, WHITE)
-        elif stage == 6: text = font.render(f"[ STAGE 5]", True, WHITE)
-        self.screen.blit(text, (660, 15))
+        elif stage == 2: text = font.render(f"[ STAGE 1 - {map_num}]", True, WHITE)
+        elif stage == 3: text = font.render(f"[ STAGE 2 - {map_num}]", True, WHITE)
+        elif stage == 4: text = font.render(f"[ STAGE 3 - {map_num}]", True, WHITE)
+        elif stage == 5: text = font.render(f"[ STAGE 4 - {map_num}]", True, WHITE)
+        elif stage == 6: text = font.render(f"[ STAGE 5 - {map_num}]", True, WHITE)
+        self.screen.blit(text, (640, 15))
         
     def show_general_inventory(self):
         for i in range(12):
