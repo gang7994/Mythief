@@ -57,7 +57,7 @@ Mythief
 |![img](/Images/Item/test_general_item2.png)|"GI2"(test_general_item2)|GeneralItem2( )|보존식(최대 체력 증가)|
 |![img](/Images/Item/test_general_item3.png)|"GI3"(test_general_item3)|GeneralItem3( )|영혼석(스테이지 마다 최대 2회 방어)|
 |![img](/Images/Item/test_general_item4.png)|"GI4"(test_general_item4)|GeneralItem4( )|패스권을 하나 덜 소지|
-|![img](/Images/Item/test_general_item5.png)|"GI5"(test_general_item5)|GeneralItem5( )|.|
+|![img](/Images/Item/test_general_item5.png)|"GI5"(test_general_item5)|GeneralItem5( )|고대주화(추가점수)|
 
 ### [미분류]
 |이미지|코드(명칭)|클래스|비고|

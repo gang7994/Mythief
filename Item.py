@@ -178,7 +178,7 @@ class GeneralItem4(pygame.sprite.Sprite): #패스권 1개 감소
         self.item_gage = 0
         self.is_pause = False
         
-class GeneralItem5(pygame.sprite.Sprite): #
+class GeneralItem5(pygame.sprite.Sprite): #고대 주화
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item5.png")).convert_alpha()

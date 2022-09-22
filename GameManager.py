@@ -465,7 +465,7 @@ class GameManager:
                 self.screen.blit(image, (715, 400))
                 
     def general_item_effect(self):
-        global rope_item, max_hp, shield, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5
+        global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5
         for tmp in general_inventory:
             if tmp[1] == 6:
                 if tmp[0].name == "test_general_item0" and not use_item0: #로프 1개 추가
@@ -485,8 +485,8 @@ class GameManager:
                     if rope_item > 0:
                         rope_item -= 1
                     use_item4 = True
-                elif tmp[0].name == "test_general_item5":
-                    
+                elif tmp[0].name == "test_general_item5" and not use_item5: #고대주화
+                    bonus += 100
                     use_item5 = True
                     
     def player_hp(self):
