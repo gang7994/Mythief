@@ -189,6 +189,7 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
         self.image_origin = pygame.image.load(os.path.join(images_path, "cerberus.png")).convert_alpha()
         self.image_flip = pygame.transform.flip(self.image_origin, True, False)
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-30, -72)
         self.name = "cerberus"
         self.dir = pygame.math.Vector2()
         self.border_images = border_images
@@ -234,7 +235,7 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
     def collision(self, direction):
         if direction == "horizontal":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad":
                         if self.dir.x > 0:
                             self.rect.right = sprite.rect.left
@@ -242,7 +243,7 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
                             self.rect.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad":
                         if self.dir.y > 0:
                             self.rect.bottom = sprite.rect.top

@@ -201,6 +201,15 @@ class WaterHole(pygame.sprite.Sprite):
         self.name = "WaterHole"
         self.is_pause = False
 
+class pillar(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wTile00.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
+        self.name = "WaterHole"
+        self.is_pause = False
+
 class Wave(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)

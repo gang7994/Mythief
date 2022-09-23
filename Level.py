@@ -376,6 +376,8 @@ class CameraGroup(pygame.sprite.Group):
             offset_rect = sprite.rect.topleft - self.offset
             if sprite.name == "Player":
                 self.display_surface.blit(sprite.image, (offset_rect[0], offset_rect[1] - 5))
+            elif sprite.name == "cerberus":
+                self.display_surface.blit(sprite.image, (offset_rect[0], offset_rect[1] - 36))
             else:
                 self.display_surface.blit(sprite.image, offset_rect)
 
