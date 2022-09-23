@@ -523,7 +523,6 @@ class Player(pygame.sprite.Sprite):
                     self.event_handler = True
 
 
-
     # 업데이트 영역 -> 무적 시간 함수 추가
     def update(self):
         dt = self.clock.tick(FPS)
