@@ -198,7 +198,7 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
         self.monster_order_wait_time = 1000
         self.monster_move = [[1, 0], [0, 1], [0, 0], [-1, 0], [0, -1]]
         self.last_x_dir = -1
-        self.boundary = 150
+        self.boundary = 2000
         self.is_rush = False
         self.clock = pygame.time.Clock()
         self.is_pause = False
@@ -227,10 +227,11 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
 
     def move(self, speed, dt):
         if self.is_moving:
-            self.rect.left += self.dir.x * speed * (dt // 6)
+            self.hitbox.left += self.dir.x * speed * (dt // 6)
             self.collision("horizontal")
-            self.rect.top += self.dir.y * speed * (dt // 6)
+            self.hitbox.top += self.dir.y * speed * (dt // 6)
             self.collision("vertical")
+            self.rect.center = self.hitbox.center
 
     def collision(self, direction):
         if direction == "horizontal":
@@ -238,29 +239,30 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
                 if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad":
                         if self.dir.x > 0:
-                            self.rect.right = sprite.rect.left
+                            self.hitbox.right = sprite.rect.left
                         elif self.dir.x < 0:
-                            self.rect.left = sprite.rect.right
+                            self.hitbox.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad":
                         if self.dir.y > 0:
-                            self.rect.bottom = sprite.rect.top
+                            self.hitbox.bottom = sprite.rect.top
                         elif self.dir.y < 0:
-                            self.rect.top = sprite.rect.bottom
+                            self.hitbox.top = sprite.rect.bottom
 
     def rush(self, direction, dt):
         self.is_rush = True
-        self.rect.left += direction[0] * self.monster_speed
+        self.hitbox.left += direction[0] * self.monster_speed
         self.dir.x = direction[0]
         if self.dir.x != 0:
             self.last_x_dir = self.dir.x
         self.collision("horizontal")
         if not direction[0]:
-            self.rect.top += direction[1] * self.monster_speed
+            self.hitbox.top += direction[1] * self.monster_speed
             self.dir.y = direction[1]
             self.collision("vertical")
+        self.rect.center = self.hitbox.center
 
     def update(self):
         dt = self.clock.tick(FPS)

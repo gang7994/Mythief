@@ -85,6 +85,8 @@ class Player(pygame.sprite.Sprite):
         self.is_player_drunken = False
         self.drunken_time = 3000
         self.drunken_start_time = 0
+        # is player cerberus
+        self.is_player_cerberus = True
         
 
         
@@ -370,7 +372,8 @@ class Player(pygame.sprite.Sprite):
                    sprite.name != "Stage2" and \
                    sprite.name != "Stage3" and \
                    sprite.name != "Stage4" and \
-                   sprite.name != "Stage5":
+                   sprite.name != "Stage5" and \
+                   sprite.name != "Pillar":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
                         if sprite.name == "alcoholRoad":
@@ -383,15 +386,24 @@ class Player(pygame.sprite.Sprite):
                         elif self.is_tile_mix and not self.is_damaged:
                             self.get_damaged()
                             self.is_damage10 = True
+                if sprite.name == "Pillar":
+                    if sprite.hitbox.colliderect(self.hitbox):
+                        if self.dir.x > 0:
+                            self.hitbox.right = sprite.hitbox.left
+                        elif self.dir.x < 0:
+                            self.hitbox.left = sprite.hitbox.right
+                    if sprite.rect.colliderect(self.hitbox):
+                        self.is_player_cerberus = False
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.name != "Finish" and \
-                        sprite.name != "Stage0" and \
-                        sprite.name != "Stage1" and \
-                        sprite.name != "Stage2" and \
-                        sprite.name != "Stage3" and \
-                        sprite.name != "Stage4" and \
-                        sprite.name != "Stage5":
+                   sprite.name != "Stage0" and \
+                   sprite.name != "Stage1" and \
+                   sprite.name != "Stage2" and \
+                   sprite.name != "Stage3" and \
+                   sprite.name != "Stage4" and \
+                   sprite.name != "Stage5" and \
+                   sprite.name != "Pillar":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
                         if sprite.name == "alcoholRoad":
@@ -404,6 +416,14 @@ class Player(pygame.sprite.Sprite):
                         elif self.is_tile_mix and not self.is_damaged:
                             self.get_damaged()
                             self.is_damage10 = True
+                if sprite.name == "Pillar":
+                    if sprite.hitbox.colliderect(self.hitbox):
+                        if self.dir.y > 0:
+                            self.hitbox.bottom = sprite.hitbox.top
+                        elif self.dir.y < 0:
+                            self.hitbox.top = sprite.hitbox.bottom
+                    if sprite.rect.colliderect(self.hitbox):
+                        self.is_player_cerberus = False
         if self.is_road:
             self.is_tile_mix = False
 

@@ -1,6 +1,6 @@
 import pygame, os, random
 from Settings import *
-from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave, Flood
+from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile
 from Monster import LaserMonster, RushMonster, Cerberus
@@ -19,6 +19,7 @@ class Level:
         # image_groups
         self.images = CameraGroup()
         self.monster_images = CameraGroup()
+        self.pillar_images = CameraGroup()
         self.border_images = pygame.sprite.Group()
         self.item_images = pygame.sprite.Group()
         self.door_images = pygame.sprite.Group()
@@ -81,7 +82,7 @@ class Level:
             for col_idx, col in enumerate(row):
                 tile_pos_x = col_idx * tile_width_size + horizontal_margin
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
-                if col == "." or col == "WA":   # 파도 실험중
+                if col == "." or col == "WA" or col == "CR":   # 파도 실험중
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
@@ -119,6 +120,8 @@ class Level:
                                           random_event_item_text[2]]
                 if col == "AR":
                     AlcoholRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "PL":
+                    Pillar((tile_pos_x, tile_pos_y), [self.pillar_images, self.border_images])
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "I0":
@@ -245,10 +248,16 @@ class Level:
                     dir_y = 0
                 elif (player_vec - monster_vec)[1] > 0:
                     dir_y = 1
-                if distance <= monster.boundary:
-                    monster.rush((dir_x, dir_y), dt)
+                if monster.name == "cerberus":
+                    if distance <= monster.boundary and self.player.is_player_cerberus:
+                        monster.rush((dir_x, dir_y), dt)
+                    else:
+                        monster.is_rush = False
                 else:
-                    monster.is_rush = False
+                    if distance <= monster.boundary:
+                        monster.rush((dir_x, dir_y), dt)
+                    else:
+                        monster.is_rush = False
 
     def monster_auto_create(self, time, dt):
         if int(time) % 10 != 0:
@@ -321,6 +330,14 @@ class Level:
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)
+
+        self.player.is_player_cerberus = True # 케르베로스 트리거
+        self.images.custom_draw(self.player, dt)
+        self.monster_images.custom_draw(self.player, dt)
+        self.pillar_images.custom_draw(self.player, dt)
+        self.monster_images.update()
+        self.images.update()
+
         if not self.is_pause:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
@@ -339,11 +356,6 @@ class Level:
                 self.flooding(elapsed_time)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
-
-        self.images.custom_draw(self.player, dt)
-        self.monster_images.custom_draw(self.player, dt)
-        self.monster_images.update()
-        self.images.update()
 
         # 어두운 맵은 따로 확인이 가능한 변수를 두는 것이 좋을듯 합니다. 이부분 수정해야겠네요
         """if self.map_idx == 2:
