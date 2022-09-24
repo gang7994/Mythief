@@ -458,7 +458,9 @@ class Player(pygame.sprite.Sprite):
                              "test_general_item2",
                              "test_general_item3",
                              "test_general_item4",
-                             "test_general_item5"]:
+                             "test_general_item5",
+                             "test_general_item7",
+                             "test_general_item6"]:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()
