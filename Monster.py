@@ -10,6 +10,7 @@ class LaserMonster(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "monster.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(0, 0)
         self.name = "laser_Monster"
         self.dir = pygame.math.Vector2()
         self.border_images = border_images
@@ -110,6 +111,7 @@ class RushMonster(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "monster.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(0, 0)
         self.name = "rush_Monster"
         self.dir = pygame.math.Vector2()
         self.border_images = border_images

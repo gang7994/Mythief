@@ -422,7 +422,7 @@ class Player(pygame.sprite.Sprite):
     # 데미지를 주는 충돌을 따로 만듦
     def damage_collision(self):
         for sprite in self.damage_images:
-            if sprite.rect.colliderect(self.hitbox):
+            if sprite.hitbox.colliderect(self.hitbox):
                 if sprite.name == "laser_Monster" and not self.is_damaged:
                     self.get_damaged()
                     self.is_damage10 = True
@@ -433,6 +433,10 @@ class Player(pygame.sprite.Sprite):
                 if sprite.name == "rush_Monster" and not self.is_damaged:
                     self.get_damaged()
                     self.is_damage10 = True
+                if sprite.name == "thunder" and sprite.animation_idx == 9 and not self.is_damaged:
+                    self.get_damaged()
+                    self.is_damage10 = True
+
 
     def get_item_interaction(self):
         for item in self.item_images:

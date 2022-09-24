@@ -1,6 +1,9 @@
 import pygame, os, random
 from Settings import *
-from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar0, Pillar1, Pillar2
+from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3,\
+                         Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1,\
+                         Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar0, Pillar1,\
+                         Pillar2, Thunder
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile
 from Monster import LaserMonster, RushMonster, Cerberus
@@ -41,6 +44,10 @@ class Level:
         self.wave_cnt = 0
         self.tile_group = []
         self.random_group = []
+        # thunder random var
+        self.thunder_start_position = []
+        self.thunder_flag = False
+        self.thunder_cool_time = True
         # map_init
         self.cur_map = map[0]
         self.create_map()
@@ -86,6 +93,7 @@ class Level:
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                     if col == "WA":
                         self.wave_start_position.append((tile_pos_x, tile_pos_y))
                 if col == "W1":
@@ -112,6 +120,7 @@ class Level:
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                 if col == "E000R":
                     EventTile((tile_pos_x, tile_pos_y), [self.images], "000")
                     random_event_item_text = random.sample(event_item_text, k=3)
@@ -182,9 +191,11 @@ class Level:
                 if col == "RH":
                     Road_Horizontal((tile_pos_x, tile_pos_y), [self.images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                 if col == "RV":
                     Road_Vertical((tile_pos_x, tile_pos_y), [self.images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
 
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
@@ -330,6 +341,13 @@ class Level:
                 self.player.is_dead = True
             self.alpha += 50
             self.flood_cnt += 1
+    def random_thunder(self, time):
+        if int(time) % 3 != 0:
+            self.thunder_flag = False
+        if int(time) % 3 == 0 and int(time) != 0 and not self.thunder_flag:
+            self.thunder_flag = True
+            for thunder in random.sample(self.thunder_start_position, k=10):
+                Thunder(thunder, [self.monster_images, self.damage_images])
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
@@ -346,6 +364,7 @@ class Level:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
             elapsed_time = (self.tem_now_time) / 1000
+            self.random_thunder(elapsed_time)
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(elapsed_time, dt)
 
