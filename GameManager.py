@@ -404,13 +404,13 @@ class GameManager:
         for i in range(12):
             pygame.draw.circle(self.screen, GREY, (150+i*105, 100), 40)
         for i, item in enumerate(general_inventory):
-            if item[0].name in ["test_general_item0", "test_general_item1", "test_general_item2", "test_general_item3", "test_general_item4", "test_general_item5"]:
+            if item[0].name in ["test_general_item0", "test_general_item1", "test_general_item2", "test_general_item3", "test_general_item4", "test_general_item5","test_general_item6"]:
                 image_rect = item[0].image.get_rect(center=(150+i*105, 100))                                       
                 self.screen.blit(item[0].image, image_rect)
                 self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
-                self.item_cover = pygame.transform.scale(self.item_cover, (30,30-item[1]*5))
+                self.item_cover = pygame.transform.scale(self.item_cover, (45,45-item[1]*7.5))
                 self.item_cover.set_alpha(200)                                          
-                self.screen.blit(self.item_cover,(135+i*105, 85))
+                self.screen.blit(self.item_cover,(130+i*105, 78))
 
     def show_info(self):
         font = pygame.font.Font(None, 25)
