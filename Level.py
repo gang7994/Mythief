@@ -348,8 +348,11 @@ class Level:
             self.thunder_flag = False
         if int(time) % 3 == 0 and int(time) != 0 and not self.thunder_flag:
             self.thunder_flag = True
-            for thunder in random.sample(self.thunder_start_position, k=10):
+            for thunder in random.sample(self.thunder_start_position, k=5-self.player.rod_num):
                 Thunder(thunder, [self.monster_images, self.damage_images], self.images, self.border_images)
+            if len(self.player.rod_position) > 0:
+                for i in self.player.rod_position:
+                    Thunder(i, [self.monster_images, self.damage_images], self.images, self.border_images)
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
@@ -411,12 +414,7 @@ class CameraGroup(pygame.sprite.Group):
         self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
         for sprite in self.sprites():
             offset_rect = sprite.rect.topleft - self.offset
-            if sprite.name == "Player":
-                self.display_surface.blit(sprite.image, (offset_rect[0], offset_rect[1] - 5))
-            elif sprite.name == "cerberus":
-                self.display_surface.blit(sprite.image, (offset_rect[0], offset_rect[1] - 36))
-            else:
-                self.display_surface.blit(sprite.image, offset_rect)
+            self.display_surface.blit(sprite.image, offset_rect)
 
     # 카메라 이동
     def camera_move(self, pos, dt):

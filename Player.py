@@ -4,14 +4,17 @@ import pygame, os
 from Settings import *
 from Rock import Rock
 from TextGroup import *
+from Item import ThunderRod
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images, item_images, door_images, images):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "sprite_0.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "sprite_idle0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,-10)
+        self.hitbox.top += 5
+        self.rod_put_box = self.hitbox.inflate(-21, -25)
         self.name = "Player"
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
@@ -89,7 +92,13 @@ class Player(pygame.sprite.Sprite):
         self.is_player_cerberus = True
         # is thunder
         self.is_thunder = False
-        
+        self.is_rod_ready = True
+        self.rod_put_cool_time = 300
+        self.rod_position = []
+        self.rod_num = 0
+        self.rod_start_time = pygame.time.get_ticks()
+        self.rod_current_time = pygame.time.get_ticks()
+
 
         
     def walk_animation(self):
@@ -308,7 +317,9 @@ class Player(pygame.sprite.Sprite):
         else:
             self.hitbox.top += y * speed_y * (dt // 6)
             self.collision("vertical")
-        self.rect.center = self.hitbox.center
+        self.rect.centerx = self.hitbox.centerx
+        self.rect.centery = self.hitbox.centery - 5
+        self.rod_put_box.center = self.hitbox.center
 
     # 무기 입력 확인 함수
     def add_rock(self):
@@ -497,6 +508,27 @@ class Player(pygame.sprite.Sprite):
                         self.item_interaction = False
                         item.is_interaction = False
 
+    def rod_put(self):
+        for sprite in self.images:
+            if sprite.name == "Road":
+                if sprite.rect.colliderect(self.rod_put_box) and not self.item_interaction:
+                    if self.is_rod_ready:
+                        keys = pygame.key.get_pressed()
+                        if keys[pygame.K_TAB]:
+                            ThunderRod((sprite.rect.left, sprite.rect.top), [self.images])
+                            self.rod_start_time = pygame.time.get_ticks()
+                            self.is_rod_ready = False
+                            if self.rod_num < 5:
+                                self.rod_num += 1
+                            self.rod_position.append((sprite.rect.left, sprite.rect.top - 96))
+
+    def rod_cool_time(self):
+        if not self.is_rod_ready:
+            self.rod_current_time = pygame.time.get_ticks()
+            if self.rod_current_time - self.rod_start_time > self.rod_put_cool_time:
+                self.is_rod_ready = True
+
+
     def get_door_interaction(self):
         for door in self.door_images:
             item_vec = pygame.math.Vector2(door.rect.center)
@@ -540,6 +572,8 @@ class Player(pygame.sprite.Sprite):
             self.un_damaged_time()
             self.drunken_cool_time()
             self.eventTrigger()
+            self.rod_put()
+            self.rod_cool_time()
             if not self.is_dead:
                 self.add_rock()
                 self.re_load_rock()

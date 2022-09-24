@@ -203,3 +203,28 @@ class GeneralItem6(pygame.sprite.Sprite): #
         self.is_interaction = False
         self.item_gage = 0
         self.is_pause = False
+
+class ThunderRod(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.animation_array = ["rod_0.png", "rod_1.png", "rod_2.png", "rod_3.png", "rod_4.png", "rod_5.png"]
+        self.image = pygame.image.load(os.path.join(item_path, self.animation_array[0])).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "thunderRod"
+        self.animation_idx = 0
+        self.animation_frame = 100
+        self.start_time = pygame.time.get_ticks()
+        self.current_time = pygame.time.get_ticks()
+        self.is_pause = False
+
+    def animation(self):
+        self.current_time = pygame.time.get_ticks()
+        if self.current_time - self.start_time > self.animation_frame:
+            self.animation_idx += 1
+            self.animation_idx %= 6
+            self.image = pygame.image.load(os.path.join(item_path, self.animation_array[self.animation_idx])).convert_alpha()
+            self.start_time = self.current_time
+
+    def update(self):
+        self.animation()

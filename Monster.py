@@ -192,6 +192,7 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
         self.image_flip = pygame.transform.flip(self.image_origin, True, False)
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-30, -72)
+        self.hitbox.y += 36
         self.name = "cerberus"
         self.dir = pygame.math.Vector2()
         self.border_images = border_images
@@ -233,7 +234,8 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
             self.collision("horizontal")
             self.hitbox.top += self.dir.y * speed * (dt // 6)
             self.collision("vertical")
-            self.rect.center = self.hitbox.center
+            self.rect.centerx = self.hitbox.centerx
+            self.rect.centery = self.hitbox.centery - 36
 
     def collision(self, direction):
         if direction == "horizontal":
@@ -264,7 +266,8 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
             self.hitbox.top += direction[1] * self.monster_speed
             self.dir.y = direction[1]
             self.collision("vertical")
-        self.rect.center = self.hitbox.center
+        self.rect.centerx = self.hitbox.centerx
+        self.rect.centery = self.hitbox.centery - 36
 
     def update(self):
         dt = self.clock.tick(FPS)
