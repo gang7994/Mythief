@@ -347,7 +347,7 @@ class Level:
         if int(time) % 3 == 0 and int(time) != 0 and not self.thunder_flag:
             self.thunder_flag = True
             for thunder in random.sample(self.thunder_start_position, k=10):
-                Thunder(thunder, [self.monster_images, self.damage_images])
+                Thunder(thunder, [self.monster_images, self.damage_images], self.images, self.border_images)
 
     # 현재 레벨의 메인 게임 로직
     def run(self):

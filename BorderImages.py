@@ -263,7 +263,7 @@ class Flood(pygame.sprite.Sprite):
         self.is_pause = False
 
 class Thunder(pygame.sprite.Sprite):
-    def __init__(self, pos, groups):
+    def __init__(self, pos, groups, images, border_images):
         super().__init__(groups)
         self.animation_array = ["lighting0.png",
                                 "lighting1.png",
@@ -280,6 +280,8 @@ class Thunder(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -96)
         self.hitbox.top += 48
+        self.images = images
+        self.border_images = border_images
         self.name = "thunder"
         self.animation_idx = 0
         self.animation_frame = 100
@@ -296,8 +298,19 @@ class Thunder(pygame.sprite.Sprite):
         if self.animation_idx == 10:
             self.kill()
 
+    def collision(self):
+        for sprite in self.images:
+            if sprite.name == "Road":
+                if sprite.rect.colliderect(self.hitbox):
+                    self.border_images.add(sprite)
+                    sprite.name = "NoneRoad"
+                    sprite.image = pygame.image.load(os.path.join(images_path, "void_checked.png")).convert_alpha()
+                    sprite.hitbox = sprite.rect.inflate(-3, -3)
+
     def update(self):
         self.animation()
+        if self.animation_idx == 9:
+            self.collision()
 
 
         
