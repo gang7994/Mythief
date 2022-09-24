@@ -201,14 +201,31 @@ class WaterHole(pygame.sprite.Sprite):
         self.name = "WaterHole"
         self.is_pause = False
 
-class Pillar(pygame.sprite.Sprite):
+class Pillar0(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "pillar.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "pillar0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0, -96)
-        self.hitbox.top += 48
-        self.name = "Pillar"
+        self.hitbox = self.rect.inflate(-48, -48)
+        self.name = "Pillar_0"
+        self.is_pause = False
+
+class Pillar1(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "pillar1.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-48, -48)
+        self.name = "Pillar_1"
+        self.is_pause = False
+
+class Pillar2(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "pillar2.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
+        self.name = "Pillar_2"
         self.is_pause = False
 
 class Wave(pygame.sprite.Sprite):

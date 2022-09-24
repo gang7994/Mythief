@@ -1,6 +1,6 @@
 import pygame, os, random
 from Settings import *
-from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar
+from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3, Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar0, Pillar1, Pillar2
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile
 from Monster import LaserMonster, RushMonster, Cerberus
@@ -82,7 +82,7 @@ class Level:
             for col_idx, col in enumerate(row):
                 tile_pos_x = col_idx * tile_width_size + horizontal_margin
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
-                if col == "." or col == "WA" or col == "CR":   # 파도 실험중
+                if col == "." or col == "WA" or col == "CR" or col == "PL0" or col == "PL1" or col == "PL2":   # 파도 실험중
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
@@ -120,8 +120,12 @@ class Level:
                                           random_event_item_text[2]]
                 if col == "AR":
                     AlcoholRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "PL":
-                    Pillar((tile_pos_x, tile_pos_y), [self.pillar_images, self.border_images])
+                if col == "PL0":
+                    Pillar0((tile_pos_x, tile_pos_y), [self.pillar_images, self.border_images])
+                if col == "PL1":
+                    Pillar1((tile_pos_x, tile_pos_y), [self.pillar_images, self.border_images])
+                if col == "PL2":
+                    Pillar2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "I0":

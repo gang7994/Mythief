@@ -55,7 +55,7 @@ class LaserMonster(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name != "NoneRoad":
+                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
                         if self.dir.x > 0:
                             self.rect.right = sprite.rect.left
                         elif self.dir.x < 0:
@@ -63,7 +63,7 @@ class LaserMonster(pygame.sprite.Sprite):
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name != "NoneRoad":
+                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
                         if self.dir.y > 0:
                             self.rect.bottom = sprite.rect.top
                         elif self.dir.y < 0:
@@ -150,7 +150,7 @@ class RushMonster(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name != "NoneRoad":
+                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
                         if self.dir.x > 0:
                             self.rect.right = sprite.rect.left
                         elif self.dir.x < 0:
@@ -158,7 +158,7 @@ class RushMonster(pygame.sprite.Sprite):
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name != "NoneRoad":
+                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
                         if self.dir.y > 0:
                             self.rect.bottom = sprite.rect.top
                         elif self.dir.y < 0:
@@ -237,7 +237,7 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
-                    if sprite.name != "NoneRoad":
+                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
                         if self.dir.x > 0:
                             self.hitbox.right = sprite.rect.left
                         elif self.dir.x < 0:
@@ -245,7 +245,7 @@ class Cerberus(pygame.sprite.Sprite):    # 미완성임 알고리즘 짜야함
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
-                    if sprite.name != "NoneRoad":
+                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
                         if self.dir.y > 0:
                             self.hitbox.bottom = sprite.rect.top
                         elif self.dir.y < 0:
