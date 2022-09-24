@@ -40,6 +40,7 @@ class Rock(pygame.sprite.Sprite):
                     else:
                         self.border_images.remove(sprite)
                         sprite.image = pygame.image.load(os.path.join(images_path, "re_bridge.png")).convert_alpha()
+                        sprite.name = "Road"
                 elif sprite.name != "WaterHole" and sprite.name != "alcoholRoad":
                     self.kill()
 

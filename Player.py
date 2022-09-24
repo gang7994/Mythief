@@ -85,6 +85,10 @@ class Player(pygame.sprite.Sprite):
         self.is_player_drunken = False
         self.drunken_time = 3000
         self.drunken_start_time = 0
+        # is player cerberus
+        self.is_player_cerberus = True
+        # is thunder
+        self.is_thunder = False
         
 
         
@@ -370,12 +374,14 @@ class Player(pygame.sprite.Sprite):
                    sprite.name != "Stage2" and \
                    sprite.name != "Stage3" and \
                    sprite.name != "Stage4" and \
-                   sprite.name != "Stage5":
+                   sprite.name != "Stage5" and \
+                   sprite.name != "Pillar_0" and \
+                   sprite.name != "Pillar_1":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
                         if sprite.name == "alcoholRoad":
                             self.player_drunken()
-                        elif not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
+                        elif not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.x > 0:
                                 self.hitbox.right = sprite.rect.left
                             elif self.dir.x < 0:
@@ -383,20 +389,28 @@ class Player(pygame.sprite.Sprite):
                         elif self.is_tile_mix and not self.is_damaged:
                             self.get_damaged()
                             self.is_damage10 = True
+                        elif self.is_thunder and not self.is_damaged:
+                            self.get_damaged()
+                            self.is_damage10 = True
+                if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
+                    if sprite.rect.colliderect(self.hitbox):
+                        self.is_player_cerberus = False
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.name != "Finish" and \
-                        sprite.name != "Stage0" and \
-                        sprite.name != "Stage1" and \
-                        sprite.name != "Stage2" and \
-                        sprite.name != "Stage3" and \
-                        sprite.name != "Stage4" and \
-                        sprite.name != "Stage5":
+                   sprite.name != "Stage0" and \
+                   sprite.name != "Stage1" and \
+                   sprite.name != "Stage2" and \
+                   sprite.name != "Stage3" and \
+                   sprite.name != "Stage4" and \
+                   sprite.name != "Stage5" and \
+                   sprite.name != "Pillar_0" and \
+                   sprite.name != "Pillar_1":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
                         if sprite.name == "alcoholRoad":
                             self.player_drunken()
-                        elif not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
+                        elif not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.y > 0:
                                 self.hitbox.bottom = sprite.rect.top
                             elif self.dir.y < 0:
@@ -404,13 +418,20 @@ class Player(pygame.sprite.Sprite):
                         elif self.is_tile_mix and not self.is_damaged:
                             self.get_damaged()
                             self.is_damage10 = True
+                        elif self.is_thunder and not self.is_damaged:
+                            self.get_damaged()
+                            self.is_damage10 = True
+                if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
+                    if sprite.rect.colliderect(self.hitbox):
+                        self.is_player_cerberus = False
         if self.is_road:
             self.is_tile_mix = False
+            self.is_thunder = False
 
     # 데미지를 주는 충돌을 따로 만듦
     def damage_collision(self):
         for sprite in self.damage_images:
-            if sprite.rect.colliderect(self.hitbox):
+            if sprite.hitbox.colliderect(self.hitbox):
                 if sprite.name == "laser_Monster" and not self.is_damaged:
                     self.get_damaged()
                     self.is_damage10 = True
@@ -421,6 +442,11 @@ class Player(pygame.sprite.Sprite):
                 if sprite.name == "rush_Monster" and not self.is_damaged:
                     self.get_damaged()
                     self.is_damage10 = True
+                if sprite.name == "thunder" and sprite.animation_idx == 9 and not self.is_damaged:
+                    self.is_thunder = True
+                    self.get_damaged()
+                    self.is_damage10 = True
+
 
     def get_item_interaction(self):
         for item in self.item_images:
@@ -503,7 +529,6 @@ class Player(pygame.sprite.Sprite):
                     if event.event_code == "000":
                         self.event_code = "000"
                     self.event_handler = True
-
 
 
     # 업데이트 영역 -> 무적 시간 함수 추가
