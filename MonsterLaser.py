@@ -7,6 +7,7 @@ class MonsterLaser(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "monster_laser.png")).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
+        self.hitbox = self.rect.inflate(0, 0)
         self.name = "monster_laser"
         self.speed = 5
         self.direction = direction
