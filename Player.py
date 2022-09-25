@@ -457,6 +457,10 @@ class Player(pygame.sprite.Sprite):
                     self.is_thunder = True
                     self.get_damaged()
                     self.is_damage10 = True
+                if sprite.name == "Fish" and not self.is_damaged:
+                    self.get_damaged()
+                    self.is_damage5 = True
+                    sprite.image = pygame.image.load(os.path.join(images_path, "monster_fish_animation_atk.png")).convert_alpha()
 
 
     def get_item_interaction(self):
