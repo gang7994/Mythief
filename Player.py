@@ -465,6 +465,9 @@ class Player(pygame.sprite.Sprite):
                     self.get_damaged()
                     self.is_damage5 = True
                     sprite.image = pygame.image.load(os.path.join(images_path, "monster_fish_animation_atk.png")).convert_alpha()
+                if sprite.name == "satiros" and not self.is_damaged:
+                    self.get_damaged()
+                    self.is_damage5 = True
 
 
     def get_item_interaction(self):

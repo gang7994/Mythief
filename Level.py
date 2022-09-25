@@ -6,7 +6,7 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
                          Pillar2, Thunder
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile
-from Monster import LaserMonster, RushMonster, Cerberus, FishMonster
+from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7
 from Map import *
 from TextScene import *
@@ -179,11 +179,11 @@ class Level:
                     self.monsterlist.append(self.monster)
                     Level.remain_monster+=1 # Show_info
                 if col == "FM":
-                    FishMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
-                                self.border_images)
+                    FishMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images)
+                if col == "SM":
+                    Satiros((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images)
                 if col == "CR":
-                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
-                            self.border_images)
+                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images)
                     Level.remain_monster+=1 # Show_info
                 if col == "W1g":
                     Fire_Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -264,7 +264,7 @@ class Level:
     # 플레이어 , 적 거리 계산
     def get_player_distance(self, player, dt):
         for monster in self.monster_images:
-            if monster.name == "rush_Monster" or monster.name == "cerberus" or monster.name == "Fish":
+            if monster.name == "rush_Monster" or monster.name == "cerberus" or monster.name == "Fish" or monster.name == "satiros":
                 monster_vec = pygame.math.Vector2(monster.rect.center)
                 player_vec = pygame.math.Vector2(player.rect.center)
                 distance = (player_vec - monster_vec).magnitude()
