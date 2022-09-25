@@ -56,7 +56,10 @@ class LaserMonster(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and\
+                       sprite.name != "alcoholRoad" and\
+                       sprite.name != "Pillar_0" and\
+                       sprite.name != "Pillar_1":
                         if self.dir.x > 0:
                             self.rect.right = sprite.rect.left
                         elif self.dir.x < 0:
@@ -64,7 +67,10 @@ class LaserMonster(pygame.sprite.Sprite):
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
+                       sprite.name != "Pillar_1":
                         if self.dir.y > 0:
                             self.rect.bottom = sprite.rect.top
                         elif self.dir.y < 0:
@@ -153,7 +159,10 @@ class RushMonster(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
+                       sprite.name != "Pillar_1":
                         if self.dir.x > 0:
                             self.rect.right = sprite.rect.left
                         elif self.dir.x < 0:
@@ -161,7 +170,10 @@ class RushMonster(pygame.sprite.Sprite):
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.rect):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
+                       sprite.name != "Pillar_1":
                         if self.dir.y > 0:
                             self.rect.bottom = sprite.rect.top
                         elif self.dir.y < 0:
@@ -281,7 +293,10 @@ class FishMonster(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
+                       sprite.name != "Pillar_1":
                         if self.dir.x > 0:
                             self.hitbox.right = sprite.rect.left
                         elif self.dir.x < 0:
@@ -289,7 +304,10 @@ class FishMonster(pygame.sprite.Sprite):
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
+                       sprite.name != "Pillar_1":
                         if self.dir.y > 0:
                             self.hitbox.bottom = sprite.rect.top
                         elif self.dir.y < 0:
@@ -413,7 +431,10 @@ class Satiros(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
+                       sprite.name != "Pillar_1":
                         if self.dir.x > 0:
                             self.hitbox.right = sprite.rect.left
                         elif self.dir.x < 0:
@@ -421,7 +442,10 @@ class Satiros(pygame.sprite.Sprite):
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
+                       sprite.name != "Pillar_1":
                         if self.dir.y > 0:
                             self.hitbox.bottom = sprite.rect.top
                         elif self.dir.y < 0:
@@ -507,7 +531,10 @@ class Cerberus(pygame.sprite.Sprite):
         if direction == "horizontal":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
+                       sprite.name != "Pillar_1":
                         if self.dir.x > 0:
                             self.hitbox.right = sprite.rect.left
                         elif self.dir.x < 0:
@@ -515,7 +542,10 @@ class Cerberus(pygame.sprite.Sprite):
         if direction == "vertical":
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
-                    if sprite.name != "NoneRoad" and sprite.name != "alcoholRoad":
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
+                       sprite.name != "Pillar_1":
                         if self.dir.y > 0:
                             self.hitbox.bottom = sprite.rect.top
                         elif self.dir.y < 0:
