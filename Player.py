@@ -98,7 +98,8 @@ class Player(pygame.sprite.Sprite):
         self.rod_num = 0
         self.rod_start_time = pygame.time.get_ticks()
         self.rod_current_time = pygame.time.get_ticks()
-        
+        # item effect
+        self.is_first = True
 
 
         
@@ -402,8 +403,12 @@ class Player(pygame.sprite.Sprite):
                             elif self.dir.x < 0:
                                 self.hitbox.left = sprite.rect.right
                         elif self.is_tile_mix and not self.is_damaged:
-                            self.get_damaged()
-                            self.is_damage10 = True
+                            if self.is_first:
+                                self.get_damaged()
+                                self.is_first = False
+                            else :
+                                self.get_damaged()
+                                self.is_damage10 = True
                         elif self.is_thunder and not self.is_damaged:
                             self.get_damaged()
                             self.is_damage10 = True
@@ -431,8 +436,12 @@ class Player(pygame.sprite.Sprite):
                             elif self.dir.y < 0:
                                 self.hitbox.top = sprite.rect.bottom
                         elif self.is_tile_mix and not self.is_damaged:
-                            self.get_damaged()
-                            self.is_damage10 = True
+                            if self.is_first:
+                                self.get_damaged()
+                                self.is_first = False
+                            else :
+                                self.get_damaged()
+                                self.is_damage10 = True
                         elif self.is_thunder and not self.is_damaged:
                             self.get_damaged()
                             self.is_damage10 = True
