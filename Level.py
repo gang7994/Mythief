@@ -7,7 +7,7 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster
-from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6
+from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7
 from Map import *
 from TextScene import *
 from ParticleEffect import Particle
@@ -120,7 +120,7 @@ class Level:
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if col == "R" or col == "P" or col == "M" or col == "RM" or col == "I0" or col == "I1" or col == "I2" or \
-                    col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or col == "GI6" or col == "GI7":
+                    col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or col == "GI6" or col == "GI7" or col == "GI8":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
@@ -161,6 +161,10 @@ class Level:
                     GeneralItem5((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "GI6":
                     GeneralItem6((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
+                if col == "GI7":
+                    GeneralItem7((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
+                #if col == "GI8":
+                #    GeneralItem8((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "P":
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y

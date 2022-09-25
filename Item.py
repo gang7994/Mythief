@@ -191,13 +191,26 @@ class GeneralItem5(pygame.sprite.Sprite): #고대 주화
         self.item_gage = 0
         self.is_pause = False
 
-class GeneralItem6(pygame.sprite.Sprite): #
+class GeneralItem6(pygame.sprite.Sprite): # 회중시계
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item6.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item6"
+        self.boundary = 50
+        self.is_get = False
+        self.is_interaction = False
+        self.item_gage = 0
+        self.is_pause = False
+        
+class GeneralItem7(pygame.sprite.Sprite): # 평평한 돌
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(item_path, "test_general_item7.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "test_general_item7"
         self.boundary = 50
         self.is_get = False
         self.is_interaction = False

@@ -3,7 +3,7 @@ from Settings import *
 
 # 벽 이미지
 class Rock(pygame.sprite.Sprite):
-    def __init__(self, pos, direction, border_images):
+    def __init__(self, pos, direction, border_images, itemeffect):
         super().__init__()
         self.image = pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
@@ -15,6 +15,7 @@ class Rock(pygame.sprite.Sprite):
         self.clock = pygame.time.Clock()
         self.is_pause = False
         self.is_on_alcohol = False
+        self.itemeffect = itemeffect
 
     # 영역 밖에서 오브젝트 삭제
     def destroy(self):
@@ -34,7 +35,7 @@ class Rock(pygame.sprite.Sprite):
                 if sprite.name == "alcoholRoad":
                     self.is_on_alcohol = True
                 if sprite.name == "NoneRoad":
-                    if self.is_on_alcohol:
+                    if self.is_on_alcohol and not self.itemeffect:
                         sprite.image = pygame.image.load(os.path.join(images_path, "purple_tile_1.png")).convert_alpha()
                         sprite.name = "alcoholRoad"
                     else:

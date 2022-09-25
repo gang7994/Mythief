@@ -404,7 +404,8 @@ class GameManager:
         for i in range(12):
             pygame.draw.circle(self.screen, GREY, (150+i*105, 100), 40)
         for i, item in enumerate(general_inventory):
-            if item[0].name in ["test_general_item0", "test_general_item1", "test_general_item2", "test_general_item3", "test_general_item4", "test_general_item5","test_general_item6"]:
+            if item[0].name in ["test_general_item0", "test_general_item1", "test_general_item2", "test_general_item3", "test_general_item4",\
+                "test_general_item5","test_general_item6","test_general_item7","test_general_item8"]:
                 image_rect = item[0].image.get_rect(center=(150+i*105, 100))                                       
                 self.screen.blit(item[0].image, image_rect)
                 self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
@@ -466,7 +467,7 @@ class GameManager:
                 self.screen.blit(image, (715, 400))
                 
     def general_item_effect(self):
-        global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6
+        global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8
         for tmp in general_inventory:
             if tmp[1] == 6:
                 if tmp[0].name == "test_general_item0" and not use_item0: #로프 1개 추가
@@ -489,17 +490,15 @@ class GameManager:
                 elif tmp[0].name == "test_general_item5" and not use_item5: #고대주화
                     bonus += 100
                     use_item5 = True
-                elif tmp[0].name == "test_general_item6":
+                elif tmp[0].name == "test_general_item6": #회중시계
                     try:
                         for tmp in self.level.monsterlist:
-                            tmp.monster_speed -= 1 #LaserMonster
-                    except AttributeError as e:
-                        pass
-                    try:
-                        self.level.monster1.monster_speed -= 1 #RushMonster
-                    except AttributeError as e:
-                        pass
-                    use_item6 = True                                     
+                            tmp.monster_speed -= 1
+                    except AttributeError as e: pass
+                    use_item6 = True
+                elif tmp[0].name == "test_general_item7": #평평한 돌
+                    self.level.player.rock_item_effect = True
+                    use_item7 = True                           
                     
     def player_hp(self):
         global current_hp, shield

@@ -1,5 +1,4 @@
 import random
-
 import pygame, os
 from Settings import *
 from Rock import Rock
@@ -40,6 +39,7 @@ class Player(pygame.sprite.Sprite):
         self.rock_count = 0
         self.current_time = 0
         self.rock_time = 0
+        self.rock_item_effect = False
         # damage var
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
@@ -98,6 +98,7 @@ class Player(pygame.sprite.Sprite):
         self.rod_num = 0
         self.rod_start_time = pygame.time.get_ticks()
         self.rod_current_time = pygame.time.get_ticks()
+        
 
 
         
@@ -332,20 +333,23 @@ class Player(pygame.sprite.Sprite):
 
     # 무기 발사 함수
     def throw_rock(self):
+        if(self.rock_item_effect and self.rock_count==0):
+            effect = True
+        else:
+            effect = False
         self.rock_count += 1
         if self.is_player_drunken:
             dir = random.randint(1, 4)
         else:
             dir = self.last_dir
-
         if dir == 2:
-            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 1, self.border_images))
+            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 1, self.border_images, effect))
         elif dir == 1:
-            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 2, self.border_images))
+            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 2, self.border_images, effect))
         elif dir == 4:
-            self.images.add(Rock(self.rect.center, 3, self.border_images))
+            self.images.add(Rock(self.rect.center, 3, self.border_images, effect))
         elif dir:
-            self.images.add(Rock(self.rect.center, 4, self.border_images))
+            self.images.add(Rock(self.rect.center, 4, self.border_images, effect))
 
     # 재장전 함수
     def re_load_rock(self):
@@ -474,8 +478,9 @@ class Player(pygame.sprite.Sprite):
                              "test_general_item3",
                              "test_general_item4",
                              "test_general_item5",
+                             "test_general_item6",
                              "test_general_item7",
-                             "test_general_item6"]:
+                             "test_general_item8"]:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()
@@ -586,4 +591,3 @@ class Player(pygame.sprite.Sprite):
             self.walk_delay()
             self.idle()
             self.idle_delay()
-        

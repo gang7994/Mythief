@@ -59,6 +59,7 @@ Mythief
 |![img](/Images/Item/test_general_item4.png)|"GI4"(test_general_item4)|GeneralItem4( )|패스권을 하나 덜 소지|
 |![img](/Images/Item/test_general_item5.png)|"GI5"(test_general_item5)|GeneralItem5( )|고대주화(추가점수)|
 |![img](/Images/Item/test_general_item6.png)|"GI6"(test_general_item6)|GeneralItem6( )|회중시계|
+|![img](/Images/Item/test_general_item7.png)|"GI7"(test_general_item7)|GeneralItem7( )|평평한돌|
 
 ### [미분류]
 |이미지|코드(명칭)|클래스|비고|
