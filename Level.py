@@ -44,6 +44,8 @@ class Level:
         self.wave_cnt = 0
         self.tile_group = []
         self.random_group = []
+        #monster list
+        self.monsterlist = []
         # thunder random var
         self.thunder_start_position = []
         self.thunder_flag = False
@@ -65,6 +67,8 @@ class Level:
         # text var
         self.text = TextManager(self.stage_number + 1)
         self.text_idx = idx
+        
+ 
 
     # 맵 생성
     def create_map(self):
@@ -161,12 +165,14 @@ class Level:
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
                 if col == "M":
-                    LaserMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
+                    self.monster = LaserMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
                             self.border_images, self.damage_images, self.images)
+                    self.monsterlist.append(self.monster)
                     Level.remain_monster+=1 # Show_info
                 if col == "RM":
-                    RushMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
+                    self.monster = RushMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
                             self.border_images)
+                    self.monsterlist.append(self.monster)
                     Level.remain_monster+=1 # Show_info
                 if col == "FM":
                     FishMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
@@ -201,6 +207,8 @@ class Level:
                     Road_Vertical((tile_pos_x, tile_pos_y), [self.images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                
+                
 
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
@@ -286,11 +294,13 @@ class Level:
             self.create_flag = True
             for idx, sample in enumerate(random.sample(self.monster_respawn_position, k=self.one_per_create)):
                 if idx % 2 == 0:
-                    LaserMonster(sample, [self.monster_images, self.damage_images],
+                    monster = LaserMonster(sample, [self.monster_images, self.damage_images],
                                 self.border_images, self.damage_images, self.images)
+                    self.monsterlist.append(monster)
                 elif idx % 2 != 0:
-                    RushMonster(sample, [self.monster_images, self.damage_images],
+                    monster = RushMonster(sample, [self.monster_images, self.damage_images],
                                 self.border_images)
+                    self.monsterlist.append(monster)
                 Level.remain_monster += 1  # Show_info
 
     def tile_random_mix(self):

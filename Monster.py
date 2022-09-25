@@ -15,7 +15,7 @@ class LaserMonster(pygame.sprite.Sprite):
         self.dir = pygame.math.Vector2()
         self.border_images = border_images
         self.damage_images = damage_images
-        self.monster_speed = 1
+        self.monster_speed = 2
         self.is_moving = False
         self.monster_order_wait_time = 1000
         self.monster_move = [[1,0], [0,1], [0,0], [-1,0], [0,-1]]
@@ -101,6 +101,7 @@ class LaserMonster(pygame.sprite.Sprite):
         dt = self.clock.tick(FPS)
         if not self.is_pause:
             self.move_order()
+            if self.monster_speed <= 0: self.monster_speed = 1
             self.move(self.monster_speed, dt)
             self.move_wait()
             self.add_laser()
@@ -115,7 +116,7 @@ class RushMonster(pygame.sprite.Sprite):
         self.name = "rush_Monster"
         self.dir = pygame.math.Vector2()
         self.border_images = border_images
-        self.monster_speed = 1
+        self.monster_speed = 2
         self.is_moving = False
         self.monster_order_wait_time = 1000
         self.monster_move = [[1, 0], [0, 1], [0, 0], [-1, 0], [0, -1]]
@@ -181,6 +182,7 @@ class RushMonster(pygame.sprite.Sprite):
         dt = self.clock.tick(FPS)
         if not self.is_rush and not self.is_pause:
             self.move_order()
+            if self.monster_speed <= 0: self.monster_speed = 1
             self.move(self.monster_speed, dt)
             self.move_wait()
 
