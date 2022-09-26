@@ -64,6 +64,9 @@ Mythief
 |![img](/Images/Item/test_general_item5.png)|"GI5"(test_general_item5)|GeneralItem5( )|고대주화(추가점수)|
 |![img](/Images/Item/test_general_item6.png)|"GI6"(test_general_item6)|GeneralItem6( )|회중시계|
 |![img](/Images/Item/test_general_item7.png)|"GI7"(test_general_item7)|GeneralItem7( )|평평한돌|
+|![img](/Images/Item/test_general_item8.png)|"GI8"(test_general_item8)|GeneralItem8( )|이상한석상|
+|![img](/Images/Item/test_general_item9.png)|"GI9"(test_general_item9)|GeneralItem9( )|미믹|
+|![img](/Images/Item/test_general_item10.png)|"GI10"(test_general_item10)|GeneralItem10( )|대나무낚싯대|
 
 ### [미분류]
 |이미지|코드(명칭)|클래스|비고|
