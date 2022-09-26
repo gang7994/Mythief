@@ -68,3 +68,20 @@ Mythief
 |![img](/Images/TestPix/wTile00.png)|"W"(WaterHole)|WaterHole( )|.|
 |![img](/Images/TestPix/waveAnim_0.png)|"WA"(Wave)|Wave( )|애니메이션 형태|
 |![img](/Images/TestPix/obstacle1.png)|"O"(obstacle)|Obstacle( )|.|
+
+### [전기회로]
+|이미지|코드(명칭)|클래스|비고|
+|:------:|:---:|:---:|:---:|
+|![img](/Images/TestPix/electric_00.png)|"─"("Electric00")|VerticalWire( )|.|
+|![img](/Images/TestPix/electric_01.png)|"│"("Electric01")|HorizontalWire( )|.|
+|![img](/Images/TestPix/electric_02.png)|"┼"("Electric02")|CrossWire( )|.|
+|![img](/Images/TestPix/electric_03.png)|"┤"("Electric03")|VerticalLeftWire( )|.|
+|![img](/Images/TestPix/electric_04.png)|"┬"("Electric04")|HorizontalDownWire( )|.|
+|![img](/Images/TestPix/electric_05.png)|"├"("Electric05")|VerticalRightWire( )|.|
+|![img](/Images/TestPix/electric_06.png)|"┴"("Electric06")|HorizontalUpWire( )|.|
+|![img](/Images/TestPix/electric_07.png)|"┘"("Electric07")|UpLeftWire( )|.|
+|![img](/Images/TestPix/electric_08.png)|"┐"("Electric08")|DownLeftWire( )|.|
+|![img](/Images/TestPix/electric_09.png)|"┌"("Electric09")|DownRightWire( )|.|
+|![img](/Images/TestPix/electric_10.png)|"└"("Electric10")|UpRightWire( )|.|
+|![img](/Images/TestPix/electric_11.png)|"CD"("Conductor")|Conductor( )|.|
+|![img](/Images/TestPix/electric_11_on.png)|"없음"("없음")|없음|.|

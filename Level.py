@@ -2,10 +2,11 @@ import pygame, os, random
 from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3,\
                          Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1,\
-                         Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar0, Pillar1,\
-                         Pillar2, Thunder
+                         Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar0, Pillar1,Pillar2, Thunder, \
+                         CrossWire, DownLeftWire, DownRightWire, HorizontalDownWire, HorizontalUpWire, \
+                         UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire
 from Player import Player
-from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile
+from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7
 from Map import *
@@ -100,6 +101,33 @@ class Level:
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                     if col == "WA":
                         self.wave_start_position.append((tile_pos_x, tile_pos_y))
+
+
+                if col == "─":
+                    HorizontalWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "│":
+                    VerticalWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "┌":
+                    DownRightWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "┐":
+                    DownLeftWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "┘":
+                    UpLeftWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "└":
+                    UpRightWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "├":
+                    VerticalRightWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "┬":
+                    HorizontalDownWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "┤":
+                    VerticalLeftWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "┴":
+                    HorizontalUpWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "┼":
+                    CrossWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "CD":                                                                     #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
+                    Conductor((tile_pos_x, tile_pos_y), [self.images])
+
                 if col == "W1":
                     Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "W2":
