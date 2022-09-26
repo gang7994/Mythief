@@ -116,7 +116,7 @@ class Test2Item(pygame.sprite.Sprite):
 class GeneralItem0(pygame.sprite.Sprite): # 패스권 1개 추가
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test_general_item0.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item0"
@@ -129,7 +129,7 @@ class GeneralItem0(pygame.sprite.Sprite): # 패스권 1개 추가
 class GeneralItem1(pygame.sprite.Sprite): # 이동속도 증가
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test_general_item1.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item1"
@@ -142,7 +142,7 @@ class GeneralItem1(pygame.sprite.Sprite): # 이동속도 증가
 class GeneralItem2(pygame.sprite.Sprite): #최대 체력 증가
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test_general_item2.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item2"
@@ -155,7 +155,7 @@ class GeneralItem2(pygame.sprite.Sprite): #최대 체력 증가
 class GeneralItem3(pygame.sprite.Sprite): #스테이지마다 플레이어가 받는 피해를 최대 2회까지 방어
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test_general_item3.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item3"
@@ -168,7 +168,7 @@ class GeneralItem3(pygame.sprite.Sprite): #스테이지마다 플레이어가 �
 class GeneralItem4(pygame.sprite.Sprite): #패스권 1개 감소
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test_general_item4.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item4"
@@ -181,7 +181,7 @@ class GeneralItem4(pygame.sprite.Sprite): #패스권 1개 감소
 class GeneralItem5(pygame.sprite.Sprite): #고대 주화
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test_general_item5.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item5"
@@ -194,7 +194,7 @@ class GeneralItem5(pygame.sprite.Sprite): #고대 주화
 class GeneralItem6(pygame.sprite.Sprite): # 회중시계
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test_general_item6.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item6"
@@ -207,7 +207,7 @@ class GeneralItem6(pygame.sprite.Sprite): # 회중시계
 class GeneralItem7(pygame.sprite.Sprite): # 평평한 돌
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test_general_item7.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item7"
@@ -217,13 +217,39 @@ class GeneralItem7(pygame.sprite.Sprite): # 평평한 돌
         self.item_gage = 0
         self.is_pause = False
 
-class GeneralItem8(pygame.sprite.Sprite):
+class GeneralItem8(pygame.sprite.Sprite): #이상한 석상
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(item_path, "test_general_item8.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item8"
+        self.boundary = 50
+        self.is_get = False
+        self.is_interaction = False
+        self.item_gage = 0
+        self.is_pause = False
+
+class GeneralItem9(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "test_general_item9"
+        self.boundary = 50
+        self.is_get = False
+        self.is_interaction = False
+        self.item_gage = 0
+        self.is_pause = False
+
+class GeneralItem10(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(item_path, "general_item.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "test_general_item10"
         self.boundary = 50
         self.is_get = False
         self.is_interaction = False

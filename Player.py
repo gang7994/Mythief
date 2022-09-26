@@ -99,8 +99,10 @@ class Player(pygame.sprite.Sprite):
         self.rod_start_time = pygame.time.get_ticks()
         self.rod_current_time = pygame.time.get_ticks()
         # item effect
-        self.is_first = True
-        self.is_effect = False
+        self.is_first0 = True # 이상한 석상
+        self.is_first1 = True #대나무 낚싯대
+        self.is_effect0 = False #이상한 석상
+        self.is_effect1 = False #대나무 낚싯대
 
 
         
@@ -397,7 +399,7 @@ class Player(pygame.sprite.Sprite):
                    sprite.name != "Pillar_1":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
-                        if not self.is_road and self.is_first:
+                        if not self.is_road and self.is_first0:
                             self.start0 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
                             self.player_drunken()
@@ -407,14 +409,15 @@ class Player(pygame.sprite.Sprite):
                             elif self.dir.x < 0:
                                 self.hitbox.left = sprite.rect.right
                         elif self.is_tile_mix and not self.is_damaged:
+                            
                             current_time0 = pygame.time.get_ticks()
-                            if current_time0 - self.start0 < 5000 and self.is_effect:
+                            if current_time0 - self.start0 < 5000 and self.is_effect0:
                                 self.get_damaged()
-                                self.is_first = False
+                                self.is_first0 = False
                             else :
                                 self.get_damaged()
                                 self.is_damage10 = True
-                                self.is_first = True
+                                self.is_first0 = True
 
                         elif self.is_thunder and not self.is_damaged:
                             self.get_damaged()
@@ -435,7 +438,7 @@ class Player(pygame.sprite.Sprite):
                    sprite.name != "Pillar_1":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_road = False
-                        if not self.is_road and self.is_first:
+                        if not self.is_road and self.is_first0:
                             self.start1 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
                             self.player_drunken()
@@ -446,13 +449,13 @@ class Player(pygame.sprite.Sprite):
                                 self.hitbox.top = sprite.rect.bottom
                         elif self.is_tile_mix and not self.is_damaged:
                             current_time1 = pygame.time.get_ticks()
-                            if current_time1 - self.start1 < 5000 and self.is_effect:
+                            if current_time1 - self.start1 < 5000 and self.is_effect0:
                                 self.get_damaged()
-                                self.is_first = False
+                                self.is_first0 = False
                             else :
                                 self.get_damaged()
                                 self.is_damage10 = True
-                                self.is_first = True
+                                self.is_first0= True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_player_cerberus = False
@@ -500,7 +503,9 @@ class Player(pygame.sprite.Sprite):
                              "test_general_item5",
                              "test_general_item6",
                              "test_general_item7",
-                             "test_general_item8"]:
+                             "test_general_item8",
+                             "test_general_item9",
+                             "test_general_item10"]:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()
@@ -539,7 +544,7 @@ class Player(pygame.sprite.Sprite):
 
     def rod_put(self):
         for sprite in self.images:
-            if sprite.name == "Road" or sprite.name == "Conductor":
+            if sprite.name == "Road" or sprite.name == "Conductor0" or sprite.name == "Conductor1":
                 if sprite.rect.colliderect(self.rod_put_box) and not self.item_interaction:
                     if self.is_rod_ready:
                         keys = pygame.key.get_pressed()
