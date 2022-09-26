@@ -22,6 +22,10 @@ Mythief
 |이미지|코드(명칭)|클래스|비고|
 |:------:|:---:|:---:|:---:|
 |![img](/Images/TestPix/wall_door.png)|"F"(Finish)|Finish( )|.|
+|![img](/Images/TestPix/wall_door2.png), ![img](/Images/TestPix/wall_door2_closed.png)|"없음"(없음)|없음|.|
+|![img](/Images/TestPix/wall_door3.png), ![img](/Images/TestPix/wall_door3_closed.png)|"없음"(없음)|없음|.|
+|![img](/Images/TestPix/wall_door4.png), ![img](/Images/TestPix/wall_door4_closed.png)|"없음"(없음)|없음|.|
+
 |![img](/Images/TestPix/wall_door.png)|"S0"(Stage0)|Stage0( )|.|
 |![img](/Images/TestPix/wall_door.png), ![img](/Images/TestPix/wall_door_closed0.png)|"S1"(Stage1)|Stage1( )|이전 스테이지를 클리어 해야 열림|
 |![img](/Images/TestPix/wall_door.png), ![img](/Images/TestPix/wall_door_closed0.png)|"S2"(Stage2)|Stage2( )|이전 스테이지를 클리어 해야 열림|
