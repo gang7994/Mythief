@@ -498,7 +498,10 @@ class GameManager:
                     use_item6 = True
                 elif tmp[0].name == "test_general_item7": #평평한 돌
                     self.level.player.rock_item_effect = True
-                    use_item7 = True                           
+                    use_item7 = True    
+                elif tmp[0].name == "test_general_item8": #이상한 석상
+                    self.level.player.is_effect = True
+                    use_item8 = True       
                     
     def player_hp(self):
         global current_hp, shield

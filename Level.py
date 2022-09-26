@@ -7,7 +7,7 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
-from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7
+from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8
 from Map import *
 from TextScene import *
 from ParticleEffect import Particle
@@ -163,8 +163,8 @@ class Level:
                     GeneralItem6((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "GI7":
                     GeneralItem7((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
-                #if col == "GI8":
-                #    GeneralItem8((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
+                if col == "GI8":
+                    GeneralItem8((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "P":
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
@@ -389,6 +389,7 @@ class Level:
             self.random_thunder(elapsed_time)
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(elapsed_time, dt)
+                
 
             if self.stage_number == 2 and len(self.wave_start_position) != 0:
                 if self.wave_cool_time:
