@@ -405,15 +405,24 @@ class GameManager:
         for i in range(12):
             pygame.draw.circle(self.screen, GREY, (150+i*105, 100), 40)
         for i, item in enumerate(general_inventory):
-            if item[0].name in ["test_general_item0", "test_general_item1", "test_general_item2", "test_general_item3", "test_general_item4",\
-                "test_general_item5","test_general_item6","test_general_item7","test_general_item8","test_general_item9","test_general_item10"]:
-                image_rect = item[0].image.get_rect(center=(150+i*105, 100))                                       
-                self.screen.blit(item[0].image, image_rect)
-                self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
-                if item[1] == -1: self.item_cover = pygame.transform.scale(self.item_cover, (45,45))
-                else: self.item_cover = pygame.transform.scale(self.item_cover, (45,45-item[1]*7.5))
-                self.item_cover.set_alpha(200)                                          
-                self.screen.blit(self.item_cover,(130+i*105, 78))
+            if item[0].name == "test_general_item0": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item0.png")).convert_alpha()
+            elif item[0].name == "test_general_item1": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item1.png")).convert_alpha()
+            elif item[0].name == "test_general_item2": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item2.png")).convert_alpha()
+            elif item[0].name == "test_general_item3": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item3.png")).convert_alpha()
+            elif item[0].name == "test_general_item4": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item4.png")).convert_alpha()
+            elif item[0].name == "test_general_item5": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item5.png")).convert_alpha()
+            elif item[0].name == "test_general_item6": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item6.png")).convert_alpha()
+            elif item[0].name == "test_general_item7": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item7.png")).convert_alpha()
+            elif item[0].name == "test_general_item8": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item8.png")).convert_alpha()
+            elif item[0].name == "test_general_item9": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item9.png")).convert_alpha()
+            elif item[0].name == "test_general_item10": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item10.png")).convert_alpha()
+            image_rect = item[0].image.get_rect(center=(150+i*105, 100))                                       
+            self.screen.blit(item[0].image, image_rect)
+            self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
+            if item[1] == -1: self.item_cover = pygame.transform.scale(self.item_cover, (45,45))
+            else: self.item_cover = pygame.transform.scale(self.item_cover, (45,45-item[1]*7.5))
+            self.item_cover.set_alpha(200)                                          
+            self.screen.blit(self.item_cover,(130+i*105, 78))
 
     def show_info(self):
         font = pygame.font.Font(None, 25)
