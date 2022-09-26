@@ -544,7 +544,7 @@ class Player(pygame.sprite.Sprite):
 
     def rod_put(self):
         for sprite in self.images:
-            if sprite.name == "Road" or sprite.name == "Conductor":
+            if sprite.name == "Road" or sprite.name == "Conductor0" or sprite.name == "Conductor1":
                 if sprite.rect.colliderect(self.rod_put_box) and not self.item_interaction:
                     if self.is_rod_ready:
                         keys = pygame.key.get_pressed()

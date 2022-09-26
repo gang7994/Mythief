@@ -6,7 +6,7 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
                          CrossWire, DownLeftWire, DownRightWire, HorizontalDownWire, HorizontalUpWire, \
                          UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire
 from Player import Player
-from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor
+from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor0, Conductor1
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2,\
      GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8, GeneralItem9, GeneralItem10
@@ -126,8 +126,10 @@ class Level:
                     HorizontalUpWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "┼":
                     CrossWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "CD":                                                                     #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
-                    Conductor((tile_pos_x, tile_pos_y), [self.images])
+                if col == "CD0":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
+                    Conductor0((tile_pos_x, tile_pos_y), [self.images])
+                if col == "CD1":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
+                    Conductor1((tile_pos_x, tile_pos_y), [self.images])
 
                 if col == "W1":
                     Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -415,6 +417,7 @@ class Level:
             if len(self.player.rod_position) > 0:
                 for i in self.player.rod_position:
                     Thunder(i, [self.monster_images, self.damage_images], self.images, self.border_images)
+                    
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
@@ -434,7 +437,6 @@ class Level:
             self.random_thunder(elapsed_time)
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(elapsed_time, dt)
-                
 
             if self.stage_number == 2 and len(self.wave_start_position) != 0:
                 if self.wave_cool_time:
