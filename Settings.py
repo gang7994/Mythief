@@ -50,6 +50,8 @@ use_item5 = False
 use_item6 = False
 use_item7 = False
 use_item8 = False
+use_item9 = False
+use_item10 = False
 
 # 플레이어
 current_hp = 100

@@ -217,13 +217,39 @@ class GeneralItem7(pygame.sprite.Sprite): # 평평한 돌
         self.item_gage = 0
         self.is_pause = False
 
-class GeneralItem8(pygame.sprite.Sprite):
+class GeneralItem8(pygame.sprite.Sprite): #이상한 석상
     def __init__(self, pos, groups):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(item_path, "test_general_item8.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2,-2)
         self.name = "test_general_item8"
+        self.boundary = 50
+        self.is_get = False
+        self.is_interaction = False
+        self.item_gage = 0
+        self.is_pause = False
+
+class GeneralItem9(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(item_path, "test_general_item9.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "test_general_item9"
+        self.boundary = 50
+        self.is_get = False
+        self.is_interaction = False
+        self.item_gage = 0
+        self.is_pause = False
+
+class GeneralItem10(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(item_path, "test_general_item10.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "test_general_item10"
         self.boundary = 50
         self.is_get = False
         self.is_interaction = False

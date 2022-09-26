@@ -25,6 +25,7 @@ class GameManager:
         self.interaction_UI = pygame.image.load(os.path.join(images_path, "interaction_UI.png")).convert_alpha()
         self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
         self.finish = False
+        self.ignore_item = False
 
     def Encyclopedia(self):
         running = True
@@ -405,11 +406,12 @@ class GameManager:
             pygame.draw.circle(self.screen, GREY, (150+i*105, 100), 40)
         for i, item in enumerate(general_inventory):
             if item[0].name in ["test_general_item0", "test_general_item1", "test_general_item2", "test_general_item3", "test_general_item4",\
-                "test_general_item5","test_general_item6","test_general_item7","test_general_item8"]:
+                "test_general_item5","test_general_item6","test_general_item7","test_general_item8","test_general_item9","test_general_item10"]:
                 image_rect = item[0].image.get_rect(center=(150+i*105, 100))                                       
                 self.screen.blit(item[0].image, image_rect)
                 self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
-                self.item_cover = pygame.transform.scale(self.item_cover, (45,45-item[1]*7.5))
+                if item[1] == -1: self.item_cover = pygame.transform.scale(self.item_cover, (45,45))
+                else: self.item_cover = pygame.transform.scale(self.item_cover, (45,45-item[1]*7.5))
                 self.item_cover.set_alpha(200)                                          
                 self.screen.blit(self.item_cover,(130+i*105, 78))
 
@@ -467,9 +469,12 @@ class GameManager:
                 self.screen.blit(image, (715, 400))
                 
     def general_item_effect(self):
-        global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8
+        global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8, use_item9, use_item10
         for tmp in general_inventory:
-            if tmp[1] == 6:
+            if tmp[1] == 6 and self.ignore_item and not tmp[0].name == "test_general_item9":
+                tmp[1] = -1 
+                self.ignore_item = False
+            elif tmp[1] == 6:
                 if tmp[0].name == "test_general_item0" and not use_item0: #로프 1개 추가
                     rope_item +=1
                     use_item0 = True
@@ -500,8 +505,15 @@ class GameManager:
                     self.level.player.rock_item_effect = True
                     use_item7 = True    
                 elif tmp[0].name == "test_general_item8": #이상한 석상
-                    self.level.player.is_effect = True
+                    self.level.player.is_effect0 = True
                     use_item8 = True       
+                elif tmp[0].name == "test_general_item9" and not use_item9: #미믹 [비활성화 토의필요]
+                    self.ignore_item = True
+                    use_item9 = True
+                elif tmp[0].name == "test_general_item10": #대나무 낚싯대
+                    self.level.player.is_effect1 = True
+                    use_item10 = True
+                
                     
     def player_hp(self):
         global current_hp, shield

@@ -7,7 +7,8 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
 from Player import Player
 from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
-from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8
+from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2,\
+     GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8, GeneralItem9, GeneralItem10
 from Map import *
 from TextScene import *
 from ParticleEffect import Particle
@@ -120,7 +121,7 @@ class Level:
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if col == "R" or col == "P" or col == "M" or col == "RM" or col == "I0" or col == "I1" or col == "I2" or \
-                    col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or col == "GI6" or col == "GI7" or col == "GI8":
+                    col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or col == "GI6" or col == "GI7" or col == "GI8"  or col == "GI9"  or col == "GI10":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
@@ -165,6 +166,10 @@ class Level:
                     GeneralItem7((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "GI8":
                     GeneralItem8((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
+                if col == "GI9":
+                    GeneralItem9((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
+                if col == "GI10":
+                    GeneralItem10((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "P":
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
@@ -322,12 +327,21 @@ class Level:
             self.wave_flag = True
             self.wave_collision(self.wave[-1].rect)
             if len(self.wave) == 0:
+                self.tile_random_mix()
+                while True:
+                    self.choice = random.choice(self.tile_group)
+                    if self.choice.name == "Road": break
                 self.wave_cool_time = True
                 if self.player.player_in_wave:
                     self.player.is_tile_mix = True
-                self.tile_random_mix()
+                    if self.player.is_effect1 and self.player.is_first1:
+                        self.player.hitbox.left = self.choice.hitbox[0]
+                        self.player.hitbox.top = self.choice.hitbox[1]
+                        self.player.is_first1 = False
+                
                 self.tile_group.clear()
                 self.random_group.clear()
+
 
     def wave_collision(self, wave_rect):
         for sprite in self.images:
@@ -337,8 +351,11 @@ class Level:
                         self.images.remove(i)
                     self.wave.clear()
                 if sprite.name == "Road" or sprite.name == "NoneRoad" or sprite.name == "WaterHole":
+                    
                     self.tile_group.append(sprite)
                     self.random_group.append(sprite)
+
+                    
     def wave_player_collision_check(self):
         self.player.player_in_wave = False
         for wave in self.wave:
