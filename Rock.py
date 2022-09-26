@@ -42,8 +42,52 @@ class Rock(pygame.sprite.Sprite):
                         self.border_images.remove(sprite)
                         sprite.image = pygame.image.load(os.path.join(images_path, "re_bridge.png")).convert_alpha()
                         sprite.name = "Road"
-                elif sprite.name != "WaterHole" and sprite.name != "alcoholRoad":
+                elif sprite.name != "WaterHole" and sprite.name != "alcoholRoad" and not sprite.name in ["Electric00","Electric01","Electric02","Electric03","Electric04","Electric05","Electric06","Electric07","Electric08","Electric09","Electric10"]:
                     self.kill()
+                if sprite.name == "Electric00":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_00_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric01":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_01_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric02":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_02_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric03":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_03_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric04":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_04_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric05":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_05_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric06":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_06_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric07":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_07_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric08":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_08_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric09":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_09_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
+                if sprite.name == "Electric10":
+                    self.border_images.remove(sprite)
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_10_bridge.png")).convert_alpha()
+                    sprite.name = "Road"
 
     # 업데이트 영역
     def update(self):

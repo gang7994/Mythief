@@ -191,6 +191,106 @@ class NoneRoad(pygame.sprite.Sprite):
         self.name = "NoneRoad"
         self.is_pause = False
 
+# 제우스 전선
+class HorizontalWire(pygame.sprite.Sprite): #─
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_00.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric00"
+        self.is_pause = False
+
+class VerticalWire(pygame.sprite.Sprite): #│
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_01.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric01"
+        self.is_pause = False
+
+class CrossWire(pygame.sprite.Sprite): #┼
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_02.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric02"
+        self.is_pause = False
+
+class VerticalLeftWire(pygame.sprite.Sprite): #┤
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_03.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric03"
+        self.is_pause = False
+
+class HorizontalDownWire(pygame.sprite.Sprite): #┬
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_04.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric04"
+        self.is_pause = False
+        
+class VerticalRightWire(pygame.sprite.Sprite): #├
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_05.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric05"
+        self.is_pause = False
+
+class HorizontalUpWire(pygame.sprite.Sprite): #┴
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_06.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric06"
+        self.is_pause = False
+
+class UpLeftWire(pygame.sprite.Sprite): #┘
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_07.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric07"
+        self.is_pause = False
+
+class DownLeftWire(pygame.sprite.Sprite): #┐
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_08.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric08"
+        self.is_pause = False
+        
+class DownRightWire(pygame.sprite.Sprite): #┌
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_09.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric09"
+        self.is_pause = False
+
+class UpRightWire(pygame.sprite.Sprite): #└
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "electric_10.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Electric10"
+        self.is_pause = False
+
 #물구덩이 이미지
 class WaterHole(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
