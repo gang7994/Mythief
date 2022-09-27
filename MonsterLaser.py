@@ -18,13 +18,13 @@ class MonsterLaser(pygame.sprite.Sprite):
     # 영역 밖에서 오브젝트 삭제
     def destroy(self):
         if self.direction == 1:
-            if self.rect.x > screen_width: self.kill()
+            if self.hitbox.x > screen_width: self.kill()
         elif self.direction == 2:
-            if self.rect.x < 0: self.kill()
+            if self.hitbox.x < 0: self.kill()
         elif self.direction == 3:
-            if self.rect.y > screen_height: self.kill()
+            if self.hitbox.y > screen_height: self.kill()
         elif self.direction == 4:
-            if self.rect.y < 0: self.kill()
+            if self.hitbox.y < 0: self.kill()
 
     # 충돌 함수
     def collision(self):
@@ -37,8 +37,9 @@ class MonsterLaser(pygame.sprite.Sprite):
     def update(self):
         dt = self.clock.tick(FPS)
         if not self.is_pause:
-            if self.direction == 1: self.rect.x += self.speed * (dt // 6)
-            elif self.direction == 2: self.rect.x -= self.speed * (dt // 6)
-            elif self.direction == 3: self.rect.y += self.speed * (dt // 6)
-            elif self.direction == 4: self.rect.y -= self.speed * (dt // 6)
+            if self.direction == 1: self.hitbox.x += self.speed * (dt // 6)
+            elif self.direction == 2: self.hitbox.x -= self.speed * (dt // 6)
+            elif self.direction == 3: self.hitbox.y += self.speed * (dt // 6)
+            elif self.direction == 4: self.hitbox.y -= self.speed * (dt // 6)
+            self.rect.center = self.hitbox.center
             self.collision()

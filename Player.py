@@ -490,7 +490,7 @@ class Player(pygame.sprite.Sprite):
                 if sprite.name == "satiros" and not self.is_damaged:
                     self.get_damaged()
                     self.is_damage5 = True
-                if sprite.name == "cerberus" and not self.is_damaged:
+                if sprite.name == "cerberus" and self.is_player_cerberus and not self.is_damaged:
                     self.get_damaged()
                     self.is_damage30 = True
 

@@ -304,15 +304,6 @@ class GameManager:
         pygame.draw.rect(self.screen, BLACK, (0,0,1456,776), 150)
         pygame.draw.rect(self.screen, WHITE, (150, 150, 1156, 476), 1)
 
-    # 무기 쿨타임 그리기
-    def draw_rock_cool_time(self):
-        if self.level.player.current_time != 0 and self.level.player.rock_time != 0:
-            if self.level.player.current_time - self.level.player.rock_time <= self.level.player.rock_cool_time:
-                pygame.draw.rect(self.screen,
-                                 BLACK,
-                                 (1325.5, 395.5, 32,
-                                  32 - (self.level.player.current_time - self.level.player.rock_time) / 63))
-
     def item_interaction_text(self):
         if self.level.player.item_interaction:
             font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 20)
@@ -458,7 +449,7 @@ class GameManager:
         pygame.draw.rect(self.screen, WHITE, (1341, 690, 55, 55), 2)
         if self.level.player.current_time != 0 and self.level.player.rock_time != 0:
             if self.level.player.current_time - self.level.player.rock_time <= self.level.player.rock_cool_time:
-                pygame.draw.rect(self.screen, BLACK,(1341, 690, 55, 55 - (self.level.player.current_time - self.level.player.rock_time) / 40))
+                pygame.draw.rect(self.screen, BLACK,(1341, 690, 55, 55 - (self.level.player.current_time - self.level.player.rock_time) / (self.level.player.rock_cool_time / 55)))
 
 
     def show_dir(self):

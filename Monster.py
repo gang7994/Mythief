@@ -46,35 +46,36 @@ class LaserMonster(pygame.sprite.Sprite):
     # 입력받은 움직임으로 이동
     def move(self, speed, dt):
         if self.is_moving:
-            self.rect.left += self.dir.x * speed * (dt // 6)
+            self.hitbox.left += self.dir.x * speed * (dt // 6)
             self.collision("horizontal")
-            self.rect.top += self.dir.y * speed * (dt // 6)
+            self.hitbox.top += self.dir.y * speed * (dt // 6)
             self.collision("vertical")
+            self.rect.center = self.hitbox.center
         
     # 몬스터 충돌 (여기에 플레이어 충돌을 만들까 고민중)
     def collision(self, direction):
         if direction == "horizontal":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.rect):
-                    if sprite.name != "NoneRoad" and\
-                       sprite.name != "alcoholRoad" and\
-                       sprite.name != "Pillar_0" and\
+                if sprite.rect.colliderect(self.hitbox):
+                    if sprite.name != "NoneRoad" and \
+                       sprite.name != "alcoholRoad" and \
+                       sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":
                         if self.dir.x > 0:
-                            self.rect.right = sprite.rect.left
+                            self.hitbox.right = sprite.rect.left
                         elif self.dir.x < 0:
-                            self.rect.left = sprite.rect.right
+                            self.hitbox.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad" and \
                        sprite.name != "alcoholRoad" and \
                        sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":
                         if self.dir.y > 0:
-                            self.rect.bottom = sprite.rect.top
+                            self.hitbox.bottom = sprite.rect.top
                         elif self.dir.y < 0:
-                            self.rect.top = sprite.rect.bottom
+                            self.hitbox.top = sprite.rect.bottom
 
     # 몬스터 레이져 추가 함수 -> 레이져 발사 쿨타임을 랜덤으로 정하기
     def add_laser(self):
@@ -150,44 +151,49 @@ class RushMonster(pygame.sprite.Sprite):
     # 입력받은 움직임으로 이동
     def move(self, speed, dt):
         if self.is_moving:
-            self.rect.left += self.dir.x * speed * (dt // 6)
+            self.hitbox.left += self.dir.x * speed * (dt // 6)
             self.collision("horizontal")
-            self.rect.top += self.dir.y * speed * (dt // 6)
+            self.hitbox.top += self.dir.y * speed * (dt // 6)
             self.collision("vertical")
+            self.rect.center = self.hitbox.center
 
     def collision(self, direction):
         if direction == "horizontal":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad" and \
                        sprite.name != "alcoholRoad" and \
                        sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":
                         if self.dir.x > 0:
-                            self.rect.right = sprite.rect.left
+                            self.hitbox.right = sprite.rect.left
                         elif self.dir.x < 0:
-                            self.rect.left = sprite.rect.right
+                            self.hitbox.left = sprite.rect.right
         if direction == "vertical":
             for sprite in self.border_images:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad" and \
                        sprite.name != "alcoholRoad" and \
                        sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":
                         if self.dir.y > 0:
-                            self.rect.bottom = sprite.rect.top
+                            self.hitbox.bottom = sprite.rect.top
                         elif self.dir.y < 0:
-                            self.rect.top = sprite.rect.bottom
+                            self.hitbox.top = sprite.rect.bottom
+
 
     def rush(self, direction, dt):
         self.is_rush = True
-        self.rect.left += direction[0] * self.monster_speed * (dt // 6)
+        self.hitbox.left += direction[0] * self.monster_speed * (dt // 6)
         self.dir.x = direction[0]
+        if self.dir.x != 0:
+            self.last_x_dir = self.dir.x
         self.collision("horizontal")
         if not direction[0]:
-            self.rect.top += direction[1] * self.monster_speed * (dt // 6)
+            self.hitbox.top += direction[1] * self.monster_speed * (dt // 6)
             self.dir.y = direction[1]
             self.collision("vertical")
+        self.rect.center = self.hitbox.center
 
 
     def update(self):
