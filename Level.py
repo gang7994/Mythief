@@ -473,8 +473,8 @@ class Level:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
             self.elapsed_time = (self.tem_now_time) / 1000
-            self.random_thunder(self.elapsed_time)
-            self.thunder_conductor_collision_check()
+            '''self.random_thunder(self.elapsed_time)'''
+            '''self.thunder_conductor_collision_check()'''
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(self.elapsed_time, dt)
 
