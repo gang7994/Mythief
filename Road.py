@@ -34,6 +34,7 @@ class Conductor0(pygame.sprite.Sprite): #가짜
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "Conductor0"
+        self.is_on = False
         
 class Conductor1(pygame.sprite.Sprite): #진짜
     def __init__(self, pos, groups):
@@ -42,6 +43,7 @@ class Conductor1(pygame.sprite.Sprite): #진짜
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "Conductor1"
+        self.is_on = False
 
 class AlcoholRoad(pygame.sprite.Sprite):
     def __init__(self, pos, groups):

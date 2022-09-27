@@ -106,11 +106,12 @@ class Finish(pygame.sprite.Sprite):
     def __init__(self, pos, groups, stage_num, map_idx):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+        self.name = "Finish"
         if stage_num == 5 and (map_idx == 4 or map_idx == 5 or map_idx == 6 or map_idx ==8):
             self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
+            self.name = "ClosedFinish"
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
-        self.name = "Finish"
         self.is_pause = False
 
 # 스테이지 입구 이미지
@@ -408,53 +409,58 @@ class Thunder(pygame.sprite.Sprite):
                     sprite.name = "NoneRoad"
                     sprite.image = pygame.image.load(os.path.join(images_path, "void_checked.png")).convert_alpha()
                     sprite.hitbox = sprite.rect.inflate(-3, -3)
+            elif sprite.name == "Conductor0" or sprite.name == "Conductor1":
+                if sprite.rect.colliderect(self.hitbox):
+                    sprite.image = pygame.image.load(os.path.join(images_path, "electric_11_on.png")).convert_alpha()
+                    sprite.is_on = True
             elif sprite.name in ["ElectricRoad00","ElectricRoad01","ElectricRoad02","ElectricRoad03","ElectricRoad04","ElectricRoad05","ElectricRoad06","ElectricRoad07","ElectricRoad08","ElectricRoad09","ElectricRoad10"]:
                 if sprite.rect.colliderect(self.hitbox):
                     self.border_images.add(sprite)
                     if sprite.name == "ElectricRoad00":
-                        sprite.name == "Electric00"
+                        sprite.name = "Electric00"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_00.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad01":
-                        sprite.name == "Electric01"
+                        sprite.name = "Electric01"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_01.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad02":
-                        sprite.name == "Electric02"
+                        sprite.name = "Electric02"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_02.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad03":
-                        sprite.name == "Electric03"
+                        sprite.name = "Electric03"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_03.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad04":
-                        sprite.name == "Electric04"
+                        sprite.name = "Electric04"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_04.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad05":
-                        sprite.name == "Electric05"
+                        sprite.name = "Electric05"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_05.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad06":
-                        sprite.name == "Electric06"
+                        sprite.name = "Electric06"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_06.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad07":
-                        sprite.name == "Electric07"
+                        sprite.name = "Electric07"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_07.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad08":
-                        sprite.name == "Electric08"
+                        sprite.name = "Electric08"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_08.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad09":
-                        sprite.name == "Electric09"
+                        sprite.name = "Electric09"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_09.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
                     elif sprite.name == "ElectricRoad10":
-                        sprite.name == "Electric10"
+                        sprite.name = "Electric10"
                         sprite.image = pygame.image.load(os.path.join(images_path, "electric_10.png")).convert_alpha()
                         sprite.hitbox = sprite.rect.inflate(-3, -3)
+
                         
     def update(self):
         if not self.is_pause:

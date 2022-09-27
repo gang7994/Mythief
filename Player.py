@@ -100,6 +100,8 @@ class Player(pygame.sprite.Sprite):
         self.rod_num = 0
         self.rod_start_time = pygame.time.get_ticks()
         self.rod_current_time = pygame.time.get_ticks()
+        # is dark
+        self.is_dark = False
         # item effect
         self.is_first0 = True # 이상한 석상
         self.is_first1 = True #대나무 낚싯대
@@ -405,13 +407,12 @@ class Player(pygame.sprite.Sprite):
                             self.start0 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
                             self.player_drunken()
-                        elif not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
+                        elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.x > 0:
                                 self.hitbox.right = sprite.rect.left
                             elif self.dir.x < 0:
                                 self.hitbox.left = sprite.rect.right
                         elif self.is_tile_mix and not self.is_damaged:
-                            
                             current_time0 = pygame.time.get_ticks()
                             if current_time0 - self.start0 < 5000 and self.is_effect0:
                                 self.get_damaged()
@@ -420,8 +421,10 @@ class Player(pygame.sprite.Sprite):
                                 self.get_damaged()
                                 self.is_damage10 = True
                                 self.is_first0 = True
-
                         elif self.is_thunder and not self.is_damaged:
+                            self.get_damaged()
+                            self.is_damage10 = True
+                        elif self.is_dark and not self.is_damaged:
                             self.get_damaged()
                             self.is_damage10 = True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
@@ -444,7 +447,7 @@ class Player(pygame.sprite.Sprite):
                             self.start1 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
                             self.player_drunken()
-                        elif not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
+                        elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.y > 0:
                                 self.hitbox.bottom = sprite.rect.top
                             elif self.dir.y < 0:
@@ -457,7 +460,13 @@ class Player(pygame.sprite.Sprite):
                             else :
                                 self.get_damaged()
                                 self.is_damage10 = True
-                                self.is_first0= True
+                                self.is_first0 = True
+                        elif self.is_thunder and not self.is_damaged:
+                            self.get_damaged()
+                            self.is_damage10 = True
+                        elif self.is_dark and not self.is_damaged:
+                            self.get_damaged()
+                            self.is_damage10 = True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_player_cerberus = False

@@ -53,10 +53,8 @@ class Level:
         self.thunder_start_position = []
         self.thunder_flag = False
         self.thunder_cool_time = True
-        self.thunder_select_pos = []
         # conductor var
-        self.conductor0_pos = []
-        self.conductor1_pos = []
+        self.conductor1 = None
         # map_init
         self.cur_map = map[0]
         self.create_map()
@@ -133,10 +131,8 @@ class Level:
                     CrossWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "CD0":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
                     Conductor0((tile_pos_x, tile_pos_y), [self.images])
-                    self.conductor0_pos.append((tile_pos_x, tile_pos_y))
                 if col == "CD1":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
-                    Conductor1((tile_pos_x, tile_pos_y), [self.images])
-                    self.conductor1_pos.append((tile_pos_x, tile_pos_y))
+                    self.conductor1 = Conductor1((tile_pos_x, tile_pos_y), [self.images])
 
                 if col == "W1":
                     Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -315,9 +311,6 @@ class Level:
             if monster.name == "rush_Monster" or monster.name == "cerberus" or monster.name == "Fish" or monster.name == "satiros":
                 monster_vec = pygame.math.Vector2(monster.rect.center)
                 player_vec = pygame.math.Vector2(player.rect.center)
-                
-                #print("monster: %s, plyer: %s" % (monster_vec, player_vec)) # 버그 확인중
-                
                 distance = (player_vec - monster_vec).magnitude()
                 if (player_vec - monster_vec)[0] > -3 and (player_vec - monster_vec)[0] < 3:
                     dir_x = 0
@@ -435,27 +428,6 @@ class Level:
             if len(self.player.rod_position) > 0:
                 for i in self.player.rod_position:
                     Thunder(i, [self.monster_images, self.damage_images], self.images, self.border_images)
-                    
-    def thunder_conductor_collision_check(self):
-        conductor_num = len(self.conductor1_pos)
-        print("함수에 진입했어요 ", conductor_num)
-        for sprite_CD in self.images:
-            if sprite_CD.name == "Conductor0":
-                for sprite_TH in self.damage_images:
-                    if sprite_TH.rect.colliderect(sprite_CD.rect) and sprite_TH.animation_idx ==9:
-                        sprite_CD.image = pygame.image.load(os.path.join(images_path, "electric_11_on.png")).convert_alpha()
-            if sprite_CD.name == "Conductor1":
-                for sprite_TH in self.damage_images:
-                    if sprite_TH.rect.colliderect(sprite_CD.rect) and sprite_TH.animation_idx ==9:
-                        sprite_CD.image = pygame.image.load(os.path.join(images_path, "electric_11_on.png")).convert_alpha()
-                        conductor_num-=1
-                        print("번개가 쳤어요 ", conductor_num)
-                        
-        if conductor_num == 0:
-            print(conductor_num)
-            print("문열림")
-        
-        self.thunder_select_pos.clear()
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
@@ -473,8 +445,14 @@ class Level:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
             self.elapsed_time = (self.tem_now_time) / 1000
-            '''self.random_thunder(self.elapsed_time)'''
-            '''self.thunder_conductor_collision_check()'''
+
+            if self.stage_number == 5 and (self.map_idx in [0,1,2,4,5,6,8]): # 번개 알고리즘 + 전도체 블록 알고리즘
+                self.random_thunder(self.elapsed_time)
+                if self.conductor1 is not None:
+                    if self.conductor1.is_on and self.finish.name == "ClosedFinish":
+                        self.finish.name = "Finish"
+                        self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(self.elapsed_time, dt)
 
@@ -494,6 +472,7 @@ class Level:
 
         if self.stage_number == 3 and (self.map_idx == 1 or self.map_idx == 3 or self.map_idx == 6):
             self.glow.draw_player_glow()
+            self.player.is_dark = True
 
 
         self.glow.draw_display_change(dt)
