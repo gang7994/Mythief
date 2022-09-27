@@ -476,7 +476,7 @@ class Player(pygame.sprite.Sprite):
                     self.get_damaged()
                     self.is_damage5 = True
                     sprite.kill()
-                if sprite.name == "rush_Monster" and not self.is_damaged:
+                if sprite.name == "rush_Monster" and not self.is_damaged:           # 데미지 2~3
                     self.get_damaged()
                     self.is_damage10 = True
                 if sprite.name == "thunder" and sprite.animation_idx == 9 and not self.is_damaged:
