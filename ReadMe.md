@@ -90,5 +90,6 @@ Mythief
 |![img](/Images/TestPix/electric_08.png)|"┐"("Electric08")|DownLeftWire( )|.|
 |![img](/Images/TestPix/electric_09.png)|"┌"("Electric09")|DownRightWire( )|.|
 |![img](/Images/TestPix/electric_10.png)|"└"("Electric10")|UpRightWire( )|.|
-|![img](/Images/TestPix/electric_11.png)|"CD"("Conductor")|Conductor( )|.|
+|![img](/Images/TestPix/electric_11.png)|"CD0"("Conductor0")|Conductor0( )|가짜|
+|![img](/Images/TestPix/electric_11.png)|"CD1"("Conductor1")|Conductor1( )|진짜|
 |![img](/Images/TestPix/electric_11_on.png)|"없음"("없음")|없음|.|

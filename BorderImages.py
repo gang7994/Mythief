@@ -412,6 +412,7 @@ class Thunder(pygame.sprite.Sprite):
                     sprite.hitbox = sprite.rect.inflate(-3, -3)
 
     def update(self):
-        self.animation()
-        if self.animation_idx == 9:
-            self.collision()
+        if not self.is_pause:
+            self.animation()
+            if self.animation_idx == 9:
+                self.collision()

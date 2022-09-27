@@ -279,4 +279,18 @@ class ThunderRod(pygame.sprite.Sprite):
             self.start_time = self.current_time
 
     def update(self):
-        self.animation()
+        if not self.is_pause:
+            self.animation()
+
+class HadesHelmet(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(item_path, "hadesHelmet.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "hadesHelmet"
+        self.boundary = 50
+        self.is_get = False
+        self.is_interaction = False
+        self.item_gage = 0
+        self.is_pause = False

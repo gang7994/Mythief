@@ -533,10 +533,14 @@ class GameManager:
             if self.level.player.is_damage10 and shield == 0:
                 current_hp -= 10
                 self.level.player.is_damage10 = False
-            elif (self.level.player.is_damage5 or self.level.player.is_damage10) and shield !=0:
+            if self.level.player.is_damage30 and shield == 0:
+                current_hp -= 30
+                self.level.player.is_damage30 = False
+            elif (self.level.player.is_damage5 or self.level.player.is_damage10 or self.level.player.is_damage30) and shield !=0:
                 shield -= 1
                 self.level.player.is_damage5 = False
                 self.level.player.is_damage10 = False
+                self.level.player.is_damage30 = False
         else:
             current_hp = 0                          
             self.level.player.is_dead = True

@@ -15,7 +15,7 @@ class LaserMonster(pygame.sprite.Sprite):
         self.dir = pygame.math.Vector2()
         self.border_images = border_images
         self.damage_images = damage_images
-        self.monster_speed = 2
+        self.monster_speed = 1
         self.is_moving = False
         self.monster_order_wait_time = 1000
         self.monster_move = [[1,0], [0,1], [0,0], [-1,0], [0,-1]]
@@ -122,7 +122,7 @@ class RushMonster(pygame.sprite.Sprite):
         self.name = "rush_Monster"
         self.dir = pygame.math.Vector2()
         self.border_images = border_images
-        self.monster_speed = 2
+        self.monster_speed = 1
         self.is_moving = False
         self.monster_order_wait_time = 1000
         self.monster_move = [[1, 0], [0, 1], [0, 0], [-1, 0], [0, -1]]
@@ -475,7 +475,7 @@ class Satiros(pygame.sprite.Sprite):
         self.animation()
 
 class Cerberus(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images):
+    def __init__(self, pos, groups, border_images, move_flag):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "cerberus.png")).convert_alpha()
         self.image_origin = pygame.image.load(os.path.join(images_path, "cerberus.png")).convert_alpha()
@@ -488,6 +488,7 @@ class Cerberus(pygame.sprite.Sprite):
         self.border_images = border_images
         self.monster_speed = 1
         self.is_moving = False
+        self.move_flag = move_flag
         self.monster_order_wait_time = 1000
         self.monster_move = [[1, 0], [0, 1], [0, 0], [-1, 0], [0, -1]]
         self.last_x_dir = -1
@@ -520,9 +521,9 @@ class Cerberus(pygame.sprite.Sprite):
 
     def move(self, speed, dt):
         if self.is_moving:
-            self.hitbox.left += self.dir.x * speed * (dt // 6)
+            self.hitbox.left += self.dir.x * speed * (dt // 5)
             self.collision("horizontal")
-            self.hitbox.top += self.dir.y * speed * (dt // 6)
+            self.hitbox.top += self.dir.y * speed * (dt // 5)
             self.collision("vertical")
             self.rect.centerx = self.hitbox.centerx
             self.rect.centery = self.hitbox.centery - 36
@@ -552,25 +553,32 @@ class Cerberus(pygame.sprite.Sprite):
                             self.hitbox.top = sprite.rect.bottom
 
     def rush(self, direction, dt):
-        self.is_rush = True
-        self.hitbox.left += direction[0] * self.monster_speed
-        self.dir.x = direction[0]
-        if self.dir.x != 0:
-            self.last_x_dir = self.dir.x
-        self.collision("horizontal")
-        if not direction[0]:
-            self.hitbox.top += direction[1] * self.monster_speed
+        if self.move_flag:
+            self.is_rush = True
+            self.hitbox.left += direction[0] * self.monster_speed * (dt // 5)
+            self.dir.x = direction[0]
+            if self.dir.x != 0:
+                self.last_x_dir = self.dir.x
+            self.collision("horizontal")
+            if direction[0] == 0:
+                self.hitbox.top += direction[1] * self.monster_speed * (dt // 5)
+                self.dir.y = direction[1]
+                self.collision("vertical")
+            self.rect.centerx = self.hitbox.centerx
+            self.rect.centery = self.hitbox.centery - 36
+        else:
+            self.dir.x = direction[0]
             self.dir.y = direction[1]
-            self.collision("vertical")
-        self.rect.centerx = self.hitbox.centerx
-        self.rect.centery = self.hitbox.centery - 36
+            if self.dir.x != 0:
+                self.last_x_dir = self.dir.x
 
     def update(self):
         dt = self.clock.tick(FPS)
         if not self.is_rush and not self.is_pause:
-            self.move_order()
-            self.move(self.monster_speed, dt)
-            self.move_wait()
+            if self.move_flag:
+                self.move_order()
+                self.move(self.monster_speed, dt)
+                self.move_wait()
         if self.last_x_dir == 1:
             self.image = self.image_flip
         elif self.last_x_dir == -1:
