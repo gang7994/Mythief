@@ -45,6 +45,7 @@ class Player(pygame.sprite.Sprite):
         self.is_damaged = False      # 데미지 상태인지
         self.is_damage5 = False
         self.is_damage10 = False
+        self.is_damage30 = False
         # walk animation variable 
         self.walk_count = 0
         self.walk_time = 0
@@ -347,9 +348,9 @@ class Player(pygame.sprite.Sprite):
         else:
             dir = self.last_dir
         if dir == 2:
-            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 1, self.border_images, effect))
+            self.images.add(Rock(self.rect.center, 1, self.border_images, effect))
         elif dir == 1:
-            self.images.add(Rock((self.rect.x, self.rect.y + 7.5), 2, self.border_images, effect))
+            self.images.add(Rock(self.rect.center, 2, self.border_images, effect))
         elif dir == 4:
             self.images.add(Rock(self.rect.center, 3, self.border_images, effect))
         elif dir:
@@ -488,6 +489,10 @@ class Player(pygame.sprite.Sprite):
                 if sprite.name == "satiros" and not self.is_damaged:
                     self.get_damaged()
                     self.is_damage5 = True
+                if sprite.name == "cerberus" and not self.is_damaged:
+                    self.get_damaged()
+                    self.is_damage30 = True
+
 
 
     def get_item_interaction(self):
@@ -548,7 +553,7 @@ class Player(pygame.sprite.Sprite):
                 if sprite.rect.colliderect(self.rod_put_box) and not self.item_interaction:
                     if self.is_rod_ready:
                         keys = pygame.key.get_pressed()
-                        if keys[pygame.K_TAB]:
+                        if keys[pygame.K_q]:
                             ThunderRod((sprite.rect.left, sprite.rect.top), [self.images])
                             self.rod_start_time = pygame.time.get_ticks()
                             self.is_rod_ready = False

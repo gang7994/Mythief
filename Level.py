@@ -95,7 +95,7 @@ class Level:
             for col_idx, col in enumerate(row):
                 tile_pos_x = col_idx * tile_width_size + horizontal_margin
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
-                if col == "." or col == "WA" or col == "CR" or col == "PL0" or col == "PL1" or col == "PL2" or col == "FM":   # 파도 실험중
+                if col == "." or col == "WA" or col == "CR" or col == "PL0" or col == "PL1" or col == "PL2" or col == "FM" or col == "FCR":   # 파도 실험중
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
@@ -218,7 +218,10 @@ class Level:
                 if col == "SM":
                     Satiros((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images)
                 if col == "CR":
-                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images)
+                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, True)
+                    Level.remain_monster+=1 # Show_info
+                if col == "FCR":
+                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, False)
                     Level.remain_monster+=1 # Show_info
                 if col == "W1g":
                     Fire_Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -302,17 +305,21 @@ class Level:
             if monster.name == "rush_Monster" or monster.name == "cerberus" or monster.name == "Fish" or monster.name == "satiros":
                 monster_vec = pygame.math.Vector2(monster.rect.center)
                 player_vec = pygame.math.Vector2(player.rect.center)
+                
+                #print("monster: %s, plyer: %s" % (monster_vec, player_vec)) # 버그 확인중
+                
                 distance = (player_vec - monster_vec).magnitude()
-                if (player_vec - monster_vec)[0] < 0:
-                    dir_x = -1
-                elif (player_vec - monster_vec)[0] == 0:
+                if (player_vec - monster_vec)[0] > -3 and (player_vec - monster_vec)[0] < 3:
                     dir_x = 0
+                elif (player_vec - monster_vec)[0] < 0:
+                    dir_x = -1
                 elif (player_vec - monster_vec)[0] > 0:
                     dir_x = 1
-                if (player_vec - monster_vec)[1] < 0:
-                    dir_y = -1
-                elif (player_vec - monster_vec)[1] == 0:
+
+                if (player_vec - monster_vec)[1] > -3 and (player_vec - monster_vec)[1] < 3:
                     dir_y = 0
+                elif (player_vec - monster_vec)[1] < 0:
+                    dir_y = -1
                 elif (player_vec - monster_vec)[1] > 0:
                     dir_y = 1
                 if monster.name == "cerberus":
@@ -433,10 +440,10 @@ class Level:
         if not self.is_pause:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
-            elapsed_time = (self.tem_now_time) / 1000
-            self.random_thunder(elapsed_time)
+            self.elapsed_time = (self.tem_now_time) / 1000
+            self.random_thunder(self.elapsed_time)
             if self.stage_number != 0 and self.stage_number != 1:
-                self.monster_auto_create(elapsed_time, dt)
+                self.monster_auto_create(self.elapsed_time, dt)
 
             if self.stage_number == 2 and len(self.wave_start_position) != 0:
                 if self.wave_cool_time:
@@ -444,17 +451,17 @@ class Level:
                     self.wave_cool_time = False
                     self.wave_cnt = 0
                 self.wave_player_collision_check()
-                self.create_wave(elapsed_time * 10, self.wave_idx)
+                self.create_wave(self.elapsed_time * 10, self.wave_idx)
             elif self.stage_number == 2 and (self.map_idx == 2 or self.map_idx == 3):
-                self.flooding(elapsed_time)
+                self.flooding(self.elapsed_time)
+
+            self.glow.glow_wait(self.elapsed_time)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 
-        # 어두운 맵은 따로 확인이 가능한 변수를 두는 것이 좋을듯 합니다. 이부분 수정해야겠네요
-        """if self.map_idx == 2:
+        if self.stage_number == 3 and (self.map_idx == 1 or self.map_idx == 3 or self.map_idx == 6):
             self.glow.draw_player_glow()
-            for fire in self.fire_images:
-                fire.draw_fire_glow(self.player, dt)"""
+
 
         self.glow.draw_display_change(dt)
 
@@ -513,8 +520,11 @@ class Glow:
         self.player_glow = []
         self.fire_glow = []
         self.pos = pos
-        for i in [[10, 300],[50,200],[100,100],[200,50],[255,10]]:
+        for i in [[10, 50],[50,40],[100,30],[200,20],[255,10]]:
             self.player_glow.append([self.circle_surf(i[1],(i[0],i[0],i[0])), i[1]])
+        self.player_glow_cool_time = 3
+        self.is_player_glow = False
+        self.glow_count_flag = False
         # display_change_animation
         self.game_display_flag = False
         self.display_anim_surf = pygame.Surface((screen_width, screen_height))
@@ -556,10 +566,21 @@ class Glow:
         return surf
 
     def draw_player_glow(self):
-        self.new_surf.fill(BLACK)
-        for glow in self.player_glow:
-            self.new_surf.blit(glow[0], (self.half_width - glow[1], self.half_height - glow[1]))
-        self.display_surface.blit(self.new_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
+        if self.is_player_glow:
+            self.new_surf.fill(BLACK)
+            for glow in self.player_glow:
+                self.new_surf.blit(glow[0], (self.half_width - glow[1], self.half_height - glow[1]))
+            self.display_surface.blit(self.new_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
+
+    def glow_wait(self, time):
+        if int(time) % self.player_glow_cool_time != 0:
+            self.glow_count_flag = False
+        if int(time) % self.player_glow_cool_time == 0 and int(time) != 0 and not self.glow_count_flag:
+            self.glow_count_flag = True
+            if not self.is_player_glow:
+                self.is_player_glow = True
+            else:
+                self.is_player_glow = False
 
     def draw_fire_glow(self, player, dt):
         pos = []

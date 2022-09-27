@@ -30,7 +30,7 @@ class MonsterLaser(pygame.sprite.Sprite):
     def collision(self):
         for sprite in self.border_images:
             if sprite.rect.colliderect(self.rect):
-                if sprite.name == "Wall":
+                if sprite.name == "Wall" or sprite.name == "obstacle":
                     self.kill()
 
     # 업데이트 영역
