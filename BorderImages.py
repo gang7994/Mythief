@@ -409,6 +409,7 @@ class Thunder(pygame.sprite.Sprite):
 
 
     def update(self):
-        self.animation()
-        if self.animation_idx == 9:
-            self.collision()
+        if not self.is_pause:
+            self.animation()
+            if self.animation_idx == 9:
+                self.collision()
