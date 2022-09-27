@@ -417,7 +417,7 @@ class Level:
             if self.flood_cnt == 0:
                 for pos in self.flooding_tile:
                     self.flood.append(Flood(pos, [self.images]))
-            elif self.flood_cnt < 4:
+            elif self.flood_cnt < 12:
                 for sprite in self.flood:
                     sprite.image.set_alpha(self.alpha)
             else:
