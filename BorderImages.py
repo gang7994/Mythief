@@ -408,7 +408,6 @@ class Thunder(pygame.sprite.Sprite):
                     sprite.hitbox = sprite.rect.inflate(-3, -3)
             elif sprite.name == "Conductor0" or sprite.name == "Conductor1":
                 if sprite.rect.colliderect(self.hitbox):
-                    self.border_images.add(sprite)
                     sprite.image = pygame.image.load(os.path.join(images_path, "electric_11_on.png")).convert_alpha()
                     sprite.hitbox = sprite.rect.inflate(-3, -3)
 
