@@ -173,7 +173,7 @@ class Level:
                 if col == "PL2":
                     Pillar2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "F":
-                    self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
                 if col == "I0":
                     Test0Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
                 if col == "I1":

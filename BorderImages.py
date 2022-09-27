@@ -103,9 +103,11 @@ class Obstacle(pygame.sprite.Sprite):
 
 # 도착 이미지
 class Finish(pygame.sprite.Sprite):
-    def __init__(self, pos, groups):
+    def __init__(self, pos, groups, stage_num, map_idx):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+        if stage_num == 5 and (map_idx == 4 or map_idx == 5 or map_idx == 6 or map_idx ==8):
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Finish"
