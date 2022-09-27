@@ -438,6 +438,7 @@ class Level:
                     
     def thunder_conductor_collision_check(self):
         conductor_num = len(self.conductor1_pos)
+        print("함수에 진입했어요 ", conductor_num)
         for sprite_CD in self.images:
             if sprite_CD.name == "Conductor0":
                 for sprite_TH in self.damage_images:
@@ -448,8 +449,10 @@ class Level:
                     if sprite_TH.rect.colliderect(sprite_CD.rect) and sprite_TH.animation_idx ==9:
                         sprite_CD.image = pygame.image.load(os.path.join(images_path, "electric_11_on.png")).convert_alpha()
                         conductor_num-=1
+                        print("번개가 쳤어요 ", conductor_num)
                         
         if conductor_num == 0:
+            print(conductor_num)
             print("문열림")
         
         self.thunder_select_pos.clear()

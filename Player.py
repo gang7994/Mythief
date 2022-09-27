@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
         self.door_images = door_images
         self.images = images
         # player rock var
-        self.rock_cool_time = 2000
+        self.rock_cool_time = 1000
         self.is_rock_ready = True
         self.rock_count = 0
         self.current_time = 0
@@ -554,7 +554,7 @@ class Player(pygame.sprite.Sprite):
 
     def rod_put(self):
         for sprite in self.images:
-            if sprite.name == "Road" or sprite.name == "Conductor0" or sprite.name == "Conductor1":
+            if sprite.name == "Road" or sprite.name == "Conductor0" or sprite.name == "Conductor1" or sprite.name in ["ElectricRoad00","ElectricRoad01","ElectricRoad02","ElectricRoad03","ElectricRoad04","ElectricRoad05","ElectricRoad06","ElectricRoad07","ElectricRoad08","ElectricRoad09","ElectricRoad10"]:
                 if sprite.rect.colliderect(self.rod_put_box) and not self.item_interaction:
                     if self.is_rod_ready:
                         keys = pygame.key.get_pressed()
