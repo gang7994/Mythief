@@ -27,68 +27,7 @@ class GameManager:
         self.finish = False
         self.ignore_item = False
 
-    def Encyclopedia(self):
-        running = True
-        while running:
-            dt = self.clock.tick(FPS)
-            OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-            self.screen.fill("Black")
-            OPTIONS_TEXT = self.get_font(45).render("백과사전창", True, "White")
-            OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width/2), 30))
-            self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
-            self.screen.blit(self.popup, (100, 100))
-            self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
-            OPTIONS_BACK = Button_text(image=None, pos=(1300, 0),
-                                text_input="BACK", font = self.get_font(60), base_color="White", hovering_color="Red")
-            OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
-            OPTIONS_BACK.update(self.screen)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    self.particle.click_flag = True
-                    if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
-                        running = False
-            self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
-            self.particle.mouse_cursor(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1])
-            pygame.display.update()
-
-    def Credit(self):
-        running = True
-        while running:
-            dt = self.clock.tick(FPS)
-            OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
-            self.screen.fill("Black")
-            OPTIONS_TEXT = self.get_titlefont(60).render("Mythief", True, "White")
-            OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=((screen_width / 2), 70))
-
-            TEXT1 = self.get_font(30).render("여기에 크레딧 내용 추가", True, "White")
-            TEXT1_RECT = TEXT1.get_rect(center=((screen_width / 2), 300))
-
-            TEXT2 = self.get_font(30).render("Add credit content here", True, "White")
-            TEXT2_RECT = TEXT1.get_rect(center=((screen_width / 2), 400))
-
-            self.screen.blit(TEXT1, TEXT1_RECT)
-            self.screen.blit(TEXT2, TEXT2_RECT)
-            self.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
-            OPTIONS_BACK = Button_text(image=None, pos=(1300, 0),
-                                       text_input="BACK", font=self.get_font(60), base_color="White", hovering_color="Red")
-            OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
-            OPTIONS_BACK.update(self.screen)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    self.particle.click_flag = True
-                    if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
-                        running = False
-            self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
-            self.particle.mouse_cursor(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1])
-            pygame.display.update()
-
-    def Option(self):
+    def Option(self): #옵션창
         global bgm_vol, effect_vol
         running = True
         while running:
@@ -118,14 +57,12 @@ class GameManager:
             BGM_DOWN = Button(image0=pygame.image.load(os.path.join(images_path, "down0.png")).convert_alpha(),
                               image1=pygame.image.load(os.path.join(images_path, "down1.png")).convert_alpha(),
                               pos=(500, 265), scale_x=50, scale_y=50)
-
             EFFECT_UP = Button(image0=pygame.image.load(os.path.join(images_path, "up0.png")).convert_alpha(),
                                image1=pygame.image.load(os.path.join(images_path, "up1.png")).convert_alpha(),
                                pos=(956, 465), scale_x=50, scale_y=50)
             EFFECT_DOWN = Button(image0=pygame.image.load(os.path.join(images_path, "down0.png")).convert_alpha(),
                                  image1=pygame.image.load(os.path.join(images_path, "down1.png")).convert_alpha(),
                                  pos=(500, 465), scale_x=50, scale_y=50)
-
             OPTIONS_BACK = Button_text(image=None, pos=(1200, 0),
                                        text_input="BACK", font=self.get_font(60), base_color="White", hovering_color="Red")
 
@@ -139,6 +76,7 @@ class GameManager:
             EFFECT_UP.update(self.screen)
             EFFECT_DOWN.changeColor(OPTIONS_MOUSE_POS)
             EFFECT_DOWN.update(self.screen)
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -163,20 +101,17 @@ class GameManager:
             self.particle.mouse_cursor(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1])
             pygame.display.update()
 
-    def draw_volume_bar(self):
+    def draw_volume_bar(self): 
         pygame.draw.rect(self.screen, WHITE, (528, 250, bgm_vol / 0.25, 30))
         pygame.draw.rect(self.screen, BLACK, (528, 250, 400, 30), 3)
         pygame.draw.rect(self.screen, WHITE, (528, 450, effect_vol / 0.25, 30))
         pygame.draw.rect(self.screen, BLACK, (528, 450, 400, 30), 3)
 
-    def get_titlefont(self, size):
-        return pygame.font.Font("Images/TestPix/font.ttf", size)
-
     def get_font(self, size):
         return pygame.font.SysFont('malgungothic', size)
 
     def main_menu(self):
-        global rope_item, current_hp
+        global rope_item, current_hp, max_hp
         while True:
             dt = self.clock.tick(FPS)
             self.screen.fill(BLACK)
@@ -190,24 +125,16 @@ class GameManager:
 
             PLAY_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(),
                                  image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(),
-                                 pos=(728, 280), scale_x=400, scale_y=100)
-            ENCYCLOPEDIA_BUTTON = Button(
-                image0=pygame.image.load(os.path.join(images_path, "btn_Collection_0.png")).convert_alpha(),
-                image1=pygame.image.load(os.path.join(images_path, "btn_Collection_1.png")).convert_alpha(),
-                pos=(728, 390), scale_x=400, scale_y=100)
-            CREDIT_BUTTON = Button(
-                image0=pygame.image.load(os.path.join(images_path, "btn_credit_0.png")).convert_alpha(),
-                image1=pygame.image.load(os.path.join(images_path, "btn_credit_1.png")).convert_alpha(),
-                pos=(728, 500), scale_x=400, scale_y=100)
+                                 pos=(728, 340), scale_x=400, scale_y=100)
             OPTION_BUTTON = Button(
                 image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(),
                 image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(),
-                pos=(728, 610), scale_x=400, scale_y=100)
+                pos=(728, 480), scale_x=400, scale_y=100)
             QUIT_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_exit_0.png")).convert_alpha(),
                                  image1=pygame.image.load(os.path.join(images_path, "btn_exit_1.png")).convert_alpha(),
-                                 pos=(728, 720), scale_x=400, scale_y=100)
+                                 pos=(728, 620), scale_x=400, scale_y=100)
 
-            for button in [PLAY_BUTTON, ENCYCLOPEDIA_BUTTON, CREDIT_BUTTON, OPTION_BUTTON, QUIT_BUTTON]:
+            for button in [PLAY_BUTTON, OPTION_BUTTON, QUIT_BUTTON]:
                 button.changeColor(MENU_MOUSE_POS)
                 button.update(self.screen)
 
@@ -221,25 +148,27 @@ class GameManager:
                     if event.button == 1:
                         self.particle.click_flag = True
                         if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                            current_hp = max_hp
+                            
                             if not self.is_opening:
                                 self.text.draw_text(0, self.screen)
                                 self.is_opening = True
                             self.level = Level(0, 0, 0, pygame.time.get_ticks())
                             self.running = True
                             self.Run()
+                            # 초기화
+                            max_hp = 100
+                            current_hp = max_hp
                             theme_inventory.clear()
+                            general_inventory.clear()
                             rope_item = 2
-                        if ENCYCLOPEDIA_BUTTON.checkForInput(MENU_MOUSE_POS):
-                            self.Encyclopedia()
-                        if CREDIT_BUTTON.checkForInput(MENU_MOUSE_POS):
-                            self.Credit()
+                            self.general_item_effect_clear()
+
+                            
                         if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
                             self.Option()
                         if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                             pygame.quit()
                             sys.exit()
-
             pygame.display.update()
 
     def dead_surface(self, mouse_pos):
@@ -514,7 +443,45 @@ class GameManager:
                     self.level.player.is_effect1 = True
                     use_item10 = True
                 
-                    
+    def general_item_effect_clear(self):
+        global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8, use_item9, use_item10
+        if use_item0:
+            rope_item =2
+            use_item0 = False
+        if use_item1:
+            use_item1 = False
+        if use_item2:
+            max_hp == 100
+            use_item2 = False
+        if use_item3:
+            shield = 0
+            use_item3 = False
+        if use_item4:
+            rope_item = 2
+            use_item4 = False
+        if use_item5:
+            bonus = 0
+            use_item5 = False
+        if use_item6:
+            use_item6 = False
+        if use_item7:
+            self.level.player.rock_item_effect = False
+            use_item7 = False
+        if use_item8:
+            self.level.player.is_effect0 = False
+            use_item8 = False
+        if use_item9:
+            self.ignore_item = False
+            use_item9 = False
+        if use_item10:
+            self.level.player.is_effect1 = False
+            use_item10 = False
+        
+            
+            
+            
+            
+            
     def player_hp(self):
         global current_hp, shield
         if current_hp > 0:
@@ -535,10 +502,16 @@ class GameManager:
         else:
             current_hp = 0                          
             self.level.player.is_dead = True
+    
+    def player_hp_recovery(self):
+        global current_hp
+        if current_hp + 10 > max_hp:
+            current_hp = max_hp
+        else: current_hp += 10
             
     # 게임 로직
     def Run(self):
-        global rope_item, shield
+        global rope_item, shield, max_hp, current_hp
         # 프레임 영역
         self.start_time = pygame.time.get_ticks()
         # 메인 로직 영역
@@ -591,11 +564,22 @@ class GameManager:
                         self.level.pause("F")
                     if event.key == pygame.K_r and self.level.stage_number != 0:
                         if rope_item != 0 and not self.use_rope:
-                            if(self.level.map_idx == 3 or self.level.map_idx == 7 or self.level.map_idx == 8):
+                            if self.level.stage_number == 0:
                                 pass
-                            if (not self.level.stage_number == 1) or (self.level.stage_number == 1 and self.level.map_idx == 3):
-                                rope_item -= 1
-                                self.use_rope = True
+                            elif self.level.stage_number == 1:
+                                if self.level.map_idx == 3:
+                                    rope_item -= 1
+                                    self.use_rope = True
+                            elif self.level.stage_number == 2 or self.level.stage_number == 5:
+                                if not(self.level.map_idx == 3 or self.level.map_idx == 7 or self.level.map_idx == 8):
+                                    rope_item -= 1
+                                    self.use_rope = True
+                            elif self.level.stage_number == 3 or self.level.stage_number == 4:
+                                if not(self.level.map_idx == 6):
+                                    rope_item -= 1
+                                    self.use_rope = True
+                                    
+                            
                     if event.key == pygame.K_f:
                         if not text_flag[self.level.stage_number + 1]:
                             if len(self.level.text.texts[self.level.map_idx]) != 0:
@@ -628,6 +612,7 @@ class GameManager:
             self.item_interaction_text()
             self.door_interaction_text()
             self.show_theme_inventory()
+
             if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]):
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
             if self.level.player.event_handler:
@@ -666,24 +651,29 @@ class GameManager:
             if self.use_rope:
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
-                elif self.level.stage_number < len(self.level.cur_map) - 1: #추후 보스맵에서는 로프권 사용 못하게 할 예정
-                    self.level = Level(0, self.level.stage_number + 1, 0, pygame.time.get_ticks())
+                    self.player_hp_recovery()
                 self.use_rope = False
 
             if x.hitbox.colliderect(y.rect):
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
                     Level.remain_monster = 0 # Show_info
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
+                    self.player_hp_recovery()
                 else: #다음 방이 없으면 메인 스테이지로 넘어가기
                     if self.level.stage_number == 1: #튜토리얼 스테이지 마지막 방에서 나왔을때 초기화
                         theme_inventory.clear()
+                        general_inventory.clear()
                         rope_item = 2
+                        max_hp = 100
+                        current_hp = max_hp
+                        
                     if self.level.stage_number == 6: # 마지막 스테이지 
                         self.finish = True
                     else:
                         stage_clear[self.level.stage_number] = True
                         text_flag[self.level.stage_number + 1] = True
                         self.level = Level(0, 0, 0, pygame.time.get_ticks())
+                        self.player_hp_recovery()
 
             if self.level.stage_number == 0: #메인 스테이지 
                 s0 = self.level.get_stage0() #스테이지 입구 타일
