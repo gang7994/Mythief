@@ -91,6 +91,7 @@ class Player(pygame.sprite.Sprite):
         self.drunken_start_time = 0
         # is player cerberus
         self.is_player_cerberus = True
+        self.is_hadesHelmet = False
         # is thunder
         self.is_thunder = False
         self.is_rod_ready = True
@@ -510,7 +511,8 @@ class Player(pygame.sprite.Sprite):
                              "test_general_item7",
                              "test_general_item8",
                              "test_general_item9",
-                             "test_general_item10"]:
+                             "test_general_item10",
+                             "hadesHelmet"]:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()
@@ -528,6 +530,9 @@ class Player(pygame.sprite.Sprite):
                             self.current_item_gage = 0
                             if item.name in ["event_item1", "event_item2", "event_item3"]:
                                 theme_inventory.append(item)
+                            elif item.name == "hadesHelmet":
+                                self.is_hadesHelmet = True
+                                self.is_player_cerberus = False
                             else:
                                 is_fill = True
                                 for tmp in general_inventory:
