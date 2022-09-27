@@ -53,6 +53,10 @@ class Level:
         self.thunder_start_position = []
         self.thunder_flag = False
         self.thunder_cool_time = True
+        self.thunder_select_pos = []
+        # conductor var
+        self.conductor0_pos = []
+        self.conductor1_pos = []
         # map_init
         self.cur_map = map[0]
         self.create_map()
@@ -129,8 +133,10 @@ class Level:
                     CrossWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "CD0":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
                     Conductor0((tile_pos_x, tile_pos_y), [self.images])
+                    self.conductor0_pos.append((tile_pos_x, tile_pos_y))
                 if col == "CD1":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
                     Conductor1((tile_pos_x, tile_pos_y), [self.images])
+                    self.conductor1_pos.append((tile_pos_x, tile_pos_y))
 
                 if col == "W1":
                     Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -418,6 +424,7 @@ class Level:
                 self.player.is_dead = True
             self.alpha += 50
             self.flood_cnt += 1
+            
     def random_thunder(self, time):
         if int(time) % 3 != 0:
             self.thunder_flag = False
@@ -429,6 +436,23 @@ class Level:
                 for i in self.player.rod_position:
                     Thunder(i, [self.monster_images, self.damage_images], self.images, self.border_images)
                     
+    def thunder_conductor_collision_check(self):
+        conductor_num = len(self.conductor1_pos)
+        for sprite_CD in self.images:
+            if sprite_CD.name == "Conductor0":
+                for sprite_TH in self.damage_images:
+                    if sprite_TH.rect.colliderect(sprite_CD.rect) and sprite_TH.animation_idx ==9:
+                        sprite_CD.image = pygame.image.load(os.path.join(images_path, "electric_11_on.png")).convert_alpha()
+            if sprite_CD.name == "Conductor1":
+                for sprite_TH in self.damage_images:
+                    if sprite_TH.rect.colliderect(sprite_CD.rect) and sprite_TH.animation_idx ==9:
+                        sprite_CD.image = pygame.image.load(os.path.join(images_path, "electric_11_on.png")).convert_alpha()
+                        conductor_num-=1
+                        
+        if conductor_num == 0:
+            print("문열림")
+        
+        self.thunder_select_pos.clear()
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
@@ -447,6 +471,7 @@ class Level:
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
             self.elapsed_time = (self.tem_now_time) / 1000
             self.random_thunder(self.elapsed_time)
+            self.thunder_conductor_collision_check()
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(self.elapsed_time, dt)
 
