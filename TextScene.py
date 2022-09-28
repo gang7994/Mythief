@@ -61,5 +61,3 @@ class TextManager:
             if code == "000":
                 self.event_item_image = pygame.image.load(os.path.join(item_path, self.event_item_list[self.event_text_idx])).convert_alpha()
                 screen.blit(self.event_item_image, (575, 665))
-
-
