@@ -10,7 +10,7 @@ from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, C
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2,\
      GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8, GeneralItem9,\
-     GeneralItem10, HadesHelmet
+     GeneralItem10, GeneralItem, HadesHelmet
 from Map import *
 from TextScene import *
 from ParticleEffect import Particle
@@ -53,12 +53,11 @@ class Level:
         self.thunder_start_position = []
         self.thunder_flag = False
         self.thunder_cool_time = True
-        self.thunder_select_pos = []
         # conductor var
-        self.conductor0_pos = []
-        self.conductor1_pos = []
+        self.conductor1 = None
         # map_init
         self.cur_map = map[0]
+        self.event_item_list = []
         self.create_map()
         # player_glow
         self.glow = Glow(self.player.rect.topleft)
@@ -139,10 +138,8 @@ class Level:
                     CrossWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "CD0":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
                     Conductor0((tile_pos_x, tile_pos_y), [self.images])
-                    self.conductor0_pos.append((tile_pos_x, tile_pos_y))
                 if col == "CD1":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
-                    Conductor1((tile_pos_x, tile_pos_y), [self.images])
-                    self.conductor1_pos.append((tile_pos_x, tile_pos_y))
+                    self.conductor1 = Conductor1((tile_pos_x, tile_pos_y), [self.images])
 
                 if col == "W1":
                     Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -164,7 +161,7 @@ class Level:
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if col == "R" or col == "P" or col == "M" or col == "RM" or col == "I0" or col == "I1" or col == "I2" or \
-                    col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or \
+                    col == "GI" or col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or \
                     col == "GI6" or col == "GI7" or col == "GI8"  or col == "GI9"  or col == "GI10" or col == "H":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
@@ -172,10 +169,10 @@ class Level:
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                 if col == "E000R":
                     EventTile((tile_pos_x, tile_pos_y), [self.images], "000")
-                    random_event_item_text = random.sample(event_item_text, k=3)
-                    event_texts["000"] = [random_event_item_text[0],
-                                          random_event_item_text[1],
-                                          random_event_item_text[2]]
+                    random_event_item_text = random.sample(event_list, k=3)
+                    event_texts["000"] = [event_item_text[random_event_item_text[0]],
+                                          event_item_text[random_event_item_text[1]],
+                                          event_item_text[random_event_item_text[2]]]
                 if col == "AR":
                     AlcoholRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "PL0":
@@ -193,11 +190,11 @@ class Level:
                 if col == "F4":
                     self.finish = Finish4((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
                 if col == "I0":
-                    Test0Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
+                    self.event_item_list.append(Test0Item((tile_pos_x, tile_pos_y), [self.images, self.item_images]))
                 if col == "I1":
-                    Test1Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
+                    self.event_item_list.append(Test1Item((tile_pos_x, tile_pos_y), [self.images, self.item_images]))
                 if col == "I2":
-                    Test2Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
+                    self.event_item_list.append(Test2Item((tile_pos_x, tile_pos_y), [self.images, self.item_images]))
                 if col == "GI0":
                     GeneralItem0((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "GI1":
@@ -220,6 +217,8 @@ class Level:
                     GeneralItem9((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "GI10":
                     GeneralItem10((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
+                if col == "GI":
+                    GeneralItem((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "H":
                     HadesHelmet((tile_pos_x, tile_pos_y), [self.images, self.item_images])
                 if col == "P":
@@ -271,6 +270,7 @@ class Level:
                     Road_Vertical((tile_pos_x, tile_pos_y), [self.images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+
                 
                 
 
@@ -281,6 +281,10 @@ class Level:
                              self.item_images,
                              self.door_images,
                              self.images)
+
+        if len(self.event_item_list) != 0:
+            for idx, item in enumerate(self.event_item_list):
+                item.event = random_event_item_text[idx]
 
     # 현재 레벨의 플레이어 반환
     def get_player(self):
@@ -312,6 +316,7 @@ class Level:
                 sprite.is_pause = True
             for fire in self.fire_images:
                 fire.is_pause = True
+            self.glow.is_pause = True
         elif str == 'F':
             self.is_pause = False
             for sprite in self.images:
@@ -320,6 +325,7 @@ class Level:
                 sprite.is_pause = False
             for fire in self.fire_images:
                 fire.is_pause = False
+            self.glow.is_pause = False
 
     # 플레이어 , 적 거리 계산
     def get_player_distance(self, player, dt):
@@ -327,9 +333,6 @@ class Level:
             if monster.name == "rush_Monster" or monster.name == "cerberus" or monster.name == "Fish" or monster.name == "satiros":
                 monster_vec = pygame.math.Vector2(monster.rect.center)
                 player_vec = pygame.math.Vector2(player.rect.center)
-                
-                #print("monster: %s, plyer: %s" % (monster_vec, player_vec)) # 버그 확인중
-                
                 distance = (player_vec - monster_vec).magnitude()
                 if (player_vec - monster_vec)[0] > -3 and (player_vec - monster_vec)[0] < 3:
                     dir_x = 0
@@ -356,9 +359,9 @@ class Level:
                         monster.is_rush = False
 
     def monster_auto_create(self, time, dt):
-        if int(time) % 10 != 0:
+        if int(time) % 15 != 0:
             self.create_flag = False
-        if int(time) % 10 == 0 and int(time) != 0 and not self.create_flag:
+        if int(time) % 15 == 0 and int(time) != 0 and not self.create_flag:
             self.create_flag = True
             for idx, sample in enumerate(random.sample(self.monster_respawn_position, k=self.one_per_create)):
                 if idx % 2 == 0:
@@ -447,32 +450,11 @@ class Level:
             if len(self.player.rod_position) > 0:
                 for i in self.player.rod_position:
                     Thunder(i, [self.monster_images, self.damage_images], self.images, self.border_images)
-                    
-    def thunder_conductor_collision_check(self):
-        conductor_num = len(self.conductor1_pos)
-        print("함수에 진입했어요 ", conductor_num)
-        for sprite_CD in self.images:
-            if sprite_CD.name == "Conductor0":
-                for sprite_TH in self.damage_images:
-                    if sprite_TH.rect.colliderect(sprite_CD.rect) and sprite_TH.animation_idx ==9:
-                        sprite_CD.image = pygame.image.load(os.path.join(images_path, "electric_11_on.png")).convert_alpha()
-            if sprite_CD.name == "Conductor1":
-                for sprite_TH in self.damage_images:
-                    if sprite_TH.rect.colliderect(sprite_CD.rect) and sprite_TH.animation_idx ==9:
-                        sprite_CD.image = pygame.image.load(os.path.join(images_path, "electric_11_on.png")).convert_alpha()
-                        conductor_num-=1
-                        print("번개가 쳤어요 ", conductor_num)
-                        
-        if conductor_num == 0:
-            print(conductor_num)
-            print("문열림")
-        
-        self.thunder_select_pos.clear()
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)
-
+        
         if not self.player.is_hadesHelmet:
             self.player.is_player_cerberus = True # 케르베로스 트리거
         self.images.custom_draw(self.player, dt)
@@ -481,12 +463,22 @@ class Level:
         self.monster_images.update()
         self.images.update()
 
+        if self.player.get_event_item:
+            self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+            self.finish.name = "Finish"
+
         if not self.is_pause:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
             self.elapsed_time = (self.tem_now_time) / 1000
-            '''self.random_thunder(self.elapsed_time)'''
-            '''self.thunder_conductor_collision_check()'''
+
+            if self.stage_number == 5 and (self.map_idx in [0,1,2,4,5,6,8]): # 번개 알고리즘 + 전도체 블록 알고리즘
+                self.random_thunder(self.elapsed_time)
+                if self.conductor1 is not None:
+                    if self.conductor1.is_on and self.finish.name == "ClosedFinish":
+                        self.finish.name = "Finish"
+                        self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+
             if self.stage_number != 0 and self.stage_number != 1:
                 self.monster_auto_create(self.elapsed_time, dt)
 
@@ -497,15 +489,17 @@ class Level:
                     self.wave_cnt = 0
                 self.wave_player_collision_check()
                 self.create_wave(self.elapsed_time * 10, self.wave_idx)
-            elif self.stage_number == 2 and (self.map_idx == 2 or self.map_idx == 3):
+            elif self.stage_number == 2 and (self.map_idx == 2 or self.map_idx == 4 or self.map_idx == 8):
                 self.flooding(self.elapsed_time)
 
-            self.glow.glow_wait(self.elapsed_time)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 
         if self.stage_number == 3 and (self.map_idx == 1 or self.map_idx == 3 or self.map_idx == 6):
+            self.glow.wait_bright()
+            self.glow.wait_dark()
             self.glow.draw_player_glow()
+            self.player.is_dark = True
 
 
         self.glow.draw_display_change(dt)
@@ -567,9 +561,12 @@ class Glow:
         self.pos = pos
         for i in [[10, 50],[50,40],[100,30],[200,20],[255,10]]:
             self.player_glow.append([self.circle_surf(i[1],(i[0],i[0],i[0])), i[1]])
-        self.player_glow_cool_time = 3
+        self.player_glow_cool_time = 3  # -> ex) 보여주는게 짧고 암전 길게
         self.is_player_glow = False
-        self.glow_count_flag = False
+        self.bright_start = pygame.time.get_ticks()
+        self.dark_start = pygame.time.get_ticks()
+        self.bright_time = 1000
+        self.dark_time = 5000
         # display_change_animation
         self.game_display_flag = False
         self.display_anim_surf = pygame.Surface((screen_width, screen_height))
@@ -617,15 +614,25 @@ class Glow:
                 self.new_surf.blit(glow[0], (self.half_width - glow[1], self.half_height - glow[1]))
             self.display_surface.blit(self.new_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
 
-    def glow_wait(self, time):
-        if int(time) % self.player_glow_cool_time != 0:
-            self.glow_count_flag = False
-        if int(time) % self.player_glow_cool_time == 0 and int(time) != 0 and not self.glow_count_flag:
-            self.glow_count_flag = True
+    def wait_bright(self):
+        if not self.is_pause:
             if not self.is_player_glow:
-                self.is_player_glow = True
-            else:
-                self.is_player_glow = False
+                self.tem_now_time = pygame.time.get_ticks() - self.bright_start
+                if self.tem_now_time > self.bright_time:
+                    self.is_player_glow = True
+                    self.dark_start = pygame.time.get_ticks()
+        else:
+            self.bright_start = pygame.time.get_ticks() - self.tem_now_time
+
+    def wait_dark(self):
+        if not self.is_pause:
+            if self.is_player_glow:
+                self.tem_now_time = pygame.time.get_ticks() - self.dark_start
+                if self.tem_now_time > self.dark_time:
+                    self.is_player_glow = False
+                    self.bright_start = pygame.time.get_ticks()
+        else:
+            self.dark_start = pygame.time.get_ticks() - self.tem_now_time
 
     def draw_fire_glow(self, player, dt):
         pos = []

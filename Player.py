@@ -43,6 +43,7 @@ class Player(pygame.sprite.Sprite):
         # damage var
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
+        self.is_damage2 = False
         self.is_damage5 = False
         self.is_damage10 = False
         self.is_damage30 = False
@@ -74,6 +75,7 @@ class Player(pygame.sprite.Sprite):
         # event item handler var
         self.event_handler = False
         self.event_code = None
+        self.get_event_item = False
         # is wave?
         self.is_tile_mix = False
         self.player_in_wave = False
@@ -100,6 +102,8 @@ class Player(pygame.sprite.Sprite):
         self.rod_num = 0
         self.rod_start_time = pygame.time.get_ticks()
         self.rod_current_time = pygame.time.get_ticks()
+        # is dark
+        self.is_dark = False
         # item effect
         self.is_first0 = True # 이상한 석상
         self.is_first1 = True #대나무 낚싯대
@@ -385,6 +389,26 @@ class Player(pygame.sprite.Sprite):
                 self.player_speed_x = 2
                 self.player_speed_y = 2
 
+    def event_item_effects(self, event_char):    # 이벤트 유물 효과 필요
+        if event_char == "A":
+            pass
+        elif event_char == "B":
+            pass
+        elif event_char == "C":
+            pass
+        elif event_char == "D":
+            pass
+        elif event_char == "E":
+            pass
+        elif event_char == "F":
+            pass
+        elif event_char == "G":
+            pass
+        elif event_char == "H":
+            pass
+        elif event_char == "I":
+            pass
+
     # 충돌 함수
     def collision(self, direction):
         self.is_road = True
@@ -405,13 +429,12 @@ class Player(pygame.sprite.Sprite):
                             self.start0 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
                             self.player_drunken()
-                        elif not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
+                        elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.x > 0:
                                 self.hitbox.right = sprite.rect.left
                             elif self.dir.x < 0:
                                 self.hitbox.left = sprite.rect.right
                         elif self.is_tile_mix and not self.is_damaged:
-                            
                             current_time0 = pygame.time.get_ticks()
                             if current_time0 - self.start0 < 5000 and self.is_effect0:
                                 self.get_damaged()
@@ -420,8 +443,10 @@ class Player(pygame.sprite.Sprite):
                                 self.get_damaged()
                                 self.is_damage10 = True
                                 self.is_first0 = True
-
                         elif self.is_thunder and not self.is_damaged:
+                            self.get_damaged()
+                            self.is_damage10 = True
+                        elif self.is_dark and not self.is_damaged:
                             self.get_damaged()
                             self.is_damage10 = True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
@@ -444,7 +469,7 @@ class Player(pygame.sprite.Sprite):
                             self.start1 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
                             self.player_drunken()
-                        elif not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
+                        elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.y > 0:
                                 self.hitbox.bottom = sprite.rect.top
                             elif self.dir.y < 0:
@@ -457,7 +482,13 @@ class Player(pygame.sprite.Sprite):
                             else :
                                 self.get_damaged()
                                 self.is_damage10 = True
-                                self.is_first0= True
+                                self.is_first0 = True
+                        elif self.is_thunder and not self.is_damaged:
+                            self.get_damaged()
+                            self.is_damage10 = True
+                        elif self.is_dark and not self.is_damaged:
+                            self.get_damaged()
+                            self.is_damage10 = True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_player_cerberus = False
@@ -471,14 +502,14 @@ class Player(pygame.sprite.Sprite):
             if sprite.hitbox.colliderect(self.hitbox):
                 if sprite.name == "laser_Monster" and not self.is_damaged:
                     self.get_damaged()
-                    self.is_damage10 = True
+                    self.is_damage2 = True
                 if sprite.name == "monster_laser" and not self.is_damaged:
                     self.get_damaged()
-                    self.is_damage5 = True
+                    self.is_damage2 = True
                     sprite.kill()
-                if sprite.name == "rush_Monster" and not self.is_damaged:
+                if sprite.name == "rush_Monster" and not self.is_damaged:           # 데미지 2~3
                     self.get_damaged()
-                    self.is_damage10 = True
+                    self.is_damage2 = True
                 if sprite.name == "thunder" and sprite.animation_idx == 9 and not self.is_damaged:
                     self.is_thunder = True
                     self.get_damaged()
@@ -498,20 +529,23 @@ class Player(pygame.sprite.Sprite):
 
     def get_item_interaction(self):
         for item in self.item_images:
+            if self.get_event_item and item.name in ["event_item1", "event_item2", "event_item3"]:
+                item.kill()
             if item.name in ["event_item1",
                              "event_item2",
                              "event_item3",
-                             "test_general_item0",
-                             "test_general_item1",
-                             "test_general_item2",
-                             "test_general_item3",
-                             "test_general_item4",
-                             "test_general_item5",
-                             "test_general_item6",
-                             "test_general_item7",
-                             "test_general_item8",
-                             "test_general_item9",
-                             "test_general_item10",
+                             "general_item",
+                             "general_item0",
+                             "general_item1",
+                             "general_item2",
+                             "general_item3",
+                             "general_item4",
+                             "general_item5",
+                             "general_item6",
+                             "general_item7",
+                             "general_item8",
+                             "general_item9",
+                             "general_item10",
                              "hadesHelmet"]:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
@@ -529,11 +563,22 @@ class Player(pygame.sprite.Sprite):
                             item.is_interaction = False
                             self.current_item_gage = 0
                             if item.name in ["event_item1", "event_item2", "event_item3"]:
-                                theme_inventory.append(item)
+                                self.event_item_effects(item.event)
+                                self.get_event_item = True
                             elif item.name == "hadesHelmet":
                                 self.is_hadesHelmet = True
                                 self.is_player_cerberus = False
                             else:
+                                self.is_full = False
+                                if item.name == "general_item":
+                                    while 1:
+                                        item.name = random.choice(["general_item0","general_item1","general_item2","general_item3","general_item4",\
+                                            "general_item5", "general_item6", "general_item7", "general_item8", "general_item9", "general_item10"])
+                                        for i in general_inventory:
+                                            if (i[0].name == item.name):
+                                                if i[1] == 6: self.is_full = True; break
+                                                else: self.is_full = False;
+                                        if not self.is_full: break
                                 is_fill = True
                                 for tmp in general_inventory:
                                     if tmp[0].name == item.name:
@@ -541,6 +586,7 @@ class Player(pygame.sprite.Sprite):
                                         is_fill = False
                                 if is_fill:
                                     general_inventory.append([item, 1])
+                                
                             item.kill()
                     elif not keys[pygame.K_TAB]:
                         item.item_gage = 0
