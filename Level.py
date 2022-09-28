@@ -296,6 +296,7 @@ class Level:
                 sprite.is_pause = True
             for fire in self.fire_images:
                 fire.is_pause = True
+            self.glow.is_pause = True
         elif str == 'F':
             self.is_pause = False
             for sprite in self.images:
@@ -304,6 +305,7 @@ class Level:
                 sprite.is_pause = False
             for fire in self.fire_images:
                 fire.is_pause = False
+            self.glow.is_pause = False
 
     # 플레이어 , 적 거리 계산
     def get_player_distance(self, player, dt):
@@ -466,11 +468,12 @@ class Level:
             elif self.stage_number == 2 and (self.map_idx == 2 or self.map_idx == 3):
                 self.flooding(self.elapsed_time)
 
-            self.glow.glow_wait(self.elapsed_time)
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 
         if self.stage_number == 3 and (self.map_idx == 1 or self.map_idx == 3 or self.map_idx == 6):
+            self.glow.wait_bright()
+            self.glow.wait_dark()
             self.glow.draw_player_glow()
             self.player.is_dark = True
 
@@ -536,7 +539,10 @@ class Glow:
             self.player_glow.append([self.circle_surf(i[1],(i[0],i[0],i[0])), i[1]])
         self.player_glow_cool_time = 3  # -> ex) 보여주는게 짧고 암전 길게
         self.is_player_glow = False
-        self.glow_count_flag = False
+        self.bright_start = pygame.time.get_ticks()
+        self.dark_start = pygame.time.get_ticks()
+        self.bright_time = 1000
+        self.dark_time = 5000
         # display_change_animation
         self.game_display_flag = False
         self.display_anim_surf = pygame.Surface((screen_width, screen_height))
@@ -584,15 +590,25 @@ class Glow:
                 self.new_surf.blit(glow[0], (self.half_width - glow[1], self.half_height - glow[1]))
             self.display_surface.blit(self.new_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
 
-    def glow_wait(self, time):
-        if int(time) % self.player_glow_cool_time != 0:
-            self.glow_count_flag = False
-        if int(time) % self.player_glow_cool_time == 0 and int(time) != 0 and not self.glow_count_flag:
-            self.glow_count_flag = True
+    def wait_bright(self):
+        if not self.is_pause:
             if not self.is_player_glow:
-                self.is_player_glow = True
-            else:
-                self.is_player_glow = False
+                self.tem_now_time = pygame.time.get_ticks() - self.bright_start
+                if self.tem_now_time > self.bright_time:
+                    self.is_player_glow = True
+                    self.dark_start = pygame.time.get_ticks()
+        else:
+            self.bright_start = pygame.time.get_ticks() - self.tem_now_time
+
+    def wait_dark(self):
+        if not self.is_pause:
+            if self.is_player_glow:
+                self.tem_now_time = pygame.time.get_ticks() - self.dark_start
+                if self.tem_now_time > self.dark_time:
+                    self.is_player_glow = False
+                    self.bright_start = pygame.time.get_ticks()
+        else:
+            self.dark_start = pygame.time.get_ticks() - self.tem_now_time
 
     def draw_fire_glow(self, player, dt):
         pos = []
