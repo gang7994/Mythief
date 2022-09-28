@@ -361,27 +361,26 @@ class GameManager:
         pygame.draw.circle(self.screen, GREY, (405, 710), 40)
         pygame.draw.circle(self.screen, GREY, (525, 710), 40)
         for i, item in enumerate(theme_inventory):
-            if item == "Them_1.png" and stage_clear[0]:
+            if item == "Them_1.png" and stage_clear[1]:
                 image = pygame.image.load(os.path.join(item_path, "Them_1.png")).convert_alpha()
-                image_rect = image.get_rect(center=(45 + i * 120, 710))
-                self.screen.blit(image, image_rect)
-            elif item == "Them_2.png" and stage_clear[1]:
-                image = pygame.image.load(os.path.join(item_path, "Them_2.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
             elif item == "Them_2.png" and stage_clear[2]:
                 image = pygame.image.load(os.path.join(item_path, "Them_2.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_2.png" and stage_clear[3]:
-                image = pygame.image.load(os.path.join(item_path, "Them_2.png")).convert_alpha()
+            elif item == "Them_3.png" and stage_clear[3]:
+                image = pygame.image.load(os.path.join(item_path, "Them_3.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_5.png" and stage_clear[4]:
+            elif item == "Them_4.png" and stage_clear[4]:
+                image = pygame.image.load(os.path.join(item_path, "Them_4.png")).convert_alpha()
+                image_rect = image.get_rect(center=(45 + i * 120, 710))
+                self.screen.blit(image, image_rect)
+            elif item == "Them_5.png" and stage_clear[5]:
                 image = pygame.image.load(os.path.join(item_path, "Them_5.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            i+= 120
         
     def show_item(self):
         pygame.draw.circle(self.screen, GREY, (1370, 480), 40) #기믹아이템
@@ -466,7 +465,7 @@ class GameManager:
         if use_item1:
             use_item1 = False
         if use_item2:
-            max_hp == 100
+            max_hp = 100
             use_item2 = False
         if use_item3:
             shield = 0
@@ -676,9 +675,8 @@ class GameManager:
                     self.player_hp_recovery()
                 else: #다음 방이 없으면 메인 스테이지로 넘어가기
                     if self.level.stage_number == 1: #튜토리얼 스테이지 마지막 방에서 나왔을때 초기화
-                        theme_inventory.clear()
                         general_inventory.clear()
-                        rope_item = 2
+                        rope_item = 100
                         max_hp = 100
                         current_hp = max_hp
                         
