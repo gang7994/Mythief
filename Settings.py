@@ -33,7 +33,7 @@ images_path = os.path.join(current_path, "Images/TestPix")
 item_path = os.path.join(current_path, "Images/Item")
 
 # 인벤토리
-theme_inventory = []
+theme_inventory = ["Them_1.png", "Them_2.png", "Them_2.png", "Them_2.png", "Them_5.png"]
 general_inventory = []
 # 로프(패스권)
 rope_item = 100
