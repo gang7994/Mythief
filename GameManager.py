@@ -352,20 +352,32 @@ class GameManager:
         self.screen.blits([(pos, (10, 560)),(remain_monster, (10, 590)), (fps, (10, 620))])
         
     def show_theme_inventory(self):
-        pygame.draw.circle(self.screen, GREY, (150, 710), 40)
-        pygame.draw.circle(self.screen, GREY, (270, 710), 40)
-        pygame.draw.circle(self.screen, GREY, (390, 710), 40)
-        pygame.draw.circle(self.screen, GREY, (510, 710), 40)
+        pygame.draw.circle(self.screen, GREY, (45, 710), 40)
+        pygame.draw.circle(self.screen, GREY, (165, 710), 40)
+        pygame.draw.circle(self.screen, GREY, (285, 710), 40)
+        pygame.draw.circle(self.screen, GREY, (405, 710), 40)
+        pygame.draw.circle(self.screen, GREY, (525, 710), 40)
         for i, item in enumerate(theme_inventory):
-            if item.name == "event_item1":
-                image_rect = item.image.get_rect(center=(150+i*120, 710))
-                self.screen.blit(item.image, image_rect)
-            elif item.name == "event_item2":
-                image_rect = item.image.get_rect(center=(150+i*120, 710))
-                self.screen.blit(item.image, image_rect)
-            elif item.name == "event_item3":
-                image_rect = item.image.get_rect(center=(150 + i * 120, 710))
-                self.screen.blit(item.image, image_rect)
+            if item == "Them_1.png" and stage_clear[0]:
+                image = pygame.image.load(os.path.join(item_path, "Them_1.png")).convert_alpha()
+                image_rect = image.get_rect(center=(45 + i * 120, 710))
+                self.screen.blit(image, image_rect)
+            elif item == "Them_2.png" and stage_clear[1]:
+                image = pygame.image.load(os.path.join(item_path, "Them_2.png")).convert_alpha()
+                image_rect = image.get_rect(center=(45 + i * 120, 710))
+                self.screen.blit(image, image_rect)
+            elif item == "Them_2.png" and stage_clear[2]:
+                image = pygame.image.load(os.path.join(item_path, "Them_2.png")).convert_alpha()
+                image_rect = image.get_rect(center=(45 + i * 120, 710))
+                self.screen.blit(image, image_rect)
+            elif item == "Them_2.png" and stage_clear[3]:
+                image = pygame.image.load(os.path.join(item_path, "Them_2.png")).convert_alpha()
+                image_rect = image.get_rect(center=(45 + i * 120, 710))
+                self.screen.blit(image, image_rect)
+            elif item == "Them_5.png" and stage_clear[4]:
+                image = pygame.image.load(os.path.join(item_path, "Them_5.png")).convert_alpha()
+                image_rect = image.get_rect(center=(45 + i * 120, 710))
+                self.screen.blit(image, image_rect)
             i+= 120
         
     def show_item(self):

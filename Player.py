@@ -539,8 +539,8 @@ class Player(pygame.sprite.Sprite):
                             item.is_interaction = False
                             self.current_item_gage = 0
                             if item.name in ["event_item1", "event_item2", "event_item3"]:
-                                theme_inventory.append(item)
-                            elif item.name == "hadesHelmet":
+                                pass
+                            if item.name == "hadesHelmet":
                                 self.is_hadesHelmet = True
                                 self.is_player_cerberus = False
                             else:
