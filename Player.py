@@ -43,6 +43,7 @@ class Player(pygame.sprite.Sprite):
         # damage var
         self.undamaged_time = 1000    # 무적시간 1초
         self.is_damaged = False      # 데미지 상태인지
+        self.is_damage2 = False
         self.is_damage5 = False
         self.is_damage10 = False
         self.is_damage30 = False
@@ -388,7 +389,7 @@ class Player(pygame.sprite.Sprite):
                 self.player_speed_x = 2
                 self.player_speed_y = 2
 
-    def event_item_effects(self, event_char):
+    def event_item_effects(self, event_char):    # 이벤트 유물 효과 필요
         if event_char == "A":
             pass
         elif event_char == "B":
@@ -501,14 +502,14 @@ class Player(pygame.sprite.Sprite):
             if sprite.hitbox.colliderect(self.hitbox):
                 if sprite.name == "laser_Monster" and not self.is_damaged:
                     self.get_damaged()
-                    self.is_damage10 = True
+                    self.is_damage2 = True
                 if sprite.name == "monster_laser" and not self.is_damaged:
                     self.get_damaged()
-                    self.is_damage5 = True
+                    self.is_damage2 = True
                     sprite.kill()
                 if sprite.name == "rush_Monster" and not self.is_damaged:           # 데미지 2~3
                     self.get_damaged()
-                    self.is_damage10 = True
+                    self.is_damage2 = True
                 if sprite.name == "thunder" and sprite.animation_idx == 9 and not self.is_damaged:
                     self.is_thunder = True
                     self.get_damaged()
