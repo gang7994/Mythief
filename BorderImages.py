@@ -107,9 +107,17 @@ class Finish(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
         self.name = "Finish"
-        if stage_num == 5 and (map_idx == 4 or map_idx == 5 or map_idx == 6 or map_idx ==8):
+
+        if stage_num == 5 and (map_idx in [3,4,5,6,7,8]):
             self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
             self.name = "ClosedFinish"
+        elif stage_num == 1 and map_idx == 4:
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
+            self.name = "ClosedFinish"
+        elif stage_num in [2,3,4] and (map_idx + 1) % 4 == 0:
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
+            self.name = "ClosedFinish"
+
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.is_pause = False

@@ -347,9 +347,9 @@ class Level:
                         monster.is_rush = False
 
     def monster_auto_create(self, time, dt):
-        if int(time) % 10 != 0:
+        if int(time) % 15 != 0:
             self.create_flag = False
-        if int(time) % 10 == 0 and int(time) != 0 and not self.create_flag:
+        if int(time) % 15 == 0 and int(time) != 0 and not self.create_flag:
             self.create_flag = True
             for idx, sample in enumerate(random.sample(self.monster_respawn_position, k=self.one_per_create)):
                 if idx % 2 == 0:
@@ -451,6 +451,10 @@ class Level:
         self.monster_images.update()
         self.images.update()
 
+        if self.player.get_event_item:
+            self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+            self.finish.name = "Finish"
+
         if not self.is_pause:
             self.get_player_distance(self.player, dt)
             self.tem_now_time = pygame.time.get_ticks() - self.start_time
@@ -473,7 +477,7 @@ class Level:
                     self.wave_cnt = 0
                 self.wave_player_collision_check()
                 self.create_wave(self.elapsed_time * 10, self.wave_idx)
-            elif self.stage_number == 2 and (self.map_idx == 2 or self.map_idx == 3):
+            elif self.stage_number == 2 and (self.map_idx == 2 or self.map_idx == 4 or self.map_idx == 8):
                 self.flooding(self.elapsed_time)
 
         else:

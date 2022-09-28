@@ -22,6 +22,7 @@ class TextManager:
 
     def draw_text(self, idx, screen):
         running = True
+        self.text_idx = 0
         while running:
             dt = self.clock.tick(FPS)
             screen.fill(BLACK)
