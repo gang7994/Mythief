@@ -74,6 +74,7 @@ class Player(pygame.sprite.Sprite):
         # event item handler var
         self.event_handler = False
         self.event_code = None
+        self.get_event_item = False
         # is wave?
         self.is_tile_mix = False
         self.player_in_wave = False
@@ -387,6 +388,26 @@ class Player(pygame.sprite.Sprite):
                 self.player_speed_x = 2
                 self.player_speed_y = 2
 
+    def event_item_effects(self, event_char):
+        if event_char == "A":
+            pass
+        elif event_char == "B":
+            pass
+        elif event_char == "C":
+            pass
+        elif event_char == "D":
+            pass
+        elif event_char == "E":
+            pass
+        elif event_char == "F":
+            pass
+        elif event_char == "G":
+            pass
+        elif event_char == "H":
+            pass
+        elif event_char == "I":
+            pass
+
     # 충돌 함수
     def collision(self, direction):
         self.is_road = True
@@ -507,6 +528,8 @@ class Player(pygame.sprite.Sprite):
 
     def get_item_interaction(self):
         for item in self.item_images:
+            if self.get_event_item and item.name in ["event_item1", "event_item2", "event_item3"]:
+                item.kill()
             if item.name in ["event_item1",
                              "event_item2",
                              "event_item3",
@@ -539,8 +562,9 @@ class Player(pygame.sprite.Sprite):
                             item.is_interaction = False
                             self.current_item_gage = 0
                             if item.name in ["event_item1", "event_item2", "event_item3"]:
-                                pass
-                            if item.name == "hadesHelmet":
+                                self.event_item_effects(item.event)
+                                self.get_event_item = True
+                            elif item.name == "hadesHelmet":
                                 self.is_hadesHelmet = True
                                 self.is_player_cerberus = False
                             else:

@@ -149,18 +149,19 @@ texts = {0: [["흐음......",
              []]}
 
 # 이벤트 텍스트(이벤트 트리거를 통해 생성되는 텍스트)
-event_item_text = ["           보유한 유물 중 랜덤으로 하나를 제공하고, HP를 대량 회복한다.",
-                   "           보유한 유물 중 랜덤으로 하나를 소비하고 새로운 유물을 랜덤으로 얻는다.",
-                   "           내 HP가 소비되는 대신, 새로운 랜덤 유물을 얻는다.",
-                   "           보유한 유물을 랜덤으로 두 개 소비하고, HP를 최대로 충전한다.",
-                   "           유물(플레이어가 알 수 있음)을 제거해 준다.",
-                   "           내 체력을 모두 회복한다. 최대 체력을 잃는다.",
-                   "           체력을 잃는다. 최대 체력을 증가시킨다.",
-                   "           유물을 얻는다.",
-                   "           떠난다."]
+event_list = ["A","B","C","D","E","F","G","H","I"]
+event_item_text = {"A": "           보유한 유물 중 랜덤으로 하나를 제공하고, HP를 대량 회복한다.",
+                   "B": "           보유한 유물 중 랜덤으로 하나를 소비하고 새로운 유물을 랜덤으로 얻는다.",
+                   "C": "           내 HP가 소비되는 대신, 새로운 랜덤 유물을 얻는다.",
+                   "D": "           보유한 유물을 랜덤으로 두 개 소비하고, HP를 최대로 충전한다.",
+                   "E": "           유물(플레이어가 알 수 있음)을 제거해 준다.",
+                   "F": "           내 체력을 모두 회복한다. 최대 체력을 잃는다.",
+                   "G": "           체력을 잃는다. 최대 체력을 증가시킨다.",
+                   "H": "           유물을 얻는다.",
+                   "I": "           떠난다."}
 
-random_event_item_text = random.sample(event_item_text, k=3)
+random_event_item_text = random.sample(event_list, k=3)
 
-event_texts = {"000": [random_event_item_text[0],
-                       random_event_item_text[1],
-                       random_event_item_text[2]]}
+event_texts = {"000": [event_item_text[random_event_item_text[0]],
+                       event_item_text[random_event_item_text[1]],
+                       event_item_text[random_event_item_text[2]]]}

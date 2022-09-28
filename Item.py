@@ -25,6 +25,7 @@ class Test0Item(pygame.sprite.Sprite):
         self.start_time = pygame.time.get_ticks()
         self.current_time = pygame.time.get_ticks()
         self.effect_idx = 0
+        self.event = None
         self.is_pause = False
 
     def animation(self):
@@ -62,6 +63,7 @@ class Test1Item(pygame.sprite.Sprite):
         self.start_time = pygame.time.get_ticks()
         self.current_time = pygame.time.get_ticks()
         self.effect_idx = 0
+        self.event = None
         self.is_pause = False
 
     def animation(self):
@@ -99,6 +101,7 @@ class Test2Item(pygame.sprite.Sprite):
         self.start_time = pygame.time.get_ticks()
         self.current_time = pygame.time.get_ticks()
         self.effect_idx = 0
+        self.event = None
         self.is_pause = False
 
     def animation(self):

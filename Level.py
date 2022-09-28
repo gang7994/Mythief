@@ -57,6 +57,7 @@ class Level:
         self.conductor1 = None
         # map_init
         self.cur_map = map[0]
+        self.event_item_list = []
         self.create_map()
         # player_glow
         self.glow = Glow(self.player.rect.topleft)
@@ -162,10 +163,10 @@ class Level:
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                 if col == "E000R":
                     EventTile((tile_pos_x, tile_pos_y), [self.images], "000")
-                    random_event_item_text = random.sample(event_item_text, k=3)
-                    event_texts["000"] = [random_event_item_text[0],
-                                          random_event_item_text[1],
-                                          random_event_item_text[2]]
+                    random_event_item_text = random.sample(event_list, k=3)
+                    event_texts["000"] = [event_item_text[random_event_item_text[0]],
+                                          event_item_text[random_event_item_text[1]],
+                                          event_item_text[random_event_item_text[2]]]
                 if col == "AR":
                     AlcoholRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "PL0":
@@ -177,11 +178,11 @@ class Level:
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
                 if col == "I0":
-                    Test0Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
+                    self.event_item_list.append(Test0Item((tile_pos_x, tile_pos_y), [self.images, self.item_images]))
                 if col == "I1":
-                    Test1Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
+                    self.event_item_list.append(Test1Item((tile_pos_x, tile_pos_y), [self.images, self.item_images]))
                 if col == "I2":
-                    Test2Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
+                    self.event_item_list.append(Test2Item((tile_pos_x, tile_pos_y), [self.images, self.item_images]))
                 if col == "GI0":
                     GeneralItem0((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "GI1":
@@ -268,6 +269,10 @@ class Level:
                              self.item_images,
                              self.door_images,
                              self.images)
+
+        if len(self.event_item_list) != 0:
+            for idx, item in enumerate(self.event_item_list):
+                item.event = random_event_item_text[idx]
 
     # 현재 레벨의 플레이어 반환
     def get_player(self):
