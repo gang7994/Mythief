@@ -57,17 +57,17 @@ Mythief
 |이미지|코드(명칭)|클래스|비고|
 |:------:|:---:|:---:|:---:|
 |![img](/Images/Item/general_item.png)|"GI"(general_item)|GeneralItem( )|랜덤 일반 아이템 조각|
-|![img](/Images/Item/test_general_item0.png)|"GI0"(general_item0)|GeneralItem0( )|여분로프(로프권 1회 추가)|
-|![img](/Images/Item/test_general_item1.png)|"GI1"(general_item1)|GeneralItem1( )|헤르메스의 날개 신(플레이어 이동속도 증가)|
-|![img](/Images/Item/test_general_item2.png)|"GI2"(general_item2)|GeneralItem2( )|보존식(최대 체력 증가)|
-|![img](/Images/Item/test_general_item3.png)|"GI3"(general_item3)|GeneralItem3( )|영혼석(스테이지 마다 최대 2회 방어)|
-|![img](/Images/Item/test_general_item4.png)|"GI4"(general_item4)|GeneralItem4( )|패스권을 하나 덜 소지|
-|![img](/Images/Item/test_general_item5.png)|"GI5"(general_item5)|GeneralItem5( )|고대주화(추가점수)|
-|![img](/Images/Item/test_general_item6.png)|"GI6"(general_item6)|GeneralItem6( )|회중시계|
-|![img](/Images/Item/test_general_item7.png)|"GI7"(general_item7)|GeneralItem7( )|평평한돌|
-|![img](/Images/Item/test_general_item8.png)|"GI8"(general_item8)|GeneralItem8( )|이상한석상|
-|![img](/Images/Item/test_general_item9.png)|"GI9"(general_item9)|GeneralItem9( )|미믹|
-|![img](/Images/Item/test_general_item10.png)|"GI10"(general_item10)|GeneralItem10( )|대나무낚싯대|
+|![img](/Images/Item/general_item0.png)|"GI0"(general_item0)|GeneralItem0( )|여분로프(로프권 1회 추가)|
+|![img](/Images/Item/general_item1.png)|"GI1"(general_item1)|GeneralItem1( )|헤르메스의 날개 신(플레이어 이동속도 증가)|
+|![img](/Images/Item/general_item2.png)|"GI2"(general_item2)|GeneralItem2( )|보존식(최대 체력 증가)|
+|![img](/Images/Item/general_item3.png)|"GI3"(general_item3)|GeneralItem3( )|영혼석(스테이지 마다 최대 2회 방어)|
+|![img](/Images/Item/general_item4.png)|"GI4"(general_item4)|GeneralItem4( )|패스권을 하나 덜 소지|
+|![img](/Images/Item/general_item5.png)|"GI5"(general_item5)|GeneralItem5( )|고대주화(추가점수)|
+|![img](/Images/Item/general_item6.png)|"GI6"(general_item6)|GeneralItem6( )|회중시계|
+|![img](/Images/Item/general_item7.png)|"GI7"(general_item7)|GeneralItem7( )|평평한돌|
+|![img](/Images/Item/general_item8.png)|"GI8"(general_item8)|GeneralItem8( )|이상한석상|
+|![img](/Images/Item/general_item9.png)|"GI9"(general_item9)|GeneralItem9( )|미믹|
+|![img](/Images/Item/general_item10.png)|"GI10"(general_item10)|GeneralItem10( )|대나무낚싯대|
 
 ### [미분류]
 |이미지|코드(명칭)|클래스|비고|

@@ -31,6 +31,7 @@ tile_height_size = 48
 current_path = os.path.dirname(__file__)
 images_path = os.path.join(current_path, "Images/TestPix")
 item_path = os.path.join(current_path, "Images/Item")
+stage_road_path = os.path.join(current_path, "Images/Stage_Road")
 
 # 인벤토리
 theme_inventory = ["Them_1.png", "Them_2.png", "Them_3.png", "Them_4.png", "Them_5.png"]
@@ -38,7 +39,7 @@ general_inventory = []
 # 로프(패스권)
 rope_item = 100
 # 스테이지 클리어 여부
-stage_clear = [False, False, False, False, False, False]
+stage_clear = [True, True, False, False, False, False]
 
 # player use item
 use_item0 = False
