@@ -26,7 +26,13 @@ class Road_Vertical(pygame.sprite.Sprite):
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "Road"
 
-#전도체
+#포세이돈(스테이지1)
+
+#하데스(스테이지2)
+
+#디오니소스(스테이지3)
+
+#제우스(스테이지4)
 class Conductor0(pygame.sprite.Sprite): #가짜
     def __init__(self, pos, groups):
         super().__init__(groups)

@@ -102,12 +102,45 @@ class Obstacle(pygame.sprite.Sprite):
         self.is_pause = False
 
 # 도착 이미지
-class Finish(pygame.sprite.Sprite):
+class Finish1(pygame.sprite.Sprite):
     def __init__(self, pos, groups, stage_num, map_idx):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
         if stage_num == 5 and (map_idx == 4 or map_idx == 5 or map_idx == 6 or map_idx ==8):
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
+        self.name = "Finish"
+        self.is_pause = False
+
+class Finish2(pygame.sprite.Sprite):
+    def __init__(self, pos, groups, stage_num, map_idx):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall_door2.png")).convert_alpha()
+        if stage_num == 5 and (map_idx == 4 or map_idx == 5 or map_idx == 6 or map_idx ==8):
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door2_closed.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
+        self.name = "Finish"
+        self.is_pause = False
+
+class Finish3(pygame.sprite.Sprite):
+    def __init__(self, pos, groups, stage_num, map_idx):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall_door3.png")).convert_alpha()
+        if stage_num == 5 and (map_idx == 4 or map_idx == 5 or map_idx == 6 or map_idx ==8):
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door3_closed.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
+        self.name = "Finish"
+        self.is_pause = False
+
+class Finish4(pygame.sprite.Sprite):
+    def __init__(self, pos, groups, stage_num, map_idx):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wall_door4.png")).convert_alpha()
+        if stage_num == 5 and (map_idx == 4 or map_idx == 5 or map_idx == 6 or map_idx ==8):
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door4_closed.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Finish"
@@ -117,7 +150,7 @@ class Finish(pygame.sprite.Sprite):
 class Stage0(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Stage0"
@@ -127,9 +160,9 @@ class Stage1(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
         if stage_clear[1]:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
         else:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Stage1"
@@ -139,9 +172,9 @@ class Stage2(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
         if stage_clear[2]:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
         else:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Stage2"
@@ -151,9 +184,9 @@ class Stage3(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
         if stage_clear[3]:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
         else:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Stage3"
@@ -163,9 +196,9 @@ class Stage4(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
         if stage_clear[4]:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
         else:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Stage4"
@@ -175,9 +208,9 @@ class Stage5(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
         if stage_clear[5]:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
         else:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Stage5"
@@ -193,7 +226,21 @@ class NoneRoad(pygame.sprite.Sprite):
         self.name = "NoneRoad"
         self.is_pause = False
 
-# 제우스 전선
+#포세이돈 스테이지(스테이지1)
+class NoneRoad1(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "wTile_Void.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "NoneRoad1"
+        self.is_pause = False
+
+#하데스 스테이지(스테이지2)
+
+#디오니소스 스테이지(스테이지3)
+
+# 제우스 스테이지(스테이지4)
 class HorizontalWire(pygame.sprite.Sprite): #─
     def __init__(self, pos, groups):
         super().__init__(groups)

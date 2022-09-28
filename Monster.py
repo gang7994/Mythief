@@ -58,6 +58,7 @@ class LaserMonster(pygame.sprite.Sprite):
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad" and \
+                       sprite.name != "NoneRoad1" and \
                        sprite.name != "alcoholRoad" and \
                        sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":
@@ -69,6 +70,7 @@ class LaserMonster(pygame.sprite.Sprite):
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad" and \
+                       sprite.name != "NoneRoad1" and \
                        sprite.name != "alcoholRoad" and \
                        sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":
@@ -162,6 +164,7 @@ class RushMonster(pygame.sprite.Sprite):
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad" and \
+                       sprite.name != "NoneRoad1" and \
                        sprite.name != "alcoholRoad" and \
                        sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":
@@ -173,6 +176,7 @@ class RushMonster(pygame.sprite.Sprite):
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad" and \
+                       sprite.name != "NoneRoad1" and \
                        sprite.name != "alcoholRoad" and \
                        sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":
@@ -300,6 +304,7 @@ class FishMonster(pygame.sprite.Sprite):
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad" and \
+                       sprite.name != "NoneRoad1" and \
                        sprite.name != "alcoholRoad" and \
                        sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":
@@ -311,6 +316,7 @@ class FishMonster(pygame.sprite.Sprite):
             for sprite in self.border_images:
                 if sprite.rect.colliderect(self.hitbox):
                     if sprite.name != "NoneRoad" and \
+                       sprite.name != "NoneRoad1" and \
                        sprite.name != "alcoholRoad" and \
                        sprite.name != "Pillar_0" and \
                        sprite.name != "Pillar_1":

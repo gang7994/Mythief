@@ -1,7 +1,7 @@
 import pygame, os, random
 from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3,\
-                         Corner4, NoneRoad, Finish, Obstacle, WaterHole, Stage0, Stage1,\
+                         Corner4, NoneRoad, NoneRoad1, Finish1, Finish2, Finish3, Finish4, Obstacle, WaterHole, Stage0, Stage1,\
                          Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar0, Pillar1,Pillar2, Thunder, \
                          CrossWire, DownLeftWire, DownRightWire, HorizontalDownWire, HorizontalUpWire, \
                          UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire
@@ -108,6 +108,12 @@ class Level:
                     if col == "WA":
                         self.wave_start_position.append((tile_pos_x, tile_pos_y))
 
+                if col == ".1":
+                    NoneRoad1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+
 
                 if col == "─":
                     HorizontalWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
@@ -178,8 +184,14 @@ class Level:
                     Pillar1((tile_pos_x, tile_pos_y), [self.pillar_images, self.border_images])
                 if col == "PL2":
                     Pillar2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "F":
-                    self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
+                if col == "F1":
+                    self.finish = Finish1((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
+                if col == "F2":
+                    self.finish = Finish2((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
+                if col == "F3":
+                    self.finish = Finish3((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
+                if col == "F4":
+                    self.finish = Finish4((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
                 if col == "I0":
                     Test0Item((tile_pos_x, tile_pos_y), [self.images, self.item_images])
                 if col == "I1":
@@ -417,12 +429,12 @@ class Level:
             if self.flood_cnt == 0:
                 for pos in self.flooding_tile:
                     self.flood.append(Flood(pos, [self.images]))
-            elif self.flood_cnt < 12:
+            elif self.flood_cnt < 16:
                 for sprite in self.flood:
                     sprite.image.set_alpha(self.alpha)
             else:
                 self.player.is_dead = True
-            self.alpha += 50
+            self.alpha += 256//16
             self.flood_cnt += 1
             
     def random_thunder(self, time):
