@@ -10,7 +10,7 @@ from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, C
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2,\
      GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8, GeneralItem9,\
-     GeneralItem10, HadesHelmet
+     GeneralItem10, GeneralItem, HadesHelmet
 from Map import *
 from TextScene import *
 from ParticleEffect import Particle
@@ -154,7 +154,7 @@ class Level:
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if col == "R" or col == "P" or col == "M" or col == "RM" or col == "I0" or col == "I1" or col == "I2" or \
-                    col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or \
+                    col == "GI" or col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or \
                     col == "GI6" or col == "GI7" or col == "GI8"  or col == "GI9"  or col == "GI10" or col == "H":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
@@ -204,6 +204,8 @@ class Level:
                     GeneralItem9((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "GI10":
                     GeneralItem10((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
+                if col == "GI":
+                    GeneralItem((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "H":
                     HadesHelmet((tile_pos_x, tile_pos_y), [self.images, self.item_images])
                 if col == "P":
@@ -255,6 +257,7 @@ class Level:
                     Road_Vertical((tile_pos_x, tile_pos_y), [self.images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+
                 
                 
 
@@ -434,7 +437,7 @@ class Level:
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)
-
+        
         if not self.player.is_hadesHelmet:
             self.player.is_player_cerberus = True # 케르베로스 트리거
         self.images.custom_draw(self.player, dt)

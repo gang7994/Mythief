@@ -510,17 +510,18 @@ class Player(pygame.sprite.Sprite):
             if item.name in ["event_item1",
                              "event_item2",
                              "event_item3",
-                             "test_general_item0",
-                             "test_general_item1",
-                             "test_general_item2",
-                             "test_general_item3",
-                             "test_general_item4",
-                             "test_general_item5",
-                             "test_general_item6",
-                             "test_general_item7",
-                             "test_general_item8",
-                             "test_general_item9",
-                             "test_general_item10",
+                             "general_item",
+                             "general_item0",
+                             "general_item1",
+                             "general_item2",
+                             "general_item3",
+                             "general_item4",
+                             "general_item5",
+                             "general_item6",
+                             "general_item7",
+                             "general_item8",
+                             "general_item9",
+                             "general_item10",
                              "hadesHelmet"]:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
@@ -543,6 +544,16 @@ class Player(pygame.sprite.Sprite):
                                 self.is_hadesHelmet = True
                                 self.is_player_cerberus = False
                             else:
+                                self.is_full = False
+                                if item.name == "general_item":
+                                    while 1:
+                                        item.name = random.choice(["general_item0","general_item1","general_item2","general_item3","general_item4",\
+                                            "general_item5", "general_item6", "general_item7", "general_item8", "general_item9", "general_item10"])
+                                        for i in general_inventory:
+                                            if (i[0].name == item.name):
+                                                if i[1] == 6: self.is_full = True; break
+                                                else: self.is_full = False;
+                                        if not self.is_full: break
                                 is_fill = True
                                 for tmp in general_inventory:
                                     if tmp[0].name == item.name:
@@ -550,6 +561,7 @@ class Player(pygame.sprite.Sprite):
                                         is_fill = False
                                 if is_fill:
                                     general_inventory.append([item, 1])
+                                
                             item.kill()
                     elif not keys[pygame.K_TAB]:
                         item.item_gage = 0

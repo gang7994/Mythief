@@ -325,17 +325,17 @@ class GameManager:
         for i in range(12):
             pygame.draw.circle(self.screen, GREY, (150+i*105, 100), 40)
         for i, item in enumerate(general_inventory):
-            if item[0].name == "test_general_item0": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item0.png")).convert_alpha()
-            elif item[0].name == "test_general_item1": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item1.png")).convert_alpha()
-            elif item[0].name == "test_general_item2": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item2.png")).convert_alpha()
-            elif item[0].name == "test_general_item3": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item3.png")).convert_alpha()
-            elif item[0].name == "test_general_item4": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item4.png")).convert_alpha()
-            elif item[0].name == "test_general_item5": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item5.png")).convert_alpha()
-            elif item[0].name == "test_general_item6": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item6.png")).convert_alpha()
-            elif item[0].name == "test_general_item7": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item7.png")).convert_alpha()
-            elif item[0].name == "test_general_item8": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item8.png")).convert_alpha()
-            elif item[0].name == "test_general_item9": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item9.png")).convert_alpha()
-            elif item[0].name == "test_general_item10": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item10.png")).convert_alpha()
+            if item[0].name == "general_item0": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item0.png")).convert_alpha()
+            elif item[0].name == "general_item1": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item1.png")).convert_alpha()
+            elif item[0].name == "general_item2": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item2.png")).convert_alpha()
+            elif item[0].name == "general_item3": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item3.png")).convert_alpha()
+            elif item[0].name == "general_item4": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item4.png")).convert_alpha()
+            elif item[0].name == "general_item5": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item5.png")).convert_alpha()
+            elif item[0].name == "general_item6": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item6.png")).convert_alpha()
+            elif item[0].name == "general_item7": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item7.png")).convert_alpha()
+            elif item[0].name == "general_item8": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item8.png")).convert_alpha()
+            elif item[0].name == "general_item9": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item9.png")).convert_alpha()
+            elif item[0].name == "general_item10": item[0].image =  pygame.image.load(os.path.join(item_path, "test_general_item10.png")).convert_alpha()
             image_rect = item[0].image.get_rect(center=(150+i*105, 100))                                       
             self.screen.blit(item[0].image, image_rect)
             self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
@@ -411,46 +411,46 @@ class GameManager:
     def general_item_effect(self):
         global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8, use_item9, use_item10
         for tmp in general_inventory:
-            if tmp[1] == 6 and self.ignore_item and not tmp[0].name == "test_general_item9":
+            if tmp[1] == 6 and self.ignore_item and not tmp[0].name == "general_item9":
                 tmp[1] = -1 
                 self.ignore_item = False
             elif tmp[1] == 6:
-                if tmp[0].name == "test_general_item0" and not use_item0: #로프 1개 추가
+                if tmp[0].name == "general_item0" and not use_item0: #로프 1개 추가
                     rope_item +=1
                     use_item0 = True
-                elif tmp[0].name == "test_general_item1": #플레이어 이동 속도 증가
+                elif tmp[0].name == "general_item1": #플레이어 이동 속도 증가
                     self.level.player.player_speed_x+=1
                     self.level.player.player_speed_y+=1
                     use_item1 = True
-                elif tmp[0].name == "test_general_item2" and not use_item2: #최대 체력 증가
+                elif tmp[0].name == "general_item2" and not use_item2: #최대 체력 증가
                     max_hp += 30
                     use_item2 = True
-                elif tmp[0].name == "test_general_item3" and not use_item3: #스테이지 마다 2회방어
+                elif tmp[0].name == "general_item3" and not use_item3: #스테이지 마다 2회방어
                     shield = 2                                                                  
                     use_item3 = True
-                elif tmp[0].name == "test_general_item4" and not use_item4: #로프 1개 감소
+                elif tmp[0].name == "general_item4" and not use_item4: #로프 1개 감소
                     if rope_item > 0:                                               
                         rope_item -= 1
                     use_item4 = True
-                elif tmp[0].name == "test_general_item5" and not use_item5: #고대주화
+                elif tmp[0].name == "general_item5" and not use_item5: #고대주화
                     bonus += 100
                     use_item5 = True
-                elif tmp[0].name == "test_general_item6": #회중시계
+                elif tmp[0].name == "general_item6": #회중시계
                     try:
                         for tmp in self.level.monsterlist:
                             tmp.monster_speed -= 1
                     except AttributeError as e: pass
                     use_item6 = True
-                elif tmp[0].name == "test_general_item7": #평평한 돌
+                elif tmp[0].name == "general_item7": #평평한 돌
                     self.level.player.rock_item_effect = True
                     use_item7 = True    
-                elif tmp[0].name == "test_general_item8": #이상한 석상
+                elif tmp[0].name == "general_item8": #이상한 석상
                     self.level.player.is_effect0 = True
                     use_item8 = True       
-                elif tmp[0].name == "test_general_item9" and not use_item9: #미믹 [비활성화 토의필요]
+                elif tmp[0].name == "general_item9" and not use_item9: #미믹 [비활성화 토의필요]
                     self.ignore_item = True
                     use_item9 = True
-                elif tmp[0].name == "test_general_item10": #대나무 낚싯대
+                elif tmp[0].name == "general_item10": #대나무 낚싯대
                     self.level.player.is_effect1 = True
                     use_item10 = True
                 
