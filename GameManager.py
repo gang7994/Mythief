@@ -183,6 +183,9 @@ class GameManager:
         MAINMENU.changeColor(mouse_pos)
         MAINMENU.update(self.screen)
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 self.particle.click_flag = True
                 if MAINMENU.checkForInput(mouse_pos):
