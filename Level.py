@@ -232,8 +232,8 @@ class Level:
                     Level.remain_monster+=1 # Show_info
                 if col == "FM":
                     FishMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images)
-                if col == "SM":
-                    Satiros((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images)
+                if "SM" in col:
+                    Satiros((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, int(col[2:]))
                 if col == "CR":
                     Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, True)
                     Level.remain_monster+=1 # Show_info
@@ -326,7 +326,7 @@ class Level:
     # 플레이어 , 적 거리 계산
     def get_player_distance(self, player, dt):
         for monster in self.monster_images:
-            if monster.name == "rush_Monster" or monster.name == "cerberus" or monster.name == "Fish" or monster.name == "satiros":
+            if monster.name == "rush_Monster" or monster.name == "cerberus" or monster.name == "Fish":
                 monster_vec = pygame.math.Vector2(monster.rect.center)
                 player_vec = pygame.math.Vector2(player.rect.center)
                 distance = (player_vec - monster_vec).magnitude()
