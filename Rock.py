@@ -4,7 +4,7 @@ from Settings import *
 
 # 벽 이미지
 class Rock(pygame.sprite.Sprite):
-    def __init__(self, pos, direction, border_images, itemeffect, stage_number):
+    def __init__(self, pos, direction, border_images, itemeffect, stage_number, vol):
         super().__init__()
         self.image = pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
@@ -18,6 +18,7 @@ class Rock(pygame.sprite.Sprite):
         self.is_on_alcohol = False
         self.itemeffect = itemeffect
         self.stage_num = stage_number
+        self.effect_vol = vol
 
     # 영역 밖에서 오브젝트 삭제
     def destroy(self):
@@ -54,6 +55,7 @@ class Rock(pygame.sprite.Sprite):
                             sprite.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_bridge.png")).convert_alpha()
                         sprite.name = "Road"
                 elif sprite.name != "WaterHole" and sprite.name != "alcoholRoad" and not sprite.name in ["Electric00","Electric01","Electric02","Electric03","Electric04","Electric05","Electric06","Electric07","Electric08","Electric09","Electric10"]:
+                    stone_break_sound.set_volume(self.effect_vol/100)
                     stone_break_sound.play()
                     self.kill()
                 if sprite.name == "Electric00":
@@ -106,7 +108,6 @@ class Rock(pygame.sprite.Sprite):
         dt = self.clock.tick(FPS)
         if not self.is_pause:
             stone_break_sound.set_volume(effect_vol/100)
-            print(effect_vol, effect_vol/100)
             if self.direction == 1: self.hitbox.x += self.speed * (dt // 6)
             elif self.direction == 2: self.hitbox.x -= self.speed * (dt // 6)
             elif self.direction == 3: self.hitbox.y += self.speed * (dt // 6)

@@ -84,24 +84,25 @@ class GameManager:
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.particle.click_flag = True
                     if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
-                        click_sound.play()
+                        self.sound_click()
                         running = False
                     if BGM_UP.checkForInput(OPTIONS_MOUSE_POS):
-                        click_sound.play()
+                        self.sound_click()
                         if bgm_vol != 100:
                             bgm_vol += 10
                     if BGM_DOWN.checkForInput(OPTIONS_MOUSE_POS):
-                        click_sound.play()
+                        self.sound_click()
                         if bgm_vol != 0:
                             bgm_vol -= 10
                     if EFFECT_UP.checkForInput(OPTIONS_MOUSE_POS):
-                        click_sound.play()
+                        self.sound_click()
                         if effect_vol != 100:
                             effect_vol += 10
                     if EFFECT_DOWN.checkForInput(OPTIONS_MOUSE_POS):
-                        click_sound.play()
+                        self.sound_click()
                         if effect_vol != 0:
                             effect_vol -= 10
+                    
             self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
             self.particle.mouse_cursor(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1])
             pygame.display.update()
@@ -153,7 +154,7 @@ class GameManager:
                     if event.button == 1:
                         self.particle.click_flag = True
                         if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                            click_sound.play()
+                            self.sound_click()
                             if not self.is_opening:
                                 self.text.draw_text(0, self.screen)
                                 self.is_opening = True
@@ -170,10 +171,10 @@ class GameManager:
 
                             
                         if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
-                            click_sound.play()
+                            self.sound_click()
                             self.Option()
                         if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
-                            click_sound.play()
+                            self.sound_click()
                             time.sleep(0.1)
                             pygame.quit()
                             sys.exit()
@@ -197,7 +198,7 @@ class GameManager:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 self.particle.click_flag = True
                 if MAINMENU.checkForInput(mouse_pos):
-                    
+                    self.sound_click()
                     self.running = False
         self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
 
@@ -315,7 +316,7 @@ class GameManager:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 self.particle.click_flag = True
                 if MAINMENU.checkForInput(mouse_pos):
-                    click_sound.play()
+                    self.sound_click()
                     self.running = False
         self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
     
@@ -531,6 +532,15 @@ class GameManager:
         if current_hp + 10 > max_hp:
             current_hp = max_hp
         else: current_hp += 10
+        
+    def sound_click(self):
+        click_sound.set_volume(effect_vol/100)
+        click_sound.play()
+        
+    def sound_setting(self):
+        print(bgm_vol, effect_vol)
+        self.level.player.effect_vol = effect_vol
+        
             
     # 게임 로직
     def Run(self):
@@ -571,17 +581,17 @@ class GameManager:
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.particle.click_flag = True
                     if PAUSE.checkForInput(PAUSE_MOUSE_POS) and not self.level.is_pause:
-                        click_sound.play()
+                        self.sound_click()
                         self.level.pause("T")
                     elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
-                        click_sound.play()
+                        self.sound_click()
                         self.level.pause("F")
 
                     if SETTING.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
-                        click_sound.play()
+                        self.sound_click()
                         self.Option()
                     if EXIT.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
-                        click_sound.play()
+                        self.sound_click()
                         self.running = False
 
                 if event.type == pygame.KEYDOWN:
@@ -595,14 +605,20 @@ class GameManager:
                                 pass
                             elif self.level.stage_number == 1:
                                 if self.level.map_idx == 3:
+                                    use_sound.set_volume(effect_vol/100)
+                                    use_sound.play()
                                     rope_item -= 1
                                     self.use_rope = True
                             elif self.level.stage_number == 2 or self.level.stage_number == 5:
                                 if not(self.level.map_idx == 3 or self.level.map_idx == 7 or self.level.map_idx == 8):
+                                    use_sound.set_volume(effect_vol/100)
+                                    use_sound.play()
                                     rope_item -= 1
                                     self.use_rope = True
                             elif self.level.stage_number == 3 or self.level.stage_number == 4:
                                 if not(self.level.map_idx == 6):
+                                    use_sound.set_volume(effect_vol/100)
+                                    use_sound.play()
                                     rope_item -= 1
                                     self.use_rope = True
                                     
@@ -639,6 +655,7 @@ class GameManager:
             self.item_interaction_text()
             self.door_interaction_text()
             self.show_theme_inventory()
+            self.sound_setting()
 
             if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]):
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)

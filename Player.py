@@ -9,6 +9,7 @@ from Item import ThunderRod
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, border_images, damage_images, item_images, door_images, images, stage_number):
         super().__init__(groups)
+        pygame.init()
         self.image = pygame.image.load(os.path.join(images_path, "sprite_idle0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,-10)
@@ -110,9 +111,10 @@ class Player(pygame.sprite.Sprite):
         self.is_first1 = True #대나무 낚싯대
         self.is_effect0 = False #이상한 석상
         self.is_effect1 = False #대나무 낚싯대
+        # sound var
+        self.effect_vol = 0
 
 
-        
     def walk_animation(self):
         if self.walk_count > 5:
             self.walk_count = 0
@@ -337,6 +339,8 @@ class Player(pygame.sprite.Sprite):
     def add_rock(self):
         keys = pygame.key.get_pressed()
         if (keys[pygame.K_SPACE] and self.is_rock_ready):
+            use_sound.set_volume(self.effect_vol/100)
+            use_sound.play()
             self.throw_rock()
             self.is_rock_ready = False
             self.rock_time = pygame.time.get_ticks()
@@ -354,13 +358,13 @@ class Player(pygame.sprite.Sprite):
         else:
             dir = self.last_dir
         if dir == 2:
-            self.images.add(Rock(self.rect.center, 1, self.border_images, effect, self.stage_num))
+            self.images.add(Rock(self.rect.center, 1, self.border_images, effect, self.stage_num, self.effect_vol))
         elif dir == 1:
-            self.images.add(Rock(self.rect.center, 2, self.border_images, effect, self.stage_num))
+            self.images.add(Rock(self.rect.center, 2, self.border_images, effect, self.stage_num, self.effect_vol))
         elif dir == 4:
-            self.images.add(Rock(self.rect.center, 3, self.border_images, effect, self.stage_num))
+            self.images.add(Rock(self.rect.center, 3, self.border_images, effect, self.stage_num, self.effect_vol))
         elif dir:
-            self.images.add(Rock(self.rect.center, 4, self.border_images, effect, self.stage_num))
+            self.images.add(Rock(self.rect.center, 4, self.border_images, effect, self.stage_num, self.effect_vol))
 
     # 재장전 함수
     def re_load_rock(self):
@@ -438,16 +442,24 @@ class Player(pygame.sprite.Sprite):
                         elif self.is_tile_mix and not self.is_damaged:
                             current_time0 = pygame.time.get_ticks()
                             if current_time0 - self.start0 < 5000 and self.is_effect0:
+                                damage_sound.set_volume(self.effect_vol/100)
+                                damage_sound.play()
                                 self.get_damaged()
                                 self.is_first0 = False
                             else :
+                                damage_sound.set_volume(self.effect_vol/100)
+                                damage_sound.play()
                                 self.get_damaged()
                                 self.is_damage10 = True
                                 self.is_first0 = True
                         elif self.is_thunder and not self.is_damaged:
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
                             self.get_damaged()
                             self.is_damage10 = True
                         elif self.is_dark and not self.is_damaged:
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
                             self.get_damaged()
                             self.is_damage10 = True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
@@ -478,16 +490,24 @@ class Player(pygame.sprite.Sprite):
                         elif self.is_tile_mix and not self.is_damaged:
                             current_time1 = pygame.time.get_ticks()
                             if current_time1 - self.start1 < 5000 and self.is_effect0:
+                                damage_sound.set_volume(self.effect_vol/100)
+                                damage_sound.play()
                                 self.get_damaged()
                                 self.is_first0 = False
                             else :
+                                damage_sound.set_volume(self.effect_vol/100)
+                                damage_sound.play()
                                 self.get_damaged()
                                 self.is_damage10 = True
                                 self.is_first0 = True
                         elif self.is_thunder and not self.is_damaged:
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
                             self.get_damaged()
                             self.is_damage10 = True
                         elif self.is_dark and not self.is_damaged:
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
                             self.get_damaged()
                             self.is_damage10 = True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
@@ -502,27 +522,41 @@ class Player(pygame.sprite.Sprite):
         for sprite in self.damage_images:
             if sprite.hitbox.colliderect(self.hitbox):
                 if sprite.name == "laser_Monster" and not self.is_damaged:
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage2 = True
                 if sprite.name == "monster_laser" and not self.is_damaged:
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage2 = True
                     sprite.kill()
                 if sprite.name == "rush_Monster" and not self.is_damaged:           # 데미지 2~3
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage2 = True
                 if sprite.name == "thunder" and sprite.animation_idx == 9 and not self.is_damaged:
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.is_thunder = True
                     self.get_damaged()
                     self.is_damage10 = True
                 if sprite.name == "Fish" and not self.is_damaged:
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage5 = True
                     sprite.image = pygame.image.load(os.path.join(images_path, "monster_fish_animation_atk.png")).convert_alpha()
                 if sprite.name == "satiros" and not self.is_damaged:
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage5 = True
                 if sprite.name == "cerberus" and self.is_player_cerberus and not self.is_damaged:
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage30 = True
 
@@ -563,6 +597,8 @@ class Player(pygame.sprite.Sprite):
                             self.item_interaction = False
                             item.is_interaction = False
                             self.current_item_gage = 0
+                            item_interaction_sound.set_volume(self.effect_vol/100)
+                            item_interaction_sound.play()
                             if item.name in ["event_item1", "event_item2", "event_item3"]:
                                 self.event_item_effects(item.event)
                                 self.get_event_item = True
