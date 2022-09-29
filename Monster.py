@@ -343,7 +343,7 @@ class FishMonster(pygame.sprite.Sprite):
         self.animation()
 
 class Satiros(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images):
+    def __init__(self, pos, groups, border_images, max_distance):
         super().__init__(groups)
         self.animation_array = ["sa_running_0.png",
                                 "sa_running_1.png",
@@ -359,20 +359,18 @@ class Satiros(pygame.sprite.Sprite):
         self.animation_start_time = pygame.time.get_ticks()
         self.animation_current_time = pygame.time.get_ticks()
         self.is_walk = False
-
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10) # 16, 32 픽셀
         self.hitbox.y += 5
+        self.pos = pos
         self.name = "satiros"
         self.dir = pygame.math.Vector2()
+        self.dir.y = 1
         self.border_images = border_images
         self.monster_speed = 1
+        self.max_distance = max_distance
         self.is_moving = False
-        self.monster_order_wait_time = 1000
-        self.monster_move = [[1, 0], [0, 1], [0, 0], [-1, 0], [0, -1]]
         self.last_x_dir = -1
-        self.boundary = 150
-        self.is_rush = False
         self.clock = pygame.time.Clock()
         self.is_pause = False
 
@@ -404,34 +402,26 @@ class Satiros(pygame.sprite.Sprite):
             self.is_walk = False
             self.idle()
 
-    def move_order(self):
-        if not self.is_moving:
-            self.is_moving = True
-            move_idx = random.randint(0, 4)
-            self.dir.x = self.monster_move[move_idx][0]
-            self.dir.y = self.monster_move[move_idx][1]
-            if self.dir.x != 0:
-                self.last_x_dir = self.dir.x
-            self.monster_move_start = pygame.time.get_ticks()
-
-        # 첫 이동 입력 이후 1초간 그 움직임 사용
-
-    def move_wait(self):
-        if self.is_moving:
-            current_time = pygame.time.get_ticks()
-            if current_time - self.monster_move_start > self.monster_order_wait_time:
-                self.is_moving = False
-
         # 입력받은 움직임으로 이동
 
     def move(self, speed, dt):
-        if self.is_moving:
-            self.hitbox.left += self.dir.x * speed * (dt // 6)
-            self.collision("horizontal")
-            self.hitbox.top += self.dir.y * speed * (dt // 6)
-            self.collision("vertical")
-            self.rect.centerx = self.hitbox.centerx
-            self.rect.centery = self.hitbox.centery - 5
+        self.hitbox.left += self.dir.x * speed * (dt // 6)
+        self.collision("horizontal")
+        self.hitbox.top += self.dir.y * speed * (dt // 6)
+        self.collision("vertical")
+        self.rect.centerx = self.hitbox.centerx
+        self.rect.centery = self.hitbox.centery - 5
+
+    def dir_change(self):
+        if self.dir.y == 1:
+            if abs(self.rect.y - self.pos[1]) >= self.max_distance:
+                self.dir.y *= -1
+                print(self.rect)
+        else:
+            if self.rect.y <= self.pos[1]:
+                self.dir.y *= -1
+
+
 
     def collision(self, direction):
         if direction == "horizontal":
@@ -457,27 +447,11 @@ class Satiros(pygame.sprite.Sprite):
                         elif self.dir.y < 0:
                             self.hitbox.top = sprite.rect.bottom
 
-    def rush(self, direction, dt):
-        self.is_rush = True
-        self.hitbox.left += direction[0] * self.monster_speed * (dt // 6)
-        self.dir.x = direction[0]
-        if self.dir.x != 0:
-            self.last_x_dir = self.dir.x
-        self.collision("horizontal")
-        if not direction[0]:
-            self.hitbox.top += direction[1] * self.monster_speed * (dt // 6)
-            self.dir.y = direction[1]
-            self.collision("vertical")
-        self.rect.centerx = self.hitbox.centerx
-        self.rect.centery = self.hitbox.centery - 5
-
     def update(self):
         dt = self.clock.tick(FPS)
-        if not self.is_rush and not self.is_pause:
-            self.move_order()
+        if not self.is_pause:
+            self.dir_change()
             self.move(self.monster_speed, dt)
-            self.move_wait()
-
         self.animation()
 
 class Cerberus(pygame.sprite.Sprite):
