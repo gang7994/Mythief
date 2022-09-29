@@ -490,8 +490,7 @@ class GameManager:
         if use_item10:
             self.level.player.is_effect1 = False
             use_item10 = False
-            
-            
+
     def player_hp(self):
         global current_hp, shield
         if current_hp > 0:

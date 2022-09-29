@@ -6,7 +6,8 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
                          CrossWire, DownLeftWire, DownRightWire, HorizontalDownWire, HorizontalUpWire, \
                          UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire
 from Player import Player
-from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor0, Conductor1
+from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor0, Conductor1,\
+    Stage1_Edge1, Stage1_Edge2, Stage1_Edge3, Stage1_Edge4, Stage1_Corner1, Stage1_Corner2, Stage1_Corner3, Stage1_Corner4
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2,\
      GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8, GeneralItem9,\
@@ -80,12 +81,12 @@ class Level:
     def create_map(self):
         global random_event_item_text, event_texts
 
-        if self.stage_number == 0:
+        if self.stage_number == 0: #메인
             self.cur_map = map[0]
-        elif self.stage_number == 1:
+        elif self.stage_number == 1: #튜토리얼
             self.cur_map = map[1]
         elif self.stage_number == 2:
-            self.cur_map = map[2]
+            self.cur_map = map[2];
         elif self.stage_number == 3:
             self.cur_map = map[3]
         elif self.stage_number == 4:
@@ -154,6 +155,49 @@ class Level:
                 if col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                if self.cur_map == map[0] or self.cur_map == map[1] or self.cur_map == map[2]:
+                    if col == "RE1":
+                        Stage1_Edge1((tile_pos_x, tile_pos_y), [self.images])
+                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                    elif col =="RE2":
+                        Stage1_Edge2((tile_pos_x, tile_pos_y), [self.images])
+                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                    elif col =="RE3":
+                        Stage1_Edge3((tile_pos_x, tile_pos_y), [self.images])
+                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                    elif col =="RE4":
+                        Stage1_Edge4((tile_pos_x, tile_pos_y), [self.images])
+                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                    elif col =="RC1":
+                        Stage1_Corner1((tile_pos_x, tile_pos_y), [self.images])
+                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                    elif col =="RC2":
+                        Stage1_Corner2((tile_pos_x, tile_pos_y), [self.images])
+                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                    elif col =="RC3":
+                        Stage1_Corner3((tile_pos_x, tile_pos_y), [self.images])
+                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                    elif col =="RC4":
+                        Stage1_Corner4((tile_pos_x, tile_pos_y), [self.images])
+                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                        
+
                 if col == "R" or col == "P" or col == "M" or col == "RM" or col == "I0" or col == "I1" or col == "I2" or \
                     col == "GI" or col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or \
                     col == "GI6" or col == "GI7" or col == "GI8"  or col == "GI9"  or col == "GI10" or col == "H":
