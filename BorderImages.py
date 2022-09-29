@@ -48,20 +48,28 @@ class Wall4(pygame.sprite.Sprite):
         self.is_pause = False
 
 class Wall_Wreck(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, stage_num, map_idx):
+    def __init__(self, pos, groups, stage_num):
         super().__init__(groups)
-        if stage_num == 0 or stage_num == 1 or stage_num == 2:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
-            self.name = "ClosedFinish"
-        elif stage_num == 3:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
-            self.name = "ClosedFinish"
+        if stage_num == 3:
+            self.image = pygame.image.load(os.path.join(images_path, "W_tile_wall_0.png")).convert_alpha()
         elif stage_num == 4:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
-            self.name = "ClosedFinish"
+            self.image = pygame.image.load(os.path.join(images_path, "tile_red_wall1.png")).convert_alpha()
         elif stage_num == 5:
-            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
-            self.name = "ClosedFinish"
+            self.image = pygame.image.load(os.path.join(images_path, "tile_purple_wall1.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2, -2)
+        self.name = "Wall"
+        self.is_pause = False
+
+class Wall_Plant(pygame.sprite.Sprite):
+    def __init__(self, pos, groups, stage_num):
+        super().__init__(groups)
+        if stage_num == 3:
+            self.image = pygame.image.load(os.path.join(images_path, "W_tile_wall_1.png")).convert_alpha()
+        elif stage_num == 4:
+            self.image = pygame.image.load(os.path.join(images_path, "tile_red_wall2.png")).convert_alpha()
+        elif stage_num == 5:
+            self.image = pygame.image.load(os.path.join(images_path, "tile_purple_wall2.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"

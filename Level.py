@@ -1,7 +1,7 @@
 import pygame, os, random
 from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3,\
-                         Corner4, NoneRoad, Finish, Finish2, Finish3, Finish4, Obstacle, WaterHole, Stage0, Stage1,\
+                         Corner4, NoneRoad, Finish, Finish2, Finish3, Finish4, Obstacle, Wall_Plant, Wall_Wreck, WaterHole, Stage0, Stage1,\
                          Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar0, Pillar1,Pillar2, Thunder, \
                          CrossWire, DownLeftWire, DownRightWire, HorizontalDownWire, HorizontalUpWire, \
                          UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire
@@ -144,6 +144,13 @@ class Level:
                     Wall3((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "W4":
                     Wall4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                if col == "WW":
+                    Wall_Wreck((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number)
+                if col == "WP":
+                    Wall_Plant((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number)
+
+
+
                 if col == "C1":
                     Corner1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "C2":
