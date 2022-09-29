@@ -100,7 +100,7 @@ class Level:
             for col_idx, col in enumerate(row):
                 tile_pos_x = col_idx * tile_width_size + horizontal_margin
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
-                if col == "." or col == "WA" or col == "CR" or col == "PL0" or col == "PL1" or col == "PL2" or col == "FM" or col == "FCR":   # 파도 실험중
+                if col == "." or col == "WA" or col == "CR" or col == "PL0" or col == "PL1" or col == "PL2" or col == "FM" or col == "FCR" or "SM" in col:   # 파도 실험중
                     NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number)
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
@@ -543,7 +543,7 @@ class Level:
         else:
             self.start_time = pygame.time.get_ticks() - self.tem_now_time
 
-        if self.stage_number == 3 and (self.map_idx == 1 or self.map_idx == 3 or self.map_idx == 6):
+        if self.stage_number == 3 and (self.map_idx == 1 or self.map_idx == 4 or self.map_idx == 8):
             self.glow.wait_bright()
             self.glow.wait_dark()
             self.glow.draw_before_glow()
