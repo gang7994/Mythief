@@ -67,3 +67,6 @@ bonus = 0
 #sound
 click_sound = pygame.mixer.Sound("Sound/click.wav")
 stone_break_sound = pygame.mixer.Sound("Sound/stone_break.mp3")
+item_interaction_sound = pygame.mixer.Sound("Sound/item_interaction.wav")
+use_sound = pygame.mixer.Sound("Sound/throw.wav")
+damage_sound = pygame.mixer.Sound("Sound/hurt.wav")
