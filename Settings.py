@@ -32,6 +32,10 @@ current_path = os.path.dirname(__file__)
 images_path = os.path.join(current_path, "Images/TestPix")
 item_path = os.path.join(current_path, "Images/Item")
 stage_road_path = os.path.join(current_path, "Images/Stage_Road")
+stage_P_path = os.path.join(current_path, "Images/Stage1_P")
+stage_H_path = os.path.join(current_path, "Images/Stage2_H")
+stage_D_path = os.path.join(current_path, "Images/Stage3_D")
+stage_Z_path = os.path.join(current_path, "Images/Stage4_Z")
 
 # 인벤토리
 theme_inventory = ["Them_1.png", "Them_2.png", "Them_3.png", "Them_4.png", "Them_5.png"]
