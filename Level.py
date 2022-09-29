@@ -486,6 +486,7 @@ class Level:
         if self.stage_number == 3 and (self.map_idx == 1 or self.map_idx == 3 or self.map_idx == 6):
             self.glow.wait_bright()
             self.glow.wait_dark()
+            self.glow.draw_before_glow()
             self.glow.draw_player_glow()
             self.player.is_dark = True
 
@@ -549,8 +550,8 @@ class Glow:
         self.pos = pos
         for i in [[10, 50],[50,40],[100,30],[200,20],[255,10]]:
             self.player_glow.append([self.circle_surf(i[1],(i[0],i[0],i[0])), i[1]])
-        self.player_glow_cool_time = 3  # -> ex) 보여주는게 짧고 암전 길게
         self.is_player_glow = False
+        self.is_before_glow = False
         self.bright_start = pygame.time.get_ticks()
         self.dark_start = pygame.time.get_ticks()
         self.bright_time = 1000
@@ -602,11 +603,24 @@ class Glow:
                 self.new_surf.blit(glow[0], (self.half_width - glow[1], self.half_height - glow[1]))
             self.display_surface.blit(self.new_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
 
+    def draw_before_glow(self):
+        if self.is_before_glow:
+            self.new_surf.fill(BLACK)
+            for glow in self.player_glow:
+                self.new_surf.blit(glow[0], (self.half_width - glow[1], self.half_height - glow[1]))
+            self.display_surface.blit(self.new_surf, pygame.math.Vector2(), special_flags=pygame.BLEND_RGB_MULT)
+
     def wait_bright(self):
         if not self.is_pause:
             if not self.is_player_glow:
                 self.tem_now_time = pygame.time.get_ticks() - self.bright_start
+                if self.tem_now_time > 700:
+                    if self.is_before_glow:
+                        self.is_before_glow = False
+                    elif not self.is_before_glow:
+                        self.is_before_glow = True
                 if self.tem_now_time > self.bright_time:
+                    self.is_before_glow = False
                     self.is_player_glow = True
                     self.dark_start = pygame.time.get_ticks()
         else:
