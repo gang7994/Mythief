@@ -84,17 +84,22 @@ class GameManager:
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.particle.click_flag = True
                     if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
+                        click_sound.play()
                         running = False
                     if BGM_UP.checkForInput(OPTIONS_MOUSE_POS):
+                        click_sound.play()
                         if bgm_vol != 100:
                             bgm_vol += 10
                     if BGM_DOWN.checkForInput(OPTIONS_MOUSE_POS):
+                        click_sound.play()
                         if bgm_vol != 0:
                             bgm_vol -= 10
                     if EFFECT_UP.checkForInput(OPTIONS_MOUSE_POS):
+                        click_sound.play()
                         if effect_vol != 100:
                             effect_vol += 10
                     if EFFECT_DOWN.checkForInput(OPTIONS_MOUSE_POS):
+                        click_sound.play()
                         if effect_vol != 0:
                             effect_vol -= 10
             self.particle.click_effect(self.screen, OPTIONS_MOUSE_POS[0], OPTIONS_MOUSE_POS[1], dt)
@@ -127,8 +132,8 @@ class GameManager:
                                  image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(),
                                  pos=(728, 340), scale_x=400, scale_y=100)
             OPTION_BUTTON = Button(
-                image0=pygame.image.load(os.path.join(images_path, "btn_start_0.png")).convert_alpha(),
-                image1=pygame.image.load(os.path.join(images_path, "btn_start_1.png")).convert_alpha(),
+                image0=pygame.image.load(os.path.join(images_path, "btn_option0.png")).convert_alpha(),
+                image1=pygame.image.load(os.path.join(images_path, "btn_option1.png")).convert_alpha(),
                 pos=(728, 480), scale_x=400, scale_y=100)
             QUIT_BUTTON = Button(image0=pygame.image.load(os.path.join(images_path, "btn_exit_0.png")).convert_alpha(),
                                  image1=pygame.image.load(os.path.join(images_path, "btn_exit_1.png")).convert_alpha(),
@@ -148,7 +153,7 @@ class GameManager:
                     if event.button == 1:
                         self.particle.click_flag = True
                         if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                            
+                            click_sound.play()
                             if not self.is_opening:
                                 self.text.draw_text(0, self.screen)
                                 self.is_opening = True
@@ -165,8 +170,11 @@ class GameManager:
 
                             
                         if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            click_sound.play()
                             self.Option()
                         if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                            click_sound.play()
+                            time.sleep(0.1)
                             pygame.quit()
                             sys.exit()
             pygame.display.update()
@@ -189,6 +197,7 @@ class GameManager:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 self.particle.click_flag = True
                 if MAINMENU.checkForInput(mouse_pos):
+                    
                     self.running = False
         self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
 
@@ -306,6 +315,7 @@ class GameManager:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 self.particle.click_flag = True
                 if MAINMENU.checkForInput(mouse_pos):
+                    click_sound.play()
                     self.running = False
         self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
     
@@ -561,13 +571,17 @@ class GameManager:
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.particle.click_flag = True
                     if PAUSE.checkForInput(PAUSE_MOUSE_POS) and not self.level.is_pause:
+                        click_sound.play()
                         self.level.pause("T")
                     elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
+                        click_sound.play()
                         self.level.pause("F")
 
                     if SETTING.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
+                        click_sound.play()
                         self.Option()
                     if EXIT.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
+                        click_sound.play()
                         self.running = False
 
                 if event.type == pygame.KEYDOWN:

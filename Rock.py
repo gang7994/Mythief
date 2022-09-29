@@ -43,6 +43,8 @@ class Rock(pygame.sprite.Sprite):
                         sprite.image = pygame.image.load(os.path.join(images_path, "re_bridge.png")).convert_alpha()
                         sprite.name = "Road"
                 elif sprite.name != "WaterHole" and sprite.name != "alcoholRoad" and not sprite.name in ["Electric00","Electric01","Electric02","Electric03","Electric04","Electric05","Electric06","Electric07","Electric08","Electric09","Electric10"]:
+                    
+                    stone_break_sound.play()
                     self.kill()
                 if sprite.name == "Electric00":
                     self.border_images.remove(sprite)
@@ -93,6 +95,8 @@ class Rock(pygame.sprite.Sprite):
     def update(self):
         dt = self.clock.tick(FPS)
         if not self.is_pause:
+            stone_break_sound.set_volume(effect_vol/100)
+            print(effect_vol, effect_vol/100)
             if self.direction == 1: self.hitbox.x += self.speed * (dt // 6)
             elif self.direction == 2: self.hitbox.x -= self.speed * (dt // 6)
             elif self.direction == 3: self.hitbox.y += self.speed * (dt // 6)

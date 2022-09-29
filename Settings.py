@@ -1,5 +1,5 @@
 import os, pygame
-
+pygame.init()
 # 게임 세팅 - 시험해보기 주석
 
 # 화면 사이즈
@@ -67,3 +67,7 @@ shield = 0
 # score
 stage_score = [0,0,0,0,100]
 bonus = 0
+
+#sound
+click_sound = pygame.mixer.Sound("Sound/click.wav")
+stone_break_sound = pygame.mixer.Sound("Sound/stone_break.mp3")
