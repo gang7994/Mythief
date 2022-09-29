@@ -107,7 +107,6 @@ class Finish(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "wall_door.png")).convert_alpha()
         self.name = "Finish"
-
         if stage_num == 5 and (map_idx in [3,4,5,6,7,8]):
             self.image = pygame.image.load(os.path.join(images_path, "wall_door_closed0.png")).convert_alpha()
             self.name = "ClosedFinish"
