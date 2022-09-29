@@ -492,10 +492,6 @@ class GameManager:
             use_item10 = False
         
             
-            
-            
-            
-            
     def player_hp(self):
         global current_hp, shield
         if current_hp > 0:
