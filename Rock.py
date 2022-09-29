@@ -49,7 +49,7 @@ class Rock(pygame.sprite.Sprite):
                         elif self.stage_num == 3:
                             sprite.image = pygame.image.load(os.path.join(stage_H_path, "tile_red_bridge.png")).convert_alpha()
                         elif self.stage_num == 4:
-                            sprite.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple-bridge.png")).convert_alpha()
+                            sprite.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple_bridge.png")).convert_alpha()
                         elif self.stage_num == 5:
                             sprite.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_bridge.png")).convert_alpha()
                         sprite.name = "Road"

@@ -300,7 +300,7 @@ class NoneRoad(pygame.sprite.Sprite):
         elif stage_num == 3:
             self.image = pygame.image.load(os.path.join(stage_H_path, "tile_red_void.png")).convert_alpha()
         elif stage_num == 4:
-            self.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple-void.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple_void.png")).convert_alpha()
         elif stage_num == 5:
             self.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_void.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
