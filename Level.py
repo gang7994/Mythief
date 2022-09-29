@@ -6,8 +6,8 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
                          CrossWire, DownLeftWire, DownRightWire, HorizontalDownWire, HorizontalUpWire, \
                          UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire
 from Player import Player
-from Road import Road, Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor0, Conductor1,\
-    Stage1_Edge1, Stage1_Edge2, Stage1_Edge3, Stage1_Edge4, Stage1_Corner1, Stage1_Corner2, Stage1_Corner3, Stage1_Corner4
+from Road import Road, Road_Corner1, Road_Corner2, Road_Corner3, Road_Corner4, Road_Edge1, Road_Edge2, Road_Edge3, Road_Edge4, \
+    Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor0, Conductor1
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2,\
      GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8, GeneralItem9,\
@@ -86,7 +86,7 @@ class Level:
         elif self.stage_number == 1: #튜토리얼
             self.cur_map = map[1]
         elif self.stage_number == 2:
-            self.cur_map = map[2];
+            self.cur_map = map[2]
         elif self.stage_number == 3:
             self.cur_map = map[3]
         elif self.stage_number == 4:
@@ -101,7 +101,7 @@ class Level:
                 tile_pos_x = col_idx * tile_width_size + horizontal_margin
                 tile_pos_y = row_idx * tile_height_size + vertical_margin
                 if col == "." or col == "WA" or col == "CR" or col == "PL0" or col == "PL1" or col == "PL2" or col == "FM" or col == "FCR":   # 파도 실험중
-                    NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    NoneRoad((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number)
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
@@ -164,42 +164,42 @@ class Level:
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if self.cur_map == map[0] or self.cur_map == map[1] or self.cur_map == map[2]:
                     if col == "RE1":
-                        Stage1_Edge1((tile_pos_x, tile_pos_y), [self.images])
+                        Road_Edge1((tile_pos_x, tile_pos_y), [self.images])
                         self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                         self.flooding_tile.append((tile_pos_x, tile_pos_y))
                         self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                     elif col =="RE2":
-                        Stage1_Edge2((tile_pos_x, tile_pos_y), [self.images])
+                        Road_Edge2((tile_pos_x, tile_pos_y), [self.images])
                         self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                         self.flooding_tile.append((tile_pos_x, tile_pos_y))
                         self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                     elif col =="RE3":
-                        Stage1_Edge3((tile_pos_x, tile_pos_y), [self.images])
+                        Road_Edge3((tile_pos_x, tile_pos_y), [self.images])
                         self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                         self.flooding_tile.append((tile_pos_x, tile_pos_y))
                         self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                     elif col =="RE4":
-                        Stage1_Edge4((tile_pos_x, tile_pos_y), [self.images])
+                        Road_Edge4((tile_pos_x, tile_pos_y), [self.images])
                         self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                         self.flooding_tile.append((tile_pos_x, tile_pos_y))
                         self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                     elif col =="RC1":
-                        Stage1_Corner1((tile_pos_x, tile_pos_y), [self.images])
+                        Road_Corner1((tile_pos_x, tile_pos_y), [self.images])
                         self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                         self.flooding_tile.append((tile_pos_x, tile_pos_y))
                         self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                     elif col =="RC2":
-                        Stage1_Corner2((tile_pos_x, tile_pos_y), [self.images])
+                        Road_Corner2((tile_pos_x, tile_pos_y), [self.images])
                         self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                         self.flooding_tile.append((tile_pos_x, tile_pos_y))
                         self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                     elif col =="RC3":
-                        Stage1_Corner3((tile_pos_x, tile_pos_y), [self.images])
+                        Road_Corner3((tile_pos_x, tile_pos_y), [self.images])
                         self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                         self.flooding_tile.append((tile_pos_x, tile_pos_y))
                         self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                     elif col =="RC4":
-                        Stage1_Corner4((tile_pos_x, tile_pos_y), [self.images])
+                        Road_Corner4((tile_pos_x, tile_pos_y), [self.images])
                         self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                         self.flooding_tile.append((tile_pos_x, tile_pos_y))
                         self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
@@ -327,7 +327,8 @@ class Level:
                              self.damage_images,
                              self.item_images,
                              self.door_images,
-                             self.images)
+                             self.images, 
+                             self.stage_number)
 
         if len(self.event_item_list) != 0:
             for idx, item in enumerate(self.event_item_list):

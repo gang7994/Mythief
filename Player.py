@@ -7,7 +7,7 @@ from Item import ThunderRod
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images, damage_images, item_images, door_images, images):
+    def __init__(self, pos, groups, border_images, damage_images, item_images, door_images, images, stage_number):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join(images_path, "sprite_idle0.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.name = "Player"
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
+        self.stage_num = stage_number
         # player hp var
         self.is_dead = False
         # player move var
@@ -353,13 +354,13 @@ class Player(pygame.sprite.Sprite):
         else:
             dir = self.last_dir
         if dir == 2:
-            self.images.add(Rock(self.rect.center, 1, self.border_images, effect))
+            self.images.add(Rock(self.rect.center, 1, self.border_images, effect, self.stage_num))
         elif dir == 1:
-            self.images.add(Rock(self.rect.center, 2, self.border_images, effect))
+            self.images.add(Rock(self.rect.center, 2, self.border_images, effect, self.stage_num))
         elif dir == 4:
-            self.images.add(Rock(self.rect.center, 3, self.border_images, effect))
+            self.images.add(Rock(self.rect.center, 3, self.border_images, effect, self.stage_num))
         elif dir:
-            self.images.add(Rock(self.rect.center, 4, self.border_images, effect))
+            self.images.add(Rock(self.rect.center, 4, self.border_images, effect, self.stage_num))
 
     # 재장전 함수
     def re_load_rock(self):

@@ -50,12 +50,14 @@ class Wall4(pygame.sprite.Sprite):
 class Wall_Wreck(pygame.sprite.Sprite):
     def __init__(self, pos, groups, stage_num):
         super().__init__(groups)
-        if stage_num == 3:
-            self.image = pygame.image.load(os.path.join(images_path, "W_tile_wall_0.png")).convert_alpha()
+        if stage_num == 2:
+            self.image = pygame.image.load(os.path.join(stage_P_path, "W_tile_wall_0.png")).convert_alpha()
+        elif stage_num == 3:
+            self.image = pygame.image.load(os.path.join(stage_H_path, "tile_red_wall1.png")).convert_alpha()
         elif stage_num == 4:
-            self.image = pygame.image.load(os.path.join(images_path, "tile_red_wall1.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple_wall1.png")).convert_alpha()
         elif stage_num == 5:
-            self.image = pygame.image.load(os.path.join(images_path, "tile_purple_wall1.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_wall1.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
@@ -64,12 +66,14 @@ class Wall_Wreck(pygame.sprite.Sprite):
 class Wall_Plant(pygame.sprite.Sprite):
     def __init__(self, pos, groups, stage_num):
         super().__init__(groups)
-        if stage_num == 3:
-            self.image = pygame.image.load(os.path.join(images_path, "W_tile_wall_1.png")).convert_alpha()
+        if stage_num == 2:
+            self.image = pygame.image.load(os.path.join(stage_P_path, "W_tile_wall_1.png")).convert_alpha()
+        elif stage_num == 3:
+            self.image = pygame.image.load(os.path.join(stage_H_path, "tile_red_wall2.png")).convert_alpha()
         elif stage_num == 4:
-            self.image = pygame.image.load(os.path.join(images_path, "tile_red_wall2.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple_wall2.png")).convert_alpha()
         elif stage_num == 5:
-            self.image = pygame.image.load(os.path.join(images_path, "tile_purple_wall2.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_wall2.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Wall"
@@ -287,9 +291,18 @@ class Stage5(pygame.sprite.Sprite):
 
 # 길 없음 이미지
 class NoneRoad(pygame.sprite.Sprite):
-    def __init__(self, pos, groups):
+    def __init__(self, pos, groups, stage_num):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "void_checked.png")).convert_alpha()
+        if stage_num == 0 or stage_num == 1:
+            self.image = pygame.image.load(os.path.join(images_path, "void_checked.png")).convert_alpha()
+        elif stage_num == 2:
+            self.image = pygame.image.load(os.path.join(stage_P_path, "wTile_Void.png")).convert_alpha()
+        elif stage_num == 3:
+            self.image = pygame.image.load(os.path.join(stage_H_path, "tile_red_void.png")).convert_alpha()
+        elif stage_num == 4:
+            self.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple-void.png")).convert_alpha()
+        elif stage_num == 5:
+            self.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_void.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "NoneRoad"
@@ -399,7 +412,7 @@ class UpRightWire(pygame.sprite.Sprite): #└
 class WaterHole(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "wTile00.png")).convert_alpha()
+        self.image = pygame.image.load(os.path.join(stage_P_path, "wTile00.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "WaterHole"
@@ -508,7 +521,7 @@ class Thunder(pygame.sprite.Sprite):
                 if sprite.rect.colliderect(self.hitbox):
                     self.border_images.add(sprite)
                     sprite.name = "NoneRoad"
-                    sprite.image = pygame.image.load(os.path.join(images_path, "void_checked.png")).convert_alpha()
+                    sprite.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_void.png")).convert_alpha()
                     sprite.hitbox = sprite.rect.inflate(-3, -3)
             elif sprite.name == "Conductor0" or sprite.name == "Conductor1":
                 if sprite.rect.colliderect(self.hitbox):

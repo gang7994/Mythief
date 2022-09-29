@@ -1,9 +1,10 @@
 import pygame, os
 from Settings import *
 
+
 # 벽 이미지
 class Rock(pygame.sprite.Sprite):
-    def __init__(self, pos, direction, border_images, itemeffect):
+    def __init__(self, pos, direction, border_images, itemeffect, stage_number):
         super().__init__()
         self.image = pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
@@ -16,6 +17,7 @@ class Rock(pygame.sprite.Sprite):
         self.is_pause = False
         self.is_on_alcohol = False
         self.itemeffect = itemeffect
+        self.stage_num = stage_number
 
     # 영역 밖에서 오브젝트 삭제
     def destroy(self):
@@ -40,10 +42,18 @@ class Rock(pygame.sprite.Sprite):
                         sprite.name = "alcoholRoad"
                     else:
                         self.border_images.remove(sprite)
-                        sprite.image = pygame.image.load(os.path.join(images_path, "re_bridge.png")).convert_alpha()
+                        if self.stage_num == 0 or self.stage_num == 1:
+                           sprite.image = pygame.image.load(os.path.join(images_path, "re_bridge.png")).convert_alpha()
+                        elif self.stage_num == 2:
+                            sprite.image = pygame.image.load(os.path.join(stage_P_path, "wTile_Bridge.png")).convert_alpha()
+                        elif self.stage_num == 3:
+                            sprite.image = pygame.image.load(os.path.join(stage_H_path, "tile_red_bridge.png")).convert_alpha()
+                        elif self.stage_num == 4:
+                            sprite.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple-bridge.png")).convert_alpha()
+                        elif self.stage_num == 5:
+                            sprite.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_bridge.png")).convert_alpha()
                         sprite.name = "Road"
                 elif sprite.name != "WaterHole" and sprite.name != "alcoholRoad" and not sprite.name in ["Electric00","Electric01","Electric02","Electric03","Electric04","Electric05","Electric06","Electric07","Electric08","Electric09","Electric10"]:
-                    
                     stone_break_sound.play()
                     self.kill()
                 if sprite.name == "Electric00":

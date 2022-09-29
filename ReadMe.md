@@ -73,7 +73,7 @@ Mythief
 |이미지|코드(명칭)|클래스|비고|
 |:------:|:---:|:---:|:---:|
 |![img](/Images/TestPix/void_checked.png)|"."(NoneRoad)|NoneRoad( )|.|
-|![img](/Images/TestPix/wTile00.png)|"W"(WaterHole)|WaterHole( )|.|
+|![img](/Images/Stage1_P/wTile00.png)|"W"(WaterHole)|WaterHole( )|.|
 |![img](/Images/TestPix/waveAnim_0.png)|"WA"(Wave)|Wave( )|애니메이션 형태|
 |![img](/Images/TestPix/obstacle1.png)|"O"(obstacle)|Obstacle( )|.|
 
