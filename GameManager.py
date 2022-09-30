@@ -25,7 +25,6 @@ class GameManager:
         self.interaction_UI = pygame.image.load(os.path.join(images_path, "interaction_UI.png")).convert_alpha()
         self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
         self.finish = False
-        self.ignore_item = False
 
     def Option(self): #옵션창
         global bgm_vol, effect_vol
@@ -425,9 +424,9 @@ class GameManager:
     def general_item_effect(self):
         global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8, use_item9, use_item10
         for tmp in general_inventory:
-            if tmp[1] == 6 and self.ignore_item and not tmp[0].name == "general_item9":
+            if tmp[1] == 6 and self.level.player.ignore_item and not tmp[0].name == "general_item9":
                 tmp[1] = -1 
-                self.ignore_item = False
+                self.level.player.ignore_item = False
             elif tmp[1] == 6:
                 if tmp[0].name == "general_item0" and not use_item0: #로프 1개 추가
                     rope_item +=1
@@ -462,7 +461,7 @@ class GameManager:
                     self.level.player.is_effect0 = True
                     use_item8 = True       
                 elif tmp[0].name == "general_item9" and not use_item9: #미믹 [비활성화 토의필요]
-                    self.ignore_item = True
+                    self.level.player.ignore_item = True
                     use_item9 = True
                 elif tmp[0].name == "general_item10": #대나무 낚싯대
                     self.level.player.is_effect1 = True
@@ -496,7 +495,7 @@ class GameManager:
             self.level.player.is_effect0 = False
             use_item8 = False
         if use_item9:
-            self.ignore_item = False
+            self.level.player.ignore_item = False
             use_item9 = False
         if use_item10:
             self.level.player.is_effect1 = False
@@ -636,7 +635,6 @@ class GameManager:
                             else:
                                 self.level.player.event_handler = False
                                 self.level.text.event_text_idx = 0
-
 
             # 이미지 영역
             self.screen.fill(BLACK)

@@ -3,7 +3,8 @@ import pygame, os
 from Settings import *
 from Rock import Rock
 from TextGroup import *
-from Item import ThunderRod
+from Item import ThunderRod, GeneralItem0, GeneralItem1, GeneralItem2, GeneralItem3, GeneralItem4, \
+                 GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8, GeneralItem9, GeneralItem10
 
 
 class Player(pygame.sprite.Sprite):
@@ -20,6 +21,11 @@ class Player(pygame.sprite.Sprite):
         self.character_height = self.rect.size[1]
         self.stage_num = stage_number
         self.map_num = map_idx
+        self.ignore_item = False
+        self.item_name_list = ["general_item0", "general_item1", "general_item2",
+                               "general_item3", "general_item4", "general_item5",
+                               "general_item6", "general_item7", "general_item8",
+                               "general_item9", "general_item10"]
         # player hp var
         self.is_dead = False
         # player move var
@@ -226,14 +232,6 @@ class Player(pygame.sprite.Sprite):
         self.damaged_start = pygame.time.get_ticks()
         self.image.set_alpha(200)
 
-    # 회복 함수
-    def get_hp(self, heal):
-        if self.current_hp < self.max_hp:
-            self.current_hp += heal
-        if self.current_hp >= self.max_hp:
-            self.current_hp = self.max_hp
-
-
     # 수평 이동 입력
     def get_horizontal(self):
         keys = pygame.key.get_pressed()
@@ -395,23 +393,167 @@ class Player(pygame.sprite.Sprite):
                 self.player_speed_x = 2
                 self.player_speed_y = 2
 
-    def event_item_effects(self, event_char):    # 이벤트 유물 효과 필요
+    def remove_item_effect(self, name):
+        global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8, use_item9, use_item10
+        if name == "general_item0":
+            rope_item -= 1
+            use_item0 = False
+        elif name == "general_item1":
+            self.player_speed_x-=1
+            self.player_speed_y-=1
+            use_item1 = False
+        elif name == "general_item2":
+            max_hp -= 30
+            use_item2 = False
+        elif name == "general_item3":
+            shield = 0
+            use_item3 = False
+        elif name == "general_item4":
+            rope_item += 1
+            use_item4 = False
+        elif name == "general_item5":
+            if bonus >= 100:
+                bonus -= 100
+            use_item5 = False
+        elif name == "general_item6":         # 이거 로직 변경 필요해보임
+            use_item6 = False
+        elif name == "general_item7":
+            self.rock_item_effect = False
+            use_item7 = False
+        elif name == "general_item8":
+            self.is_effect0 = False
+            use_item8 = False
+        elif name == "general_item9":         # 잘 모르겠음
+            self.ignore_item = False
+            use_item9 = False
+            pass
+        elif name == "general_item10":
+            self.is_effect1 = False
+            use_item10 = False
+
+    def remove_item(self):
+        tmp = []
+        for idx, item in enumerate(general_inventory):
+            if item[0].is_get:
+                tmp.append(idx)
+        if len(tmp) != 0:
+            idx = random.choice(tmp)
+            general_inventory[idx][0].is_get = False
+            self.remove_item_effect(general_inventory[idx][0].name)
+            general_inventory.pop(idx)
+            return True
+        return False
+
+    def get_item(self):
+        while True:
+            tmp = random.choice(self.item_name_list)
+            flag = False
+            for item in general_inventory:
+                if item[0].name == tmp and item[1] < 6:
+                    item[1] = 6
+                    item[0].is_get = True
+                    return
+                elif item[0].name == tmp and item[1] == 6:
+                    flag = True
+            if not flag:
+                if tmp == "general_item0":
+                    a = GeneralItem0((0,0),[self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item1":
+                    a = GeneralItem1((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item2":
+                    a = GeneralItem2((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item3":
+                    a = GeneralItem3((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item4":
+                    a = GeneralItem4((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item5":
+                    a = GeneralItem5((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item6":
+                    a = GeneralItem6((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item7":
+                    a = GeneralItem7((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item8":
+                    a = GeneralItem8((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item9":
+                    a = GeneralItem9((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item10":
+                    a = GeneralItem10((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    general_inventory.append([a, 6])
+                    a.kill()
+                return
+
+    def event_item_effects(self, event_char):    # 이벤트 유물 효과 필요 -> hp관련 수정 필요
+        global current_hp, max_hp
         if event_char == "A":
-            pass
+            flag = self.remove_item()
+            if flag:
+                if current_hp + 50 > max_hp:
+                    current_hp = max_hp
+                else:
+                    current_hp += 50
         elif event_char == "B":
-            pass
+            flag = self.remove_item()
+            if flag:
+                self.get_item()
         elif event_char == "C":
-            pass
+            if current_hp - 30 <= 0:
+                pass
+            else:
+                current_hp -= 30
+                self.get_item()
         elif event_char == "D":
-            pass
+            tmp = []
+            for idx, item in enumerate(general_inventory):
+                if item.is_get:
+                    tmp.append(idx)
+            if len(tmp) >= 2:
+                self.remove_item()
+                self.remove_item()
+                current_hp = max_hp
         elif event_char == "E":
-            pass
+            self.remove_item()
         elif event_char == "F":
-            pass
+            max_hp -= 20
+            current_hp = max_hp
         elif event_char == "G":
-            pass
+            max_hp += 20
+            if current_hp - 20 > 0:
+                current_hp -= 20
+            else:
+                current_hp = 1
         elif event_char == "H":
-            pass
+            self.get_item()
         elif event_char == "I":
             pass
 
@@ -594,7 +736,6 @@ class Player(pygame.sprite.Sprite):
                         item.item_gage += 1
                         self.current_item_gage = item.item_gage
                         if item.item_gage == 100:
-                            item.is_get = True
                             self.item_interaction = False
                             item.is_interaction = False
                             self.current_item_gage = 0
@@ -620,7 +761,10 @@ class Player(pygame.sprite.Sprite):
                                 is_fill = True
                                 for tmp in general_inventory:
                                     if tmp[0].name == item.name:
-                                        if tmp[1] < 6: tmp[1] += 1
+                                        if tmp[1] < 6:
+                                            tmp[1] += 1
+                                            if tmp[1] == 6:
+                                                tmp[0].is_get = True
                                         is_fill = False
                                 if is_fill:
                                     general_inventory.append([item, 1])
