@@ -538,8 +538,8 @@ class GameManager:
         click_sound.play()
         
     def sound_setting(self):
-        print(bgm_vol, effect_vol)
         self.level.player.effect_vol = effect_vol
+        self.level.effect_vol = effect_vol
         
             
     # 게임 로직
