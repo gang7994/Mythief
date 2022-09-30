@@ -69,9 +69,10 @@ stage_score = [0,0,0,0,100]
 bonus = 0
 
 #sound
-click_sound = pygame.mixer.Sound("Sound/click.wav")
-stone_break_sound = pygame.mixer.Sound("Sound/stone_break.mp3")
+sound_path = os.path.join(current_path, "Sound")
+click_sound = pygame.mixer.Sound((os.path.join(sound_path, "click.wav")))
+stone_break_sound = pygame.mixer.Sound((os.path.join(sound_path, "stone_break.mp3")))
 item_interaction_sound = pygame.mixer.Sound("Sound/item_interaction.wav")
-use_sound = pygame.mixer.Sound("Sound/throw.wav")
-damage_sound = pygame.mixer.Sound("Sound/hurt.wav")
-thunder_sound = pygame.mixer.Sound("Sound/thunder.wav")
+use_sound = pygame.mixer.Sound((os.path.join(sound_path, "throw.wav")))
+damage_sound = pygame.mixer.Sound((os.path.join(sound_path, "hurt.wav")))
+thunder_sound = pygame.mixer.Sound((os.path.join(sound_path, "thunder.wav")))
