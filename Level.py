@@ -155,7 +155,7 @@ class Level:
 
 
                 if col == "C1":
-                    Corner1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    Corner1((tile_pos_x, tile_pos_y), [self.images, self.border_images], )
                 if col == "C2":
                     Corner2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "C3":
@@ -163,7 +163,7 @@ class Level:
                 if col == "C4":
                     Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                 if col == "O":
-                    Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images])
+                    Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number)
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if self.cur_map == map[0] or self.cur_map == map[1] or self.cur_map == map[2]:
                     if col == "RE1":
