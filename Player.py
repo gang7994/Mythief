@@ -443,24 +443,24 @@ class Player(pygame.sprite.Sprite):
                         elif self.is_tile_mix and not self.is_damaged:
                             current_time0 = pygame.time.get_ticks()
                             if current_time0 - self.start0 < 5000 and self.is_effect0:
-                                #damage_sound.set_volume(self.effect_vol/100)
-                                #damage_sound.play()
+                                damage_sound.set_volume(self.effect_vol/100)
+                                damage_sound.play()
                                 self.get_damaged()
                                 self.is_first0 = False
                             else :
-                                #damage_sound.set_volume(self.effect_vol/100)
-                                #damage_sound.play()
+                                damage_sound.set_volume(self.effect_vol/100)
+                                damage_sound.play()
                                 self.get_damaged()
                                 self.is_damage10 = True
                                 self.is_first0 = True
                         elif self.is_thunder and not self.is_damaged:
-                            #damage_sound.set_volume(self.effect_vol/100)
-                            #damage_sound.play()
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
                             self.get_damaged()
                             self.is_damage10 = True
                         elif self.is_dark and not self.is_damaged:
-                            #damage_sound.set_volume(self.effect_vol/100)
-                            #damage_sound.play()
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
                             self.get_damaged()
                             self.is_damage10 = True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
@@ -491,24 +491,24 @@ class Player(pygame.sprite.Sprite):
                         elif self.is_tile_mix and not self.is_damaged:
                             current_time1 = pygame.time.get_ticks()
                             if current_time1 - self.start1 < 5000 and self.is_effect0:
-                                #damage_sound.set_volume(self.effect_vol/100)
-                                #damage_sound.play()
+                                damage_sound.set_volume(self.effect_vol/100)
+                                damage_sound.play()
                                 self.get_damaged()
                                 self.is_first0 = False
                             else :
-                                #damage_sound.set_volume(self.effect_vol/100)
-                                #damage_sound.play()
+                                damage_sound.set_volume(self.effect_vol/100)
+                                damage_sound.play()
                                 self.get_damaged()
                                 self.is_damage10 = True
                                 self.is_first0 = True
                         elif self.is_thunder and not self.is_damaged:
-                            #damage_sound.set_volume(self.effect_vol/100)
-                            #damage_sound.play()
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
                             self.get_damaged()
                             self.is_damage10 = True
                         elif self.is_dark and not self.is_damaged:
-                            #damage_sound.set_volume(self.effect_vol/100)
-                            #damage_sound.play()
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
                             self.get_damaged()
                             self.is_damage10 = True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
@@ -523,41 +523,41 @@ class Player(pygame.sprite.Sprite):
         for sprite in self.damage_images:
             if sprite.hitbox.colliderect(self.hitbox):
                 if sprite.name == "laser_Monster" and not self.is_damaged:
-                    #damage_sound.set_volume(self.effect_vol/100)
-                    #damage_sound.play()
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage2 = True
                 if sprite.name == "monster_laser" and not self.is_damaged:
-                    #damage_sound.set_volume(self.effect_vol/100)
-                    #damage_sound.play()
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage2 = True
                     sprite.kill()
                 if sprite.name == "rush_Monster" and not self.is_damaged:           # 데미지 2~3
-                    #damage_sound.set_volume(self.effect_vol/100)
-                    #damage_sound.play()
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage2 = True
                 if sprite.name == "thunder" and sprite.animation_idx == 9 and not self.is_damaged:
-                    #damage_sound.set_volume(self.effect_vol/100)
-                    #damage_sound.play()
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.is_thunder = True
                     self.get_damaged()
                     self.is_damage10 = True
                 if sprite.name == "Fish" and not self.is_damaged:
-                    #damage_sound.set_volume(self.effect_vol/100)
-                    #damage_sound.play()
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage5 = True
                     sprite.image = pygame.image.load(os.path.join(images_path, "monster_fish_animation_atk.png")).convert_alpha()
                 if sprite.name == "satiros" and not self.is_damaged:
-                    #damage_sound.set_volume(self.effect_vol/100)
-                    #damage_sound.play()
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage5 = True
                 if sprite.name == "cerberus" and self.is_player_cerberus and not self.is_damaged:
-                    #damage_sound.set_volume(self.effect_vol/100)
-                    #damage_sound.play()
+                    damage_sound.set_volume(self.effect_vol/100)
+                    damage_sound.play()
                     self.get_damaged()
                     self.is_damage30 = True
 
