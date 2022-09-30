@@ -7,7 +7,7 @@ from Item import ThunderRod
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images, damage_images, item_images, door_images, images, stage_number):
+    def __init__(self, pos, groups, border_images, damage_images, item_images, door_images, images, stage_number, map_idx):
         super().__init__(groups)
         pygame.init()
         self.image = pygame.image.load(os.path.join(images_path, "sprite_idle0.png")).convert_alpha()
@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.character_width = self.rect.size[0]
         self.character_height = self.rect.size[1]
         self.stage_num = stage_number
+        self.map_num = map_idx
         # player hp var
         self.is_dead = False
         # player move var
@@ -642,12 +643,13 @@ class Player(pygame.sprite.Sprite):
                     if self.is_rod_ready:
                         keys = pygame.key.get_pressed()
                         if keys[pygame.K_q]:
-                            ThunderRod((sprite.rect.left, sprite.rect.top), [self.images])
-                            self.rod_start_time = pygame.time.get_ticks()
-                            self.is_rod_ready = False
-                            if self.rod_num < 5:
-                                self.rod_num += 1
-                            self.rod_position.append((sprite.rect.left, sprite.rect.top - 96))
+                            if self.stage_num == 5 and self.rod_num != 5 and not(self.map_num == 3 or self.map_num == 7):
+                                ThunderRod((sprite.rect.left, sprite.rect.top), [self.images])
+                                self.rod_start_time = pygame.time.get_ticks()
+                                self.is_rod_ready = False
+                                if self.rod_num < 5:
+                                    self.rod_num += 1
+                                self.rod_position.append((sprite.rect.left, sprite.rect.top - 96))
 
     def rod_cool_time(self):
         if not self.is_rod_ready:

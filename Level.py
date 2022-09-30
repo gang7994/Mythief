@@ -331,7 +331,8 @@ class Level:
                              self.item_images,
                              self.door_images,
                              self.images, 
-                             self.stage_number)
+                             self.stage_number,
+                             self.map_idx)
 
         if len(self.event_item_list) != 0:
             for idx, item in enumerate(self.event_item_list):
@@ -527,9 +528,7 @@ class Level:
             if self.stage_number == 5 and (self.map_idx in [0,1,2,4,5,6,8]): # 번개 알고리즘 + 전도체 블록 알고리즘
                 self.random_thunder(self.elapsed_time)
                 if self.thunder is not None and self.thunder_flag:
-                    print(self.thunder.animation_idx)
                     if self.thunder.animation_idx == 8 or self.thunder.animation_idx == 9:
-                        print("11111111111")
                         thunder_sound.set_volume(self.effect_vol/100)
                         thunder_sound.play()
                         self.thunder= None
