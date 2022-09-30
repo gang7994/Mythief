@@ -392,13 +392,25 @@ class GameManager:
                 image = pygame.image.load(os.path.join(item_path, "Them_5.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-        
+
     def show_item(self):
+        game_font = pygame.font.Font(None, 30)
         pygame.draw.circle(self.screen, GREY, (1370, 480), 40) #기믹아이템
         pygame.draw.circle(self.screen, GREY, (1370, 600), 40) #패스권
-        game_font = pygame.font.Font(None, 50)
+        if self.level.player.is_hadesHelmet:
+            item = pygame.image.load(os.path.join(item_path, "hadesHelmet.png")).convert_alpha()
+            item_rect = item.get_rect(center=(1370, 480))
+            self.screen.blit(item, item_rect)
+        elif self.level.stage_number == 5:
+            rod = pygame.image.load(os.path.join(item_path, "rod_0.png")).convert_alpha()
+            rod_rect = rod.get_rect(center=(1370, 470))
+            rod_count = game_font.render(f"{5-self.level.player.rod_num}/5", True, WHITE)
+            self.screen.blits([(rod, rod_rect), (rod_count, (1355, 490) )])
+        image = pygame.image.load(os.path.join(item_path, "general_item0.png")).convert_alpha()
+        image_rect = image.get_rect(center=(1370, 590))
+        
         rope_count = game_font.render(f"{rope_item}/2", True, WHITE)
-        self.screen.blit(rope_count, (1350, 580))
+        self.screen.blits([(image, image_rect), (rope_count, (1355, 610))])
         self.screen.blit(pygame.transform.scale(pygame.image.load(os.path.join(images_path, "rock.png")).convert_alpha(), (50, 50)), (1345, 690))
         pygame.draw.rect(self.screen, WHITE, (1341, 690, 55, 55), 2)
         if self.level.player.current_time != 0 and self.level.player.rock_time != 0:
