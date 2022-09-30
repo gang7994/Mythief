@@ -134,9 +134,18 @@ class Corner4(pygame.sprite.Sprite):
         self.is_pause = False
         
 class Obstacle(pygame.sprite.Sprite):
-    def __init__(self, pos, groups):
+    def __init__(self, pos, groups, stage_num):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "obstacle1.png")).convert_alpha()
+        if stage_num == 0 or stage_num == 1:
+            self.image = pygame.image.load(os.path.join(images_path, "obstacle1.png")).convert_alpha()
+        elif stage_num == 2:
+            self.image = pygame.image.load(os.path.join(stage_P_path, "wTile_obs.png")).convert_alpha()
+        elif stage_num == 3:
+            self.image = pygame.image.load(os.path.join(stage_H_path, "tile_red_obs.png")).convert_alpha()
+        elif stage_num == 4:
+            self.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple_obs.png")).convert_alpha()
+        elif stage_num == 5:
+            self.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_obs.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "obstacle"   # 이름 수정함 -> 파도로 위치 변경 안시킬거임
