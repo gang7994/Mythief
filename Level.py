@@ -54,6 +54,7 @@ class Level:
         self.thunder_start_position = []
         self.thunder_flag = False
         self.thunder_cool_time = True
+        self.thunder = None
         # conductor var
         self.conductor1 = None
         # map_init
@@ -74,6 +75,8 @@ class Level:
         # text var
         self.text = TextManager(self.stage_number + 1)
         self.text_idx = idx
+        # sound var
+        self.effect_vol = 0
         
  
 
@@ -494,10 +497,11 @@ class Level:
         if int(time) % 3 == 0 and int(time) != 0 and not self.thunder_flag:
             self.thunder_flag = True
             for thunder in random.sample(self.thunder_start_position, k=5-self.player.rod_num):
-                Thunder(thunder, [self.monster_images, self.damage_images], self.images, self.border_images)
+                self.thunder = Thunder(thunder, [self.monster_images, self.damage_images], self.images, self.border_images)
             if len(self.player.rod_position) > 0:
                 for i in self.player.rod_position:
-                    Thunder(i, [self.monster_images, self.damage_images], self.images, self.border_images)
+                    self.thunder = Thunder(i, [self.monster_images, self.damage_images], self.images, self.border_images)
+
 
     # 현재 레벨의 메인 게임 로직
     def run(self):
@@ -522,6 +526,13 @@ class Level:
 
             if self.stage_number == 5 and (self.map_idx in [0,1,2,4,5,6,8]): # 번개 알고리즘 + 전도체 블록 알고리즘
                 self.random_thunder(self.elapsed_time)
+                if self.thunder is not None and self.thunder_flag:
+                    print(self.thunder.animation_idx)
+                    if self.thunder.animation_idx == 8 or self.thunder.animation_idx == 9:
+                        print("11111111111")
+                        thunder_sound.set_volume(self.effect_vol/100)
+                        thunder_sound.play()
+                        self.thunder= None
                 if self.conductor1 is not None:
                     if self.conductor1.is_on and self.finish.name == "ClosedFinish":
                         self.finish.name = "Finish"
