@@ -85,6 +85,10 @@ class Player(pygame.sprite.Sprite):
         self.event_handler = False
         self.event_code = None
         self.get_event_item = False
+        self.player_get_hp = False
+        self.player_loss_hp = False
+        self.player_get_max_hp = False
+        self.player_loss_max_hp = False
         # is wave?
         self.is_tile_mix = False
         self.player_in_wave = False
@@ -518,20 +522,14 @@ class Player(pygame.sprite.Sprite):
         if event_char == "A":
             flag = self.remove_item()
             if flag:
-                if current_hp + 50 > max_hp:
-                    current_hp = max_hp
-                else:
-                    current_hp += 50
+                self.player_get_hp = True
         elif event_char == "B":
             flag = self.remove_item()
             if flag:
                 self.get_item()
         elif event_char == "C":
-            if current_hp - 30 <= 0:
-                pass
-            else:
-                current_hp -= 30
-                self.get_item()
+            self.player_loss_hp = True
+            self.get_item()
         elif event_char == "D":
             tmp = []
             for idx, item in enumerate(general_inventory):
@@ -544,14 +542,9 @@ class Player(pygame.sprite.Sprite):
         elif event_char == "E":
             self.remove_item()
         elif event_char == "F":
-            max_hp -= 20
-            current_hp = max_hp
+            self.player_loss_max_hp = True
         elif event_char == "G":
-            max_hp += 20
-            if current_hp - 20 > 0:
-                current_hp -= 20
-            else:
-                current_hp = 1
+            self.player_get_max_hp = True
         elif event_char == "H":
             self.get_item()
         elif event_char == "I":

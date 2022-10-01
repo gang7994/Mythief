@@ -543,6 +543,39 @@ class GameManager:
         if current_hp + 10 > max_hp:
             current_hp = max_hp
         else: current_hp += 10
+
+    def player_event_hp_get(self):
+        global current_hp, max_hp
+        if self.level.player.player_get_hp:
+            if current_hp + 50 > max_hp:
+                current_hp = max_hp
+            else:
+                current_hp += 50
+            self.level.player.player_get_hp = False
+
+    def player_event_hp_loss(self):
+        global current_hp, max_hp
+        if self.level.player.player_loss_hp:
+            if current_hp - 30 <= 0:
+                current_hp = 1
+            else:
+                current_hp -= 30
+            self.level.player.player_loss_hp = False
+
+    def player_event_max_hp(self):
+        global current_hp, max_hp
+        if self.level.player.player_loss_max_hp:
+            max_hp -= 30
+            current_hp = max_hp
+            self.level.player.player_loss_max_hp = False
+
+        if self.level.player.player_get_max_hp:
+            max_hp += 30
+            if current_hp - 20 > 0:
+                current_hp -= 20
+            else:
+                current_hp = 1
+            self.level.player.player_get_max_hp = False
         
     def sound_click(self):
         click_sound.set_volume(effect_vol/100)
@@ -666,6 +699,11 @@ class GameManager:
             self.door_interaction_text()
             self.show_theme_inventory()
             self.sound_setting()
+
+            # player_get_event
+            self.player_event_hp_loss()
+            self.player_event_hp_get()
+            self.player_event_max_hp()
 
             if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]):
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
