@@ -517,6 +517,34 @@ class Player(pygame.sprite.Sprite):
                     a.kill()
                 return
 
+    def debug_item(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_v] and len(general_inventory) == 0:
+            a = GeneralItem0((0, 0), [self.images, self.item_images])
+            a.is_get = True
+            general_inventory.append([a, 6])
+            a.kill()
+
+            a = GeneralItem1((0, 0), [self.images, self.item_images])
+            a.is_get = True
+            general_inventory.append([a, 6])
+            a.kill()
+
+            a = GeneralItem2((0, 0), [self.images, self.item_images])
+            a.is_get = True
+            general_inventory.append([a, 6])
+            a.kill()
+
+            a = GeneralItem3((0, 0), [self.images, self.item_images])
+            a.is_get = True
+            general_inventory.append([a, 6])
+            a.kill()
+
+            a = GeneralItem4((0, 0), [self.images, self.item_images])
+            a.is_get = True
+            general_inventory.append([a, 6])
+            a.kill()
+
     def event_item_effects(self, event_char):    # 이벤트 유물 효과 필요 -> hp관련 수정 필요
         global current_hp, max_hp
         if event_char == "A":
@@ -833,6 +861,9 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         dt = self.clock.tick(FPS)
         if not self.is_pause:
+            # 디버그용 함수 v누르면 일반 유물 5개 생성
+            #self.debug_item()
+
             self.get_item_interaction()
             self.get_door_interaction()
             self.un_damaged_time()

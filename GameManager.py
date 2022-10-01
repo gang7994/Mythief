@@ -316,6 +316,10 @@ class GameManager:
                 self.particle.click_flag = True
                 if MAINMENU.checkForInput(mouse_pos):
                     self.sound_click()
+                    if total >= 1000:
+                        self.text.draw_text(7, self.screen)
+                    else:
+                        self.text.draw_text(8, self.screen)
                     self.running = False
         self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
     
@@ -758,7 +762,7 @@ class GameManager:
                         max_hp = 100
                         current_hp = max_hp
                         
-                    if self.level.stage_number == 6: # 마지막 스테이지 
+                    if self.level.stage_number == 6: # 마지막 스테이지
                         self.finish = True
                     else:
                         stage_clear[self.level.stage_number] = True
