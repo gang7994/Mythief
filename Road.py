@@ -10,6 +10,23 @@ class Road(pygame.sprite.Sprite):
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "Road"
 
+class Road_stage(pygame.sprite.Sprite):
+    def __init__(self, pos, groups, stage_num):
+        super().__init__(groups)
+        if stage_num == 0 or stage_num == 1:
+            self.image = pygame.image.load(os.path.join(stage_road_path, "tile2.png")).convert_alpha()
+        elif stage_num == 2:
+            self.image = pygame.image.load(os.path.join(stage_road_path, "wTile_01.png")).convert_alpha()
+        elif stage_num == 3:
+            self.image = pygame.image.load(os.path.join(stage_road_path, "tile_red_1.png")).convert_alpha()
+        elif stage_num == 4:
+            self.image = pygame.image.load(os.path.join(stage_road_path, "tile_purple_0.png")).convert_alpha()
+        elif stage_num == 5:
+            self.image = pygame.image.load(os.path.join(stage_road_path, "tile_electric_tile1.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Road"
+
 class Road_Horizontal(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
@@ -194,5 +211,6 @@ class Road_Corner4(pygame.sprite.Sprite):
             self.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple_Rcorner4.png")).convert_alpha()
         elif stage_num == 5:
             self.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_Revcorner4.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "Road"

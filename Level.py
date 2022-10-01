@@ -114,98 +114,97 @@ class Level:
 
                 if col == "─":
                     HorizontalWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "│":
+                elif col == "│":
                     VerticalWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "┌":
+                elif col == "┌":
                     DownRightWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "┐":
+                elif col == "┐":
                     DownLeftWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "┘":
+                elif col == "┘":
                     UpLeftWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "└":
+                elif col == "└":
                     UpRightWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "├":
+                elif col == "├":
                     VerticalRightWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "┬":
+                elif col == "┬":
                     HorizontalDownWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "┤":
+                elif col == "┤":
                     VerticalLeftWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "┴":
+                elif col == "┴":
                     HorizontalUpWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "┼":
+                elif col == "┼":
                     CrossWire((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "CD0":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
+                elif col == "CD0":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
                     Conductor0((tile_pos_x, tile_pos_y), [self.images])
-                if col == "CD1":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
+                elif col == "CD1":                                              #Thunder 관련 코드 필요. Thunder가 Conductor를 때리면 이미지 변경(electric_11_on.png) 그 동안 문 열림
                     self.conductor1 = Conductor1((tile_pos_x, tile_pos_y), [self.images])
 
                 if col == "W1":
                     Wall1((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "W2":
+                elif col == "W2":
                     Wall2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "W3":
+                elif col == "W3":
                     Wall3((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "W4":
+                elif col == "W4":
                     Wall4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "WW":
+                elif col == "WW":
                     Wall_Wreck((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number)
-                if col == "WP":
+                elif col == "WP":
                     Wall_Plant((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number)
 
 
 
                 if col == "C1":
                     Corner1((tile_pos_x, tile_pos_y), [self.images, self.border_images], )
-                if col == "C2":
+                elif col == "C2":
                     Corner2((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "C3":
+                elif col == "C3":
                     Corner3((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "C4":
+                elif col == "C4":
                     Corner4((tile_pos_x, tile_pos_y), [self.images, self.border_images])
-                if col == "O":
+                elif col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number)
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                if self.cur_map == map[0] or self.cur_map == map[1] or self.cur_map == map[2]:
-                    if col == "RE1":
-                        Road_Edge1((tile_pos_x, tile_pos_y), [self.images])
-                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
-                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
-                    elif col =="RE2":
-                        Road_Edge2((tile_pos_x, tile_pos_y), [self.images])
-                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
-                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
-                    elif col =="RE3":
-                        Road_Edge3((tile_pos_x, tile_pos_y), [self.images])
-                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
-                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
-                    elif col =="RE4":
-                        Road_Edge4((tile_pos_x, tile_pos_y), [self.images])
-                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
-                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
-                    elif col =="RC1":
-                        Road_Corner1((tile_pos_x, tile_pos_y), [self.images])
-                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
-                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
-                    elif col =="RC2":
-                        Road_Corner2((tile_pos_x, tile_pos_y), [self.images])
-                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
-                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
-                    elif col =="RC3":
-                        Road_Corner3((tile_pos_x, tile_pos_y), [self.images])
-                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
-                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
-                    elif col =="RC4":
-                        Road_Corner4((tile_pos_x, tile_pos_y), [self.images])
-                        self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
-                        self.flooding_tile.append((tile_pos_x, tile_pos_y))
-                        self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col == "RE1":
+                    Road_Edge1((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col =="RE2":
+                    Road_Edge2((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col =="RE3":
+                    Road_Edge3((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col =="RE4":
+                    Road_Edge4((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col =="RC1":
+                    Road_Corner1((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col =="RC2":
+                    Road_Corner2((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col =="RC3":
+                    Road_Corner3((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col =="RC4":
+                    Road_Corner4((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                         
 
                 if col == "R" or col == "P" or col == "M" or col == "RM" or col == "I0" or col == "I1" or col == "I2" or \
@@ -232,11 +231,11 @@ class Level:
                 
                 if col == "F":
                     self.finish = Finish((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
-                if col == "F2":
+                elif col == "F2":
                     self.finish = Finish2((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
-                if col == "F3":
+                elif col == "F3":
                     self.finish = Finish3((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
-                if col == "F4":
+                elif col == "F4":
                     self.finish = Finish4((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number, self.map_idx)
                 
                 if col == "I0":
@@ -297,7 +296,7 @@ class Level:
                 if col == "W1g":
                     Fire_Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.fire_images.append(Glow([tile_pos_x, tile_pos_y]))
-                if col == "W":
+                elif col == "W":
                     WaterHole((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                 if col == "S0":
