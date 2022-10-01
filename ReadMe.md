@@ -94,3 +94,25 @@ Mythief
 |![img](/Images/TestPix/electric_11.png)|"CD0"("Conductor0")|Conductor0( )|가짜|
 |![img](/Images/TestPix/electric_11.png)|"CD1"("Conductor1")|Conductor1( )|진짜|
 |![img](/Images/TestPix/electric_11_on.png)|"없음"("없음")|없음|.|
+
+</br></br>
+
+-------------------------------------------------------------------
+
+## 사운드 정보
+
+
+### [배경음]
+|파일명|출처|라이선스|
+|:------:|:---:|:---:|
+|-|-|-|
+
+### [효과음]
+|파일명|출처|라이선스|
+|:------:|:---:|:---:|
+|click.wav|https://freesound.org/people/JonnyRuss01/sounds/478197/|CC0|
+|hurt.wav|https://freesound.org/people/nettoi/sounds/553285/|CC0|
+|item_interaction.wav|https://freesound.org/people/Scrampunk/sounds/345297/|CC BY 4.0|
+|stone_break.wav|https://freesound.org/people/danielpodlovics/sounds/530354/|CC0|
+|throw.wav|https://freesound.org/people/mrickey13/sounds/515625/|CC0|
+|thunder.wav|https://freesound.org/people/Puerta118m/sounds/471691/|CC0|
