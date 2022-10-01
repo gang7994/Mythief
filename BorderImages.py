@@ -10,6 +10,14 @@ stage number :
 5 : zeus
 """
 
+class Statue(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "statue.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-2,-2)
+        self.name = "statue"
+        self.is_pause = False
 # 벽 이미지
 class Wall1(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
