@@ -316,6 +316,7 @@ class NoneRoad(pygame.sprite.Sprite):
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "NoneRoad"
         self.is_pause = False
+        self.is_collision = False
 
 # 제우스 전선
 class HorizontalWire(pygame.sprite.Sprite): #─

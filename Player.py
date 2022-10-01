@@ -15,6 +15,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,-10)
         self.hitbox.top += 5
+        self.alcohol_hitbox = self.hitbox.inflate(-25, -28)
+        self.alcohol_hitbox.y += 14
         self.rod_put_box = self.hitbox.inflate(-21, -25)
         self.name = "Player"
         self.character_width = self.rect.size[0]
@@ -337,6 +339,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = self.hitbox.centerx
         self.rect.centery = self.hitbox.centery - 5
         self.rod_put_box.center = self.hitbox.center
+        self.alcohol_hitbox.center = self.hitbox.center
 
     # 무기 입력 확인 함수
     def add_rock(self):
@@ -385,9 +388,10 @@ class Player(pygame.sprite.Sprite):
                 self.image.set_alpha(255)
                 
 
-    def player_drunken(self):
-        self.is_player_drunken = True
-        self.drunken_start_time = pygame.time.get_ticks()
+    def player_drunken(self, flag):
+        if not self.is_player_drunken and not flag:
+            self.is_player_drunken = True
+            self.drunken_start_time = pygame.time.get_ticks()
 
     def drunken_cool_time(self):
         if self.is_player_drunken:
@@ -583,6 +587,12 @@ class Player(pygame.sprite.Sprite):
         self.is_road = True
         if direction == "horizontal":
             for sprite in self.border_images:
+                if sprite.name == "alcoholRoad":
+                    if sprite.hitbox.colliderect(self.alcohol_hitbox):
+                        self.player_drunken(sprite.is_collision)
+                        sprite.is_collision = True
+                    else:
+                        sprite.is_collision = False
                 if sprite.name != "Finish" and \
                    sprite.name != "Stage0" and \
                    sprite.name != "Stage1" and \
@@ -597,7 +607,7 @@ class Player(pygame.sprite.Sprite):
                         if not self.is_road and self.is_first0:
                             self.start0 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
-                            self.player_drunken()
+                            pass
                         elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.x > 0:
                                 self.hitbox.right = sprite.rect.left
@@ -631,6 +641,12 @@ class Player(pygame.sprite.Sprite):
                         self.is_player_cerberus = False
         if direction == "vertical":
             for sprite in self.border_images:
+                if sprite.name == "alcoholRoad":
+                    if sprite.hitbox.colliderect(self.alcohol_hitbox):
+                        self.player_drunken(sprite.is_collision)
+                        sprite.is_collision = True
+                    else:
+                        sprite.is_collision = False
                 if sprite.name != "Finish" and \
                    sprite.name != "Stage0" and \
                    sprite.name != "Stage1" and \
@@ -645,7 +661,7 @@ class Player(pygame.sprite.Sprite):
                         if not self.is_road and self.is_first0:
                             self.start1 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
-                            self.player_drunken()
+                            pass
                         elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.y > 0:
                                 self.hitbox.bottom = sprite.rect.top
