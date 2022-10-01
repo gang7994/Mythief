@@ -25,7 +25,6 @@ class GameManager:
         self.interaction_UI = pygame.image.load(os.path.join(images_path, "interaction_UI.png")).convert_alpha()
         self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
         self.finish = False
-        self.ignore_item = False
 
     def Option(self): #옵션창
         global bgm_vol, effect_vol
@@ -317,6 +316,10 @@ class GameManager:
                 self.particle.click_flag = True
                 if MAINMENU.checkForInput(mouse_pos):
                     self.sound_click()
+                    if total >= 1000:
+                        self.text.draw_text(7, self.screen)
+                    else:
+                        self.text.draw_text(8, self.screen)
                     self.running = False
         self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
     
@@ -437,9 +440,9 @@ class GameManager:
     def general_item_effect(self):
         global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8, use_item9, use_item10
         for tmp in general_inventory:
-            if tmp[1] == 6 and self.ignore_item and not tmp[0].name == "general_item9":
+            if tmp[1] == 6 and self.level.player.ignore_item and not tmp[0].name == "general_item9":
                 tmp[1] = -1 
-                self.ignore_item = False
+                self.level.player.ignore_item = False
             elif tmp[1] == 6:
                 if tmp[0].name == "general_item0" and not use_item0: #로프 1개 추가
                     rope_item +=1
@@ -474,7 +477,7 @@ class GameManager:
                     self.level.player.is_effect0 = True
                     use_item8 = True       
                 elif tmp[0].name == "general_item9" and not use_item9: #미믹 [비활성화 토의필요]
-                    self.ignore_item = True
+                    self.level.player.ignore_item = True
                     use_item9 = True
                 elif tmp[0].name == "general_item10": #대나무 낚싯대
                     self.level.player.is_effect1 = True
@@ -508,7 +511,7 @@ class GameManager:
             self.level.player.is_effect0 = False
             use_item8 = False
         if use_item9:
-            self.ignore_item = False
+            self.level.player.ignore_item = False
             use_item9 = False
         if use_item10:
             self.level.player.is_effect1 = False
@@ -544,6 +547,39 @@ class GameManager:
         if current_hp + 10 > max_hp:
             current_hp = max_hp
         else: current_hp += 10
+
+    def player_event_hp_get(self):
+        global current_hp, max_hp
+        if self.level.player.player_get_hp:
+            if current_hp + 50 > max_hp:
+                current_hp = max_hp
+            else:
+                current_hp += 50
+            self.level.player.player_get_hp = False
+
+    def player_event_hp_loss(self):
+        global current_hp, max_hp
+        if self.level.player.player_loss_hp:
+            if current_hp - 30 <= 0:
+                current_hp = 1
+            else:
+                current_hp -= 30
+            self.level.player.player_loss_hp = False
+
+    def player_event_max_hp(self):
+        global current_hp, max_hp
+        if self.level.player.player_loss_max_hp:
+            max_hp -= 30
+            current_hp = max_hp
+            self.level.player.player_loss_max_hp = False
+
+        if self.level.player.player_get_max_hp:
+            max_hp += 30
+            if current_hp - 20 > 0:
+                current_hp -= 20
+            else:
+                current_hp = 1
+            self.level.player.player_get_max_hp = False
         
     def sound_click(self):
         click_sound.set_volume(effect_vol/100)
@@ -649,7 +685,6 @@ class GameManager:
                                 self.level.player.event_handler = False
                                 self.level.text.event_text_idx = 0
 
-
             # 이미지 영역
             self.screen.fill(BLACK)
             self.level.run()
@@ -668,6 +703,11 @@ class GameManager:
             self.door_interaction_text()
             self.show_theme_inventory()
             self.sound_setting()
+
+            # player_get_event
+            self.player_event_hp_loss()
+            self.player_event_hp_get()
+            self.player_event_max_hp()
 
             if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]):
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
@@ -722,7 +762,7 @@ class GameManager:
                         max_hp = 100
                         current_hp = max_hp
                         
-                    if self.level.stage_number == 6: # 마지막 스테이지 
+                    if self.level.stage_number == 6: # 마지막 스테이지
                         self.finish = True
                     else:
                         stage_clear[self.level.stage_number] = True

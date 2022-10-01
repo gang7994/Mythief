@@ -416,7 +416,6 @@ class Satiros(pygame.sprite.Sprite):
         if self.dir.y == 1:
             if abs(self.rect.y - self.pos[1]) >= self.max_distance:
                 self.dir.y *= -1
-                print(self.rect)
         else:
             if self.rect.y <= self.pos[1]:
                 self.dir.y *= -1
