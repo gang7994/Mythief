@@ -4,25 +4,25 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
                          Corner4, NoneRoad, Finish, Finish2, Finish3, Finish4, Obstacle, Wall_Plant, Wall_Wreck, WaterHole, Stage0, Stage1,\
                          Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar0, Pillar1,Pillar2, Thunder, \
                          CrossWire, DownLeftWire, DownRightWire, HorizontalDownWire, HorizontalUpWire, \
-                         UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire
+                         UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire, Statue
 from Player import Player
 from Road import Road, Road_Corner1, Road_Corner2, Road_Corner3, Road_Corner4, Road_Edge1, Road_Edge2, Road_Edge3, Road_Edge4, \
-    Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor0, Conductor1
+    Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor0, Conductor1, Road_stage
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2,\
      GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8, GeneralItem9,\
-     GeneralItem10, GeneralItem, HadesHelmet
+     GeneralItem10, GeneralItem, HadesHelmet, BonusItem
 from Map import *
 from TextScene import *
 from ParticleEffect import Particle
 
 # 레벨 클래스
 class Level:
-    remain_monster = 0 # Show_info
     def __init__(self, idx, stage_num, map_idx, start_time):
         self.stage_number = stage_num
         self.map_idx = map_idx
         self.display_surface = pygame.display.get_surface()
+        self.remain_monster = 0 # Show_info
         # image_groups
         self.images = CameraGroup()
         self.monster_images = CameraGroup()
@@ -58,6 +58,7 @@ class Level:
         # conductor var
         self.conductor1 = None
         # map_init
+        self.is_event_map = False
         self.cur_map = map[0]
         self.event_item_list = []
         self.create_map()
@@ -69,6 +70,7 @@ class Level:
         # elapsed time
         self.start_time = start_time
         # monster_auto_create var
+        self.max_create = 20
         self.one_per_create = 5
         self.create_flag = False
         self.create_effects = [Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0]), Glow([0,0])]
@@ -167,6 +169,10 @@ class Level:
                 elif col == "O":
                     Obstacle((tile_pos_x, tile_pos_y), [self.images, self.border_images], self.stage_number)
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                elif col == "ST":
+                    self.is_event_map = True
+                    statue_x_pos = tile_pos_x
+                    statue_y_pos = tile_pos_y
                 elif col == "RE1":
                     Road_Edge1((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
@@ -207,11 +213,17 @@ class Level:
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col =="RS":
+                    Road_stage((tile_pos_x, tile_pos_y), [self.images], self.stage_number)
+                    self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                         
 
                 if col == "R" or col == "P" or col == "M" or col == "RM" or col == "I0" or col == "I1" or col == "I2" or \
                     col == "GI" or col == "GI0" or col == "GI1" or col == "GI2" or col == "GI3" or col == "GI4" or col == "GI5"  or \
-                    col == "GI6" or col == "GI7" or col == "GI8"  or col == "GI9"  or col == "GI10" or col == "H":
+                    col == "GI6" or col == "GI7" or col == "GI8"  or col == "GI9"  or col == "GI10" or col == "H" or col == "BI" or \
+                    col == "ST":
                     Road((tile_pos_x, tile_pos_y), [self.images])
                     self.monster_respawn_position.append((tile_pos_x, tile_pos_y))
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
@@ -272,6 +284,8 @@ class Level:
                     GeneralItem((tile_pos_x + tile_width_size // 2 - 20, tile_pos_y + tile_height_size // 2 - 20), [self.images, self.item_images])
                 if col == "H":
                     HadesHelmet((tile_pos_x, tile_pos_y), [self.images, self.item_images])
+                if col == "BI":
+                    BonusItem((tile_pos_x, tile_pos_y), [self.images, self.item_images])
                 if col == "P":
                     player_start_pos_x = tile_pos_x
                     player_start_pos_y = tile_pos_y
@@ -279,22 +293,24 @@ class Level:
                     self.monster = LaserMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
                             self.border_images, self.damage_images, self.images)
                     self.monsterlist.append(self.monster)
-                    Level.remain_monster+=1 # Show_info
+                    self.remain_monster+=1 # Show_info
                 if col == "RM":
                     self.monster = RushMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images],
                             self.border_images)
                     self.monsterlist.append(self.monster)
-                    Level.remain_monster+=1 # Show_info
+                    self.remain_monster+=1 # Show_info
                 if col == "FM":
                     FishMonster((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images)
+                    self.remain_monster += 1
                 if "SM" in col:
                     Satiros((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, int(col[2:]))
+                    self.remain_monster += 1
                 if col == "CR":
-                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, True)
-                    Level.remain_monster+=1 # Show_info
+                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, self.images, True)
+                    self.remain_monster+=1 # Show_info
                 if col == "FCR":
-                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, False)
-                    Level.remain_monster+=1 # Show_info
+                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, self.images, False)
+                    self.remain_monster+=1 # Show_info
                 if col == "W1g":
                     Fire_Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])
                     self.fire_images.append(Glow([tile_pos_x, tile_pos_y]))
@@ -323,7 +339,8 @@ class Level:
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
 
                 
-                
+        if self.is_event_map:
+            Statue((statue_x_pos, statue_y_pos), [self.images, self.border_images])
 
 
         self.player = Player((player_start_pos_x, player_start_pos_y), [self.images],
@@ -414,7 +431,7 @@ class Level:
     def monster_auto_create(self, time, dt):
         if int(time) % 15 != 0:
             self.create_flag = False
-        if int(time) % 15 == 0 and int(time) != 0 and not self.create_flag:
+        if int(time) % 15 == 0 and int(time) != 0 and not self.create_flag and self.remain_monster + self.one_per_create <= self.max_create:
             self.create_flag = True
             for idx, sample in enumerate(random.sample(self.monster_respawn_position, k=self.one_per_create)):
                 if idx % 2 == 0:
@@ -425,7 +442,7 @@ class Level:
                     monster = RushMonster(sample, [self.monster_images, self.damage_images],
                                 self.border_images)
                     self.monsterlist.append(monster)
-                Level.remain_monster += 1  # Show_info
+                self.remain_monster += 1  # Show_info
 
     def tile_random_mix(self):
         random.shuffle(self.random_group)
@@ -489,7 +506,9 @@ class Level:
                 for sprite in self.flood:
                     sprite.image.set_alpha(self.alpha)
             else:
-                self.player.is_dead = True
+                if not self.player.is_damaged:
+                    self.player.get_damaged()
+                    self.player.is_damage30 = True
             self.alpha += 256//16
             self.flood_cnt += 1
             
@@ -536,7 +555,7 @@ class Level:
                     if self.thunder.animation_idx == 8 or self.thunder.animation_idx == 9:
                         thunder_sound.set_volume(self.effect_vol/100)
                         thunder_sound.play()
-                        self.thunder= None
+                        self.thunder = None
                 if self.conductor1 is not None:
                     if self.conductor1.is_on and self.finish.name == "ClosedFinish":
                         self.finish.name = "Finish"
@@ -546,7 +565,7 @@ class Level:
                             self.sound_flag1 = False
                         self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
 
-            if self.stage_number != 0 and self.stage_number != 1 and self.map_idx != 3 and self.map_idx !=7:
+            if self.stage_number != 0 and self.stage_number != 1 and (self.map_idx + 1) % 4 != 0:
                 self.monster_auto_create(self.elapsed_time, dt)
 
             if self.stage_number == 2 and len(self.wave_start_position) != 0:
@@ -627,13 +646,13 @@ class Glow:
         self.player_glow = []
         self.fire_glow = []
         self.pos = pos
-        for i in [[10, 50],[50,40],[100,30],[200,20],[255,10]]:
+        for i in [[10, 100],[50,80],[100,60],[200,40],[255,20]]:
             self.player_glow.append([self.circle_surf(i[1],(i[0],i[0],i[0])), i[1]])
         self.is_player_glow = False
         self.is_before_glow = False
         self.bright_start = pygame.time.get_ticks()
         self.dark_start = pygame.time.get_ticks()
-        self.bright_time = 1000
+        self.bright_time = 2000
         self.dark_time = 5000
         # display_change_animation
         self.game_display_flag = False
@@ -693,7 +712,7 @@ class Glow:
         if not self.is_pause:
             if not self.is_player_glow:
                 self.tem_now_time = pygame.time.get_ticks() - self.bright_start
-                if self.tem_now_time > 700:
+                if self.tem_now_time > 1700:
                     if self.is_before_glow:
                         self.is_before_glow = False
                     elif not self.is_before_glow:

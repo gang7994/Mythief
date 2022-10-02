@@ -580,6 +580,12 @@ class GameManager:
             else:
                 current_hp = 1
             self.level.player.player_get_max_hp = False
+
+    def get_bonus_score(self):
+        global bonus
+        if self.level.player.bonus_flag:
+            bonus += 100
+            self.level.player.bonus_flag = False
         
     def sound_click(self):
         click_sound.set_volume(effect_vol/100)
@@ -664,7 +670,7 @@ class GameManager:
                                     rope_item -= 1
                                     self.use_rope = True
                             elif self.level.stage_number == 3 or self.level.stage_number == 4:
-                                if not(self.level.map_idx == 6):
+                                if not(self.level.map_idx == 3 or self.level.map_idx == 7 or self.level.map_idx == 8):
                                     use_sound.set_volume(effect_vol/100)
                                     use_sound.play()
                                     rope_item -= 1
@@ -709,6 +715,9 @@ class GameManager:
             self.player_event_hp_get()
             self.player_event_max_hp()
 
+            # player_bonus
+            self.get_bonus_score()
+
             if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]):
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
             if self.level.player.event_handler:
@@ -752,7 +761,7 @@ class GameManager:
 
             if x.hitbox.colliderect(y.rect):
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
-                    Level.remain_monster = 0 # Show_info
+                    self.level.remain_monster = 0 # Show_info
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                     self.player_hp_recovery()
                 else: #다음 방이 없으면 메인 스테이지로 넘어가기
@@ -762,7 +771,7 @@ class GameManager:
                         max_hp = 100
                         current_hp = max_hp
                         
-                    if self.level.stage_number == 6: # 마지막 스테이지
+                    if self.level.stage_number == 1: # 마지막 스테이지
                         self.finish = True
                     else:
                         stage_clear[self.level.stage_number] = True

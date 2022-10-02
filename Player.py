@@ -15,6 +15,10 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0,-10)
         self.hitbox.top += 5
+        self.alcohol_hitbox = self.hitbox.inflate(-25, -28)
+        self.alcohol_hitbox.top += 14
+        self.dark_hitbox = self.hitbox.inflate(-25, -29)
+        self.dark_hitbox.top += 14.5
         self.rod_put_box = self.hitbox.inflate(-21, -25)
         self.name = "Player"
         self.character_width = self.rect.size[0]
@@ -125,6 +129,8 @@ class Player(pygame.sprite.Sprite):
         # sound var
         self.effect_vol = 0
         self.sound_flag0 = True
+        # bonus_item
+        self.bonus_flag = False
 
 
     def walk_animation(self):
@@ -335,9 +341,24 @@ class Player(pygame.sprite.Sprite):
         else:
             self.hitbox.top += y * speed_y * (dt // 6)
             self.collision("vertical")
+        
+        # 히트박스 조정
         self.rect.centerx = self.hitbox.centerx
         self.rect.centery = self.hitbox.centery - 5
+        
+        # 피뢰침 설치 조정
         self.rod_put_box.center = self.hitbox.center
+        
+        # 술 타일 히트박스 조정
+        self.alcohol_hitbox.centerx = self.hitbox.centerx
+        self.alcohol_hitbox.centery = self.hitbox.centery + 14
+        
+        # 추락 히트박스 조정
+        if self.last_x_dir == 1:
+            self.dark_hitbox.centerx = self.hitbox.centerx - 12.5
+        elif self.last_x_dir == -1:
+            self.dark_hitbox.centerx = self.hitbox.centerx + 12.5
+        self.dark_hitbox.centery = self.hitbox.centery + 14.5
 
     # 무기 입력 확인 함수
     def add_rock(self):
@@ -386,9 +407,10 @@ class Player(pygame.sprite.Sprite):
                 self.image.set_alpha(255)
                 
 
-    def player_drunken(self):
-        self.is_player_drunken = True
-        self.drunken_start_time = pygame.time.get_ticks()
+    def player_drunken(self, flag):
+        if not self.is_player_drunken and not flag:
+            self.is_player_drunken = True
+            self.drunken_start_time = pygame.time.get_ticks()
         if not pygame.mixer.get_busy():
             poison_sound.set_volume(self.effect_vol/100)
             poison_sound.play()
@@ -588,6 +610,19 @@ class Player(pygame.sprite.Sprite):
         self.is_road = True
         if direction == "horizontal":
             for sprite in self.border_images:
+                if sprite.name == "alcoholRoad":
+                    if sprite.hitbox.colliderect(self.alcohol_hitbox):
+                        self.player_drunken(sprite.is_collision)
+                        sprite.is_collision = True
+                    else:
+                        sprite.is_collision = False
+                if sprite.name == "NoneRoad" and self.is_dark:
+                    if sprite.rect.colliderect(self.dark_hitbox):
+                        if not self.is_damaged:
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
+                            self.get_damaged()
+                            self.is_damage10 = True
                 if sprite.name != "Finish" and \
                    sprite.name != "Stage0" and \
                    sprite.name != "Stage1" and \
@@ -602,7 +637,7 @@ class Player(pygame.sprite.Sprite):
                         if not self.is_road and self.is_first0:
                             self.start0 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
-                            self.player_drunken()
+                            pass
                         elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.x > 0:
                                 self.hitbox.right = sprite.rect.left
@@ -626,16 +661,24 @@ class Player(pygame.sprite.Sprite):
                             damage_sound.play()
                             self.get_damaged()
                             self.is_damage10 = True
-                        elif self.is_dark and not self.is_damaged:
-                            damage_sound.set_volume(self.effect_vol/100)
-                            damage_sound.play()
-                            self.get_damaged()
-                            self.is_damage10 = True
                 if sprite.name == "Pillar_0" or sprite.name == "Pillar_1":
                     if sprite.rect.colliderect(self.hitbox):
                         self.is_player_cerberus = False
         if direction == "vertical":
             for sprite in self.border_images:
+                if sprite.name == "alcoholRoad":
+                    if sprite.hitbox.colliderect(self.alcohol_hitbox):
+                        self.player_drunken(sprite.is_collision)
+                        sprite.is_collision = True
+                    else:
+                        sprite.is_collision = False
+                if sprite.name == "NoneRoad" and self.is_dark:
+                    if sprite.rect.colliderect(self.dark_hitbox):
+                        if not self.is_damaged:
+                            damage_sound.set_volume(self.effect_vol/100)
+                            damage_sound.play()
+                            self.get_damaged()
+                            self.is_damage10 = True
                 if sprite.name != "Finish" and \
                    sprite.name != "Stage0" and \
                    sprite.name != "Stage1" and \
@@ -650,8 +693,7 @@ class Player(pygame.sprite.Sprite):
                         if not self.is_road and self.is_first0:
                             self.start1 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
-                            self.player_drunken()
-
+                            pass
                         elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.y > 0:
                                 self.hitbox.bottom = sprite.rect.top
@@ -671,11 +713,6 @@ class Player(pygame.sprite.Sprite):
                                 self.is_damage10 = True
                                 self.is_first0 = True
                         elif self.is_thunder and not self.is_damaged:
-                            damage_sound.set_volume(self.effect_vol/100)
-                            damage_sound.play()
-                            self.get_damaged()
-                            self.is_damage10 = True
-                        elif self.is_dark and not self.is_damaged:
                             damage_sound.set_volume(self.effect_vol/100)
                             damage_sound.play()
                             self.get_damaged()
@@ -724,11 +761,12 @@ class Player(pygame.sprite.Sprite):
                     damage_sound.play()
                     self.get_damaged()
                     self.is_damage5 = True
-                if sprite.name == "cerberus" and self.is_player_cerberus and not self.is_damaged:
-                    damage_sound.set_volume(self.effect_vol/100)
-                    damage_sound.play()
-                    self.get_damaged()
-                    self.is_damage30 = True
+                if sprite.name == "cerberus" and self.is_player_cerberus:
+                    if not self.is_damaged:
+                        damage_sound.set_volume(self.effect_vol/100)
+                        damage_sound.play()
+                        self.get_damaged()
+                        self.is_damage30 = True
 
 
 
@@ -751,7 +789,8 @@ class Player(pygame.sprite.Sprite):
                              "general_item8",
                              "general_item9",
                              "general_item10",
-                             "hadesHelmet"]:
+                             "hadesHelmet",
+                             "bonus_item"]:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()
@@ -774,6 +813,8 @@ class Player(pygame.sprite.Sprite):
                             elif item.name == "hadesHelmet":
                                 self.is_hadesHelmet = True
                                 self.is_player_cerberus = False
+                            elif item.name == "bonus_item":
+                                self.bonus_flag = True
                             else:
                                 self.is_full = False
                                 if item.name == "general_item":
@@ -869,7 +910,6 @@ class Player(pygame.sprite.Sprite):
         if not self.is_pause:
             # 디버그용 함수 v누르면 일반 유물 5개 생성
             #self.debug_item()
-
             self.get_item_interaction()
             self.get_door_interaction()
             self.un_damaged_time()

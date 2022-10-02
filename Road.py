@@ -16,13 +16,13 @@ class Road_stage(pygame.sprite.Sprite):
         if stage_num == 0 or stage_num == 1:
             self.image = pygame.image.load(os.path.join(stage_road_path, "tile2.png")).convert_alpha()
         elif stage_num == 2:
-            self.image = pygame.image.load(os.path.join(stage_road_path, "wTile_01.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(stage_P_path, "wTile01.png")).convert_alpha()
         elif stage_num == 3:
-            self.image = pygame.image.load(os.path.join(stage_road_path, "tile_red_1.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(stage_H_path, "tile_red_1.png")).convert_alpha()
         elif stage_num == 4:
-            self.image = pygame.image.load(os.path.join(stage_road_path, "tile_purple_0.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(stage_D_path, "tile_purple_0.png")).convert_alpha()
         elif stage_num == 5:
-            self.image = pygame.image.load(os.path.join(stage_road_path, "tile_electric_tile1.png")).convert_alpha()
+            self.image = pygame.image.load(os.path.join(stage_Z_path, "tile_electric_tile1.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "Road"
@@ -69,6 +69,7 @@ class AlcoholRoad(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "alcoholRoad"
+        self.is_collision = False
 
 class EventTile(pygame.sprite.Sprite):
     def __init__(self, pos, groups, event_code):
