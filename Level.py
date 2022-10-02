@@ -7,7 +7,7 @@ from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2
                          UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire, Statue
 from Player import Player
 from Road import Road, Road_Corner1, Road_Corner2, Road_Corner3, Road_Corner4, Road_Edge1, Road_Edge2, Road_Edge3, Road_Edge4, \
-    Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor0, Conductor1, Road_stage
+    Road_Horizontal, Road_Vertical, AlcoholRoad, EventTile, Conductor0, Conductor1, Road_stage, Three_Way1, Three_Way2, Three_Way3, Three_Way4
 from Monster import LaserMonster, RushMonster, Cerberus, FishMonster, Satiros
 from Item import Test0Item, Test1Item, Test2Item, GeneralItem0, GeneralItem1, GeneralItem2,\
      GeneralItem3, GeneralItem4, GeneralItem5, GeneralItem6, GeneralItem7, GeneralItem8, GeneralItem9,\
@@ -335,6 +335,22 @@ class Level:
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
                 if col == "RV":
                     Road_Vertical((tile_pos_x, tile_pos_y), [self.images])
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                if col == "T1":
+                    Three_Way1((tile_pos_x, tile_pos_y), [self.images])
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col == "T2":
+                    Three_Way2((tile_pos_x, tile_pos_y), [self.images])
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col == "T3":
+                    Three_Way3((tile_pos_x, tile_pos_y), [self.images])
+                    self.flooding_tile.append((tile_pos_x, tile_pos_y))
+                    self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
+                elif col == "T4":
+                    Three_Way4((tile_pos_x, tile_pos_y), [self.images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
                     self.thunder_start_position.append((tile_pos_x, tile_pos_y - 96))
 

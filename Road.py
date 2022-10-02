@@ -43,6 +43,38 @@ class Road_Vertical(pygame.sprite.Sprite):
         self.hitbox = self.rect.inflate(-3, -3)
         self.name = "Road"
 
+class Three_Way1(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "H_Up_Tile.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Road"
+        
+class Three_Way2(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "V_Left_Tile.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Road"
+
+class Three_Way3(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "H_Down_Tile.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Road"
+        
+class Three_Way4(pygame.sprite.Sprite):
+    def __init__(self, pos, groups):
+        super().__init__(groups)
+        self.image = pygame.image.load(os.path.join(images_path, "V_Right__Tile.png")).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-3, -3)
+        self.name = "Road"
+
 #전도체
 class Conductor0(pygame.sprite.Sprite): #가짜
     def __init__(self, pos, groups):
