@@ -588,7 +588,7 @@ class Player(pygame.sprite.Sprite):
         elif event_char == "D":
             tmp = []
             for idx, item in enumerate(general_inventory):
-                if item.is_get:
+                if item[0].is_get:
                     tmp.append(idx)
             if len(tmp) >= 2:
                 self.remove_item()
