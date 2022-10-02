@@ -304,10 +304,10 @@ class Level:
                     Satiros((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, int(col[2:]))
                     self.remain_monster += 1
                 if col == "CR":
-                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, True)
+                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, self.images, True)
                     self.remain_monster+=1 # Show_info
                 if col == "FCR":
-                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, False)
+                    Cerberus((tile_pos_x, tile_pos_y), [self.monster_images, self.damage_images], self.border_images, self.images, False)
                     self.remain_monster+=1 # Show_info
                 if col == "W1g":
                     Fire_Wall((tile_pos_x, tile_pos_y), [self.images, self.border_images])

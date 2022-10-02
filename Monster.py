@@ -451,20 +451,33 @@ class Satiros(pygame.sprite.Sprite):
         if not self.is_pause:
             self.dir_change()
             self.move(self.monster_speed, dt)
-        self.animation()
+            self.animation()
 
 class Cerberus(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, border_images, move_flag):
+    def __init__(self, pos, groups, border_images, images, move_flag):
         super().__init__(groups)
+        # animation, image
+        self.idle_animation_array = ["CR_idleAnim_0.png", "CR_idleAnim_1.png"]
+        self.atk_animation_array = ["CR_atkAnim_0.png", "CR_atkAnim_1.png", "CR_atkAnim_2.png", "CR_atkAnim_3.png"]
         self.image = pygame.image.load(os.path.join(images_path, "cerberus.png")).convert_alpha()
         self.image_origin = pygame.image.load(os.path.join(images_path, "cerberus.png")).convert_alpha()
         self.image_flip = pygame.transform.flip(self.image_origin, True, False)
+        self.animation_frame = 100
+        self.idle_animation_idx = 0
+        self.idle_animation_start_time = pygame.time.get_ticks()
+        self.idle_animation_current_time = pygame.time.get_ticks()
+        self.is_attack = False
+        self.atk_animation_idx = 0
+        self.atk_animation_start_time = pygame.time.get_ticks()
+        self.atk_animation_current_time = pygame.time.get_ticks()
+        # hitbox
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-30, -72)
         self.hitbox.y += 36
+        # name
         self.name = "cerberus"
+        # move var
         self.dir = pygame.math.Vector2()
-        self.border_images = border_images
         self.monster_speed = 1
         self.is_moving = False
         self.move_flag = move_flag
@@ -473,10 +486,42 @@ class Cerberus(pygame.sprite.Sprite):
         self.last_x_dir = -1
         self.boundary = 2000
         self.is_rush = False
+        # collision var
+        self.border_images = border_images
+        self.images = images
+        # clock
         self.clock = pygame.time.Clock()
         self.is_pause = False
 
         # 적 움직임 랜덤으로 얻기
+
+    def idle(self):
+        self.idle_animation_current_time = pygame.time.get_ticks()
+        if self.idle_animation_current_time - self.idle_animation_start_time > self.animation_frame:
+            self.image = pygame.image.load(
+                os.path.join(images_path, self.idle_animation_array[self.idle_animation_idx])).convert_alpha()
+            self.idle_animation_idx += 1
+            self.idle_animation_idx %= 2
+            if self.last_x_dir == 1:
+                self.image = pygame.transform.flip(self.image, True, False)
+            self.idle_animation_start_time = self.idle_animation_current_time
+
+    def Atk(self):
+        self.atk_animation_current_time = pygame.time.get_ticks()
+        if self.atk_animation_current_time - self.atk_animation_start_time > self.animation_frame:
+            self.image = pygame.image.load(
+                os.path.join(images_path, self.atk_animation_array[self.atk_animation_idx])).convert_alpha()
+            self.atk_animation_idx += 1
+            self.atk_animation_idx %= 4
+            if self.last_x_dir == 1:
+                self.image = pygame.transform.flip(self.image, True, False)
+            self.atk_animation_start_time = self.atk_animation_current_time
+
+    def animation(self):
+        if not (self.dir.x == 0 and self.dir.y == 0) and not self.is_attack:
+            self.idle()
+        if self.is_attack:
+            self.Atk()
 
     def move_order(self):
         if not self.is_moving:
@@ -531,6 +576,14 @@ class Cerberus(pygame.sprite.Sprite):
                         elif self.dir.y < 0:
                             self.hitbox.top = sprite.rect.bottom
 
+    def player_collision(self):
+        for sprite in self.images:
+            if sprite.name == "Player":
+                if sprite.hitbox.colliderect(self.hitbox):
+                    self.is_attack = True
+                else:
+                    self.is_attack = False
+
     def rush(self, direction, dt):
         if self.move_flag:
             self.is_rush = True
@@ -557,11 +610,8 @@ class Cerberus(pygame.sprite.Sprite):
             if self.move_flag:
                 self.move_order()
                 self.move(self.monster_speed, dt)
-                self.move_wait()
-        if self.last_x_dir == 1:
-            self.image = self.image_flip
-        elif self.last_x_dir == -1:
-            self.image = self.image_origin
+        self.animation()
+        self.player_collision()
 
 
 

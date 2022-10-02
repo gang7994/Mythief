@@ -756,11 +756,12 @@ class Player(pygame.sprite.Sprite):
                     damage_sound.play()
                     self.get_damaged()
                     self.is_damage5 = True
-                if sprite.name == "cerberus" and self.is_player_cerberus and not self.is_damaged:
-                    damage_sound.set_volume(self.effect_vol/100)
-                    damage_sound.play()
-                    self.get_damaged()
-                    self.is_damage30 = True
+                if sprite.name == "cerberus" and self.is_player_cerberus:
+                    if not self.is_damaged:
+                        damage_sound.set_volume(self.effect_vol/100)
+                        damage_sound.play()
+                        self.get_damaged()
+                        self.is_damage30 = True
 
 
 
