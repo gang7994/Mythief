@@ -603,6 +603,8 @@ class Player(pygame.sprite.Sprite):
         elif event_char == "H":
             self.get_item()
         elif event_char == "I":
+            self.player_get_hp = True
+        elif event_char == "J":
             pass
 
     # 충돌 함수
