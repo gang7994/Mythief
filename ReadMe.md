@@ -116,3 +116,5 @@ Mythief
 |stone_break.wav|https://freesound.org/people/danielpodlovics/sounds/530354/|CC0|
 |throw.wav|https://freesound.org/people/mrickey13/sounds/515625/|CC0|
 |thunder.wav|https://freesound.org/people/Puerta118m/sounds/471691/|CC0|
+|open_door.wav|https://freesound.org/people/Juaner_/sounds/471412/|CC0|
+|posion.wav|https://freesound.org/people/killianm97/sounds/554224/|CC0|

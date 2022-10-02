@@ -77,6 +77,8 @@ class Level:
         self.text_idx = idx
         # sound var
         self.effect_vol = 0
+        self.sound_flag0 = True
+        self.sound_flag1 = True
         
  
 
@@ -518,6 +520,10 @@ class Level:
         if self.player.get_event_item:
             self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
             self.finish.name = "Finish"
+            if self.sound_flag0:
+                open_sound.set_volume(self.effect_vol/100)
+                open_sound.play()
+                self.sound_flag0 = False
 
         if not self.is_pause:
             self.get_player_distance(self.player, dt)
@@ -534,9 +540,13 @@ class Level:
                 if self.conductor1 is not None:
                     if self.conductor1.is_on and self.finish.name == "ClosedFinish":
                         self.finish.name = "Finish"
+                        if self.sound_flag1:
+                            open_sound.set_volume(self.effect_vol/100)
+                            open_sound.play()
+                            self.sound_flag1 = False
                         self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
 
-            if self.stage_number != 0 and self.stage_number != 1:
+            if self.stage_number != 0 and self.stage_number != 1 and self.map_idx != 3 and self.map_idx !=7:
                 self.monster_auto_create(self.elapsed_time, dt)
 
             if self.stage_number == 2 and len(self.wave_start_position) != 0:

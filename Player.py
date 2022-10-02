@@ -124,6 +124,7 @@ class Player(pygame.sprite.Sprite):
         self.is_effect1 = False #대나무 낚싯대
         # sound var
         self.effect_vol = 0
+        self.sound_flag0 = True
 
 
     def walk_animation(self):
@@ -388,6 +389,10 @@ class Player(pygame.sprite.Sprite):
     def player_drunken(self):
         self.is_player_drunken = True
         self.drunken_start_time = pygame.time.get_ticks()
+        if not pygame.mixer.get_busy():
+            poison_sound.set_volume(self.effect_vol/100)
+            poison_sound.play()
+
 
     def drunken_cool_time(self):
         if self.is_player_drunken:
@@ -646,6 +651,7 @@ class Player(pygame.sprite.Sprite):
                             self.start1 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
                             self.player_drunken()
+
                         elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
                             if self.dir.y > 0:
                                 self.hitbox.bottom = sprite.rect.top
