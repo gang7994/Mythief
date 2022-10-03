@@ -11,7 +11,7 @@ class GameManager:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((screen_width, screen_height))
-        pygame.display.set_caption("proto")
+        pygame.display.set_caption("Mythief")
         self.clock = pygame.time.Clock()
         self.particle = Particle()
         self.total_time = 0
@@ -78,6 +78,7 @@ class GameManager:
             
             for event in pygame.event.get():
                 pygame.mixer.Channel(0).stop()
+                pygame.mixer.Channel(2).stop()
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -120,7 +121,7 @@ class GameManager:
         global rope_item, current_hp, max_hp
         while True:
             if not pygame.mixer.Channel(0).get_busy():
-                bgm_sound.set_volume(bgm_vol/100)
+                bgm_sound.set_volume(bgm_vol/200)
                 pygame.mixer.Channel(0).play(bgm_sound)
                 dt = self.clock.tick(FPS)
             self.screen.fill(BLACK)
@@ -607,11 +608,10 @@ class GameManager:
         self.start_time = pygame.time.get_ticks()
         # 메인 로직 영역
         while self.running:
-            '''
-            if not pygame.mixer.get_busy():
-                bgm_sound.set_volume(bgm_vol/100)
-                bgm_sound.play()
-            '''
+            if not pygame.mixer.Channel(0).get_busy():
+                bgm_sound.set_volume(bgm_vol/200)
+                pygame.mixer.Channel(0).play(bgm_sound)
+            
             dt = self.clock.tick(FPS)
             PAUSE_MOUSE_POS = pygame.mouse.get_pos()
             if not self.level.is_pause:
@@ -764,6 +764,7 @@ class GameManager:
             # 이부분 고쳐야함
             if self.use_rope:
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
+                    
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                     self.player_hp_recovery()
                 self.use_rope = False

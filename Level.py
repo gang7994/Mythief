@@ -23,6 +23,7 @@ class Level:
         self.map_idx = map_idx
         self.display_surface = pygame.display.get_surface()
         self.remain_monster = 0 # Show_info
+        pygame.mixer.Channel(2).stop()
         # image_groups
         self.images = CameraGroup()
         self.monster_images = CameraGroup()
@@ -81,6 +82,7 @@ class Level:
         self.effect_vol = 0
         self.sound_flag0 = True
         self.sound_flag1 = True
+        
         
  
 
@@ -403,6 +405,8 @@ class Level:
             for fire in self.fire_images:
                 fire.is_pause = True
             self.glow.is_pause = True
+            pygame.mixer.Channel(1).stop()
+            pygame.mixer.Channel(2).stop()
         elif str == 'F':
             self.is_pause = False
             for sprite in self.images:
@@ -426,7 +430,6 @@ class Level:
                     dir_x = -1
                 elif (player_vec - monster_vec)[0] > 0:
                     dir_x = 1
-
                 if (player_vec - monster_vec)[1] > -3 and (player_vec - monster_vec)[1] < 3:
                     dir_y = 0
                 elif (player_vec - monster_vec)[1] < 0:
@@ -436,24 +439,22 @@ class Level:
                 if monster.name == "cerberus":
                     if distance <= monster.boundary and self.player.is_player_cerberus:
                         monster.rush((dir_x, dir_y), dt)
-                        
                         if not pygame.mixer.Channel(2).get_busy():
-                            print(0)
                             cerberus_sound.set_volume(self.effect_vol/100)
                             pygame.mixer.Channel(2).play(cerberus_sound)
                     elif distance <= monster.boundary:
                         if not pygame.mixer.Channel(2).get_busy():
-                            print(1)
                             cerberus_sound.set_volume(self.effect_vol/100)
                             pygame.mixer.Channel(2).play(cerberus_sound)
                     else:
                         monster.is_rush = False
-                        print(3)
                         if pygame.mixer.Channel(2).get_busy():
                             pygame.mixer.Channel(2).stop()
-                        
                     
                 else:
+                    if pygame.mixer.Channel(2).get_busy():
+                        print("1123213")
+                        pygame.mixer.Channel(2).stop()
                     if distance <= monster.boundary:
                         monster.rush((dir_x, dir_y), dt)
                     else:
