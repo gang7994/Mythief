@@ -780,7 +780,7 @@ class GameManager:
                         max_hp = 100
                         current_hp = max_hp
                         
-                    if self.level.stage_number == 1: # 마지막 스테이지
+                    if self.level.stage_number == 5: # 마지막 스테이지
                         self.finish = True
                     else:
                         stage_clear[self.level.stage_number] = True
