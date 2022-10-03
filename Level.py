@@ -574,11 +574,6 @@ class Level:
                         self.thunder = None
                 if self.conductor1 is not None:
                     if self.conductor1.is_on and (self.finish.name == "ClosedFinish1" or self.finish.name == "ClosedFinish2" or self.finish.name == "ClosedFinish3" or self.finish.name == "ClosedFinish4"):
-                        self.finish.name = "Finish"
-                        if self.sound_flag1:
-                            open_sound.set_volume(self.effect_vol/100)
-                            open_sound.play()
-                            self.sound_flag1 = False
                         if self.finish.name == "ClosedFinish1":
                             self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
                         elif self.finish.name == "ClosedFinish2":
@@ -587,6 +582,11 @@ class Level:
                             self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door3.png")).convert_alpha()
                         elif self.finish.name == "ClosedFinish4":
                             self.finish.image = pygame.image.load(os.path.join(images_path, "wall_door4.png")).convert_alpha()
+                        self.finish.name = "Finish"
+                        if self.sound_flag1:
+                            open_sound.set_volume(self.effect_vol/100)
+                            open_sound.play()
+                            self.sound_flag1 = False
 
             if self.stage_number != 0 and self.stage_number != 1 and (self.map_idx + 1) % 4 != 0:
                 self.monster_auto_create(self.elapsed_time, dt)
