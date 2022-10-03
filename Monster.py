@@ -233,7 +233,7 @@ class FishMonster(pygame.sprite.Sprite):
         self.monster_order_wait_time = 1000
         self.monster_move = [[1, 0], [0, 1], [0, 0], [-1, 0], [0, -1]]
         self.last_x_dir = -1
-        self.boundary = 200
+        self.boundary = 175
         self.is_rush = False
         self.clock = pygame.time.Clock()
         self.is_pause = False
