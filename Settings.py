@@ -68,7 +68,7 @@ shield = 0
 stage_score = [0,0,0,0,100]
 bonus = 0
 
-#sound
+#sound_effect
 sound_path = os.path.join(current_path, "Sound")
 click_sound = pygame.mixer.Sound((os.path.join(sound_path, "click.wav")))
 stone_break_sound = pygame.mixer.Sound((os.path.join(sound_path, "stone_break.mp3")))
@@ -78,3 +78,8 @@ damage_sound = pygame.mixer.Sound((os.path.join(sound_path, "hurt.wav")))
 thunder_sound = pygame.mixer.Sound((os.path.join(sound_path, "thunder.wav")))
 open_sound = pygame.mixer.Sound((os.path.join(sound_path, "open_door.wav")))
 poison_sound = pygame.mixer.Sound((os.path.join(sound_path, "poison.wav")))
+wave_sound  = pygame.mixer.Sound((os.path.join(sound_path, "wave.wav")))   
+cerberus_sound  = pygame.mixer.Sound((os.path.join(sound_path, "cerberus.wav")))     
+
+#sound_bgm
+bgm_sound = pygame.mixer.Sound((os.path.join(sound_path, "master.mp3")))

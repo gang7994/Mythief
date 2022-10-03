@@ -411,9 +411,9 @@ class Player(pygame.sprite.Sprite):
         if not self.is_player_drunken and not flag:
             self.is_player_drunken = True
             self.drunken_start_time = pygame.time.get_ticks()
-        if not pygame.mixer.get_busy():
+        if not pygame.mixer.Channel(1).get_busy():
             poison_sound.set_volume(self.effect_vol/100)
-            poison_sound.play()
+            pygame.mixer.Channel(1).play(poison_sound)
 
 
     def drunken_cool_time(self):
