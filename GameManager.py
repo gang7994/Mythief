@@ -77,6 +77,7 @@ class GameManager:
             EFFECT_DOWN.update(self.screen)
             
             for event in pygame.event.get():
+                pygame.mixer.Channel(0).stop()
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -118,7 +119,10 @@ class GameManager:
     def main_menu(self):
         global rope_item, current_hp, max_hp
         while True:
-            dt = self.clock.tick(FPS)
+            if not pygame.mixer.Channel(0).get_busy():
+                bgm_sound.set_volume(bgm_vol/100)
+                pygame.mixer.Channel(0).play(bgm_sound)
+                dt = self.clock.tick(FPS)
             self.screen.fill(BLACK)
             bg_image = pygame.transform.scale(
                 pygame.image.load(os.path.join(images_path, "mainBackGround.png")).convert_alpha(), (1456, 776))
@@ -603,6 +607,11 @@ class GameManager:
         self.start_time = pygame.time.get_ticks()
         # 메인 로직 영역
         while self.running:
+            '''
+            if not pygame.mixer.get_busy():
+                bgm_sound.set_volume(bgm_vol/100)
+                bgm_sound.play()
+            '''
             dt = self.clock.tick(FPS)
             PAUSE_MOUSE_POS = pygame.mouse.get_pos()
             if not self.level.is_pause:

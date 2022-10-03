@@ -436,8 +436,23 @@ class Level:
                 if monster.name == "cerberus":
                     if distance <= monster.boundary and self.player.is_player_cerberus:
                         monster.rush((dir_x, dir_y), dt)
+                        
+                        if not pygame.mixer.Channel(2).get_busy():
+                            print(0)
+                            cerberus_sound.set_volume(self.effect_vol/100)
+                            pygame.mixer.Channel(2).play(cerberus_sound)
+                    elif distance <= monster.boundary:
+                        if not pygame.mixer.Channel(2).get_busy():
+                            print(1)
+                            cerberus_sound.set_volume(self.effect_vol/100)
+                            pygame.mixer.Channel(2).play(cerberus_sound)
                     else:
                         monster.is_rush = False
+                        print(3)
+                        if pygame.mixer.Channel(2).get_busy():
+                            pygame.mixer.Channel(2).stop()
+                        
+                    
                 else:
                     if distance <= monster.boundary:
                         monster.rush((dir_x, dir_y), dt)
@@ -489,6 +504,10 @@ class Level:
                 
                 self.tile_group.clear()
                 self.random_group.clear()
+        if self.wave_flag:
+            if not pygame.mixer.Channel(1).get_busy():
+                wave_sound.set_volume(self.effect_vol/100)
+                pygame.mixer.Channel(1).play(wave_sound)
 
 
     def wave_collision(self, wave_rect):
@@ -598,6 +617,7 @@ class Level:
                     self.wave_cnt = 0
                 self.wave_player_collision_check()
                 self.create_wave(self.elapsed_time * 10, self.wave_idx)
+                
             elif self.stage_number == 2 and (self.map_idx == 2 or self.map_idx == 4 or self.map_idx == 8):
                 self.flooding(self.elapsed_time)
 
@@ -616,6 +636,8 @@ class Level:
 
         if self.player.is_dead:
             self.glow.draw_dead_display_change(dt)
+            if pygame.mixer.Channel(1).get_busy():
+                pygame.mixer.Channel(1).stop()
 
 # 카메라 클래스
 class CameraGroup(pygame.sprite.Group):
