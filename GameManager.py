@@ -744,14 +744,12 @@ class GameManager:
             # 게임 클리어 영역
             x = self.level.get_player() # 캐릭터
             y = self.level.get_finish() # Finish 타일
-
-            # 이부분 고쳐야함
+            
             if self.use_rope:
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                     self.player_hp_recovery()
                 self.use_rope = False
-
             if x.hitbox.colliderect(y.rect):
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
                     self.level.remain_monster = 0
@@ -763,7 +761,6 @@ class GameManager:
                         rope_item = 100
                         max_hp = 100
                         current_hp = max_hp
-                        
                     if self.level.stage_number == 5: # 마지막 스테이지
                         self.finish = True
                     else:
@@ -771,7 +768,6 @@ class GameManager:
                         text_flag[self.level.stage_number + 1] = True
                         self.level = Level(0, 0, 0, pygame.time.get_ticks())
                         self.player_hp_recovery()
-
             if self.level.stage_number == 0: #메인 스테이지 
                 s0 = self.level.get_stage0() #스테이지 입구 타일
                 s1 = self.level.get_stage1() 
@@ -779,49 +775,41 @@ class GameManager:
                 s3 = self.level.get_stage3()
                 s4 = self.level.get_stage4()
                 s5 = self.level.get_stage5()
-
                 if x.hitbox.colliderect(s0.rect): #튜토리얼 입구로 들어 갔을때
                     self.level.stage_number = 1
                     self.text.draw_text(1, self.screen)
                     text_flag[1] = True
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
-
                 if x.hitbox.colliderect(s1.rect) and stage_clear[1]: #스테이지 1 입구로 들어 갔을때
                     self.level.stage_number = 2
                     self.text.draw_text(2, self.screen)
                     if use_item3:
                         shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
-
                 if x.hitbox.colliderect(s2.rect) and stage_clear[2]: #스테이지 2 입구로 들어 갔을때
                     self.level.stage_number = 3
                     self.text.draw_text(3, self.screen)
                     if use_item3:
                         shield = 2
-                    self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
-                
+                    self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())           
                 if x.hitbox.colliderect(s3.rect) and stage_clear[3]: #스테이지 3 입구로 들어 갔을때
                     self.level.stage_number = 4
                     self.text.draw_text(4, self.screen)
                     if use_item3:
                         shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
-
                 if x.hitbox.colliderect(s4.rect) and stage_clear[4]: #스테이지 4 입구로 들어 갔을때
                     self.level.stage_number = 5
                     self.text.draw_text(5, self.screen)
                     if use_item3:
                         shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
-                
                 if x.hitbox.colliderect(s5.rect) and stage_clear[5]: #스테이지 5 입구로 들어 갔을때
                     self.level.stage_number = 6
                     self.text.draw_text(6, self.screen)
                     if use_item3:
                         shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
-
-
             # 화면 업데이트
             pygame.display.update()
 

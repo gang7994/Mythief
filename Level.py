@@ -83,9 +83,6 @@ class Level:
         self.sound_flag0 = True
         self.sound_flag1 = True
         
-        
- 
-
     # 맵 생성
     def create_map(self):
         global random_event_item_text, event_texts
@@ -395,7 +392,7 @@ class Level:
     def get_stage5(self):
         return self.stage5
 
-    def pause(self, str):
+    def pause(self, str): #일시정지 함수
         if str == "T":
             self.is_pause = True
             for sprite in self.images:
@@ -416,9 +413,8 @@ class Level:
             for fire in self.fire_images:
                 fire.is_pause = False
             self.glow.is_pause = False
-
-    # 플레이어 , 적 거리 계산
-    def get_player_distance(self, player, dt):
+    
+    def get_player_distance(self, player, dt): # 플레이어 , 적 거리 계산
         for monster in self.monster_images:
             if monster.name == "rush_Monster" or monster.name == "cerberus" or monster.name == "Fish":
                 monster_vec = pygame.math.Vector2(monster.rect.center)
@@ -459,7 +455,7 @@ class Level:
                     else:
                         monster.is_rush = False
 
-    def monster_auto_create(self, time, dt):
+    def monster_auto_create(self, time, dt): # 몬스터 자동 생성 함수
         if int(time) % 15 != 0:
             self.create_flag = False
         if int(time) % 15 == 0 and int(time) != 0 and not self.create_flag and self.remain_monster + self.one_per_create <= self.max_create:
@@ -475,13 +471,13 @@ class Level:
                     self.monsterlist.append(monster)
                 self.remain_monster += 1  # Show_info
 
-    def tile_random_mix(self):
+    def tile_random_mix(self): #타일이 랜덤하게 섞이는 함수
         random.shuffle(self.random_group)
         for idx, tile in enumerate(self.tile_group):
             tile.rect, self.random_group[idx].rect = self.random_group[idx].rect, tile.rect
             tile.hitbox, self.random_group[idx].hitbox = self.random_group[idx].hitbox, tile.hitbox
 
-    def create_wave(self, time, wave_idx):
+    def create_wave(self, time, wave_idx): #파도가 생성되는 함수
         if int(time) % 3 != 0:
             self.wave_flag = False
         if int(time) % 3 == 0 and int(time) != 0 and not self.wave_flag and not self.wave_cool_time:
@@ -509,8 +505,7 @@ class Level:
                 wave_sound.set_volume(self.effect_vol/100)
                 pygame.mixer.Channel(1).play(wave_sound)
 
-
-    def wave_collision(self, wave_rect):
+    def wave_collision(self, wave_rect): #파도와 타일의 충돌 여부를 확인하는 함수
         for sprite in self.images:
             if sprite.rect.colliderect(wave_rect):
                 if sprite.name == "Wall":
@@ -521,15 +516,14 @@ class Level:
                     
                     self.tile_group.append(sprite)
                     self.random_group.append(sprite)
-
-                    
-    def wave_player_collision_check(self):
+         
+    def wave_player_collision_check(self): #파도와 캐릭터의 충돌 여부를 확인하는 함수
         self.player.player_in_wave = False
         for wave in self.wave:
             if wave.rect.colliderect(self.player.hitbox):
                 self.player.player_in_wave = True
 
-    def flooding(self, time):
+    def flooding(self, time): #특정 맵에서 점점 침수가 되게 작동하는 함수
         if int(time) % 3 != 0:
             self.flooding_flag = False
         if int(time) % 3 == 0 and int(time) != 0 and not self.flooding_flag:
@@ -547,7 +541,7 @@ class Level:
             self.alpha += 256//16
             self.flood_cnt += 1
             
-    def random_thunder(self, time):
+    def random_thunder(self, time): #특정 맵에서 랜덤 타일에 5개의 번개가 지속해서 치는 함수 
         if int(time) % 3 != 0:
             self.thunder_flag = False
         if int(time) % 3 == 0 and int(time) != 0 and not self.thunder_flag:
@@ -557,8 +551,7 @@ class Level:
             if len(self.player.rod_position) > 0:
                 for i in self.player.rod_position:
                     self.thunder = Thunder(i, [self.monster_images, self.damage_images], self.images, self.border_images)
-
-
+    
     # 현재 레벨의 메인 게임 로직
     def run(self):
         dt = self.clock.tick(FPS)
