@@ -8,22 +8,28 @@ class LaserMonster(pygame.sprite.Sprite):
     # 몬스터 이미지 임시로 변경
     def __init__(self, pos, groups, border_images, damage_images, images):
         super().__init__(groups)
+        # 이미지 + 히트박스 영역
         self.image = pygame.image.load(os.path.join(images_path, "monster.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, 0)
+        # 몬스터 이름
         self.name = "laser_Monster"
+        # 몬스터 움직임 변수
         self.dir = pygame.math.Vector2()
-        self.border_images = border_images
-        self.damage_images = damage_images
         self.monster_speed = 1
         self.is_moving = False
         self.monster_order_wait_time = 1000
         self.monster_move = [[1,0], [0,1], [0,0], [-1,0], [0,-1]]
+        # 몬스터 충돌 정보
+        self.border_images = border_images
+        self.damage_images = damage_images
         self.images = images
+        # 레이져 몬스터 공격 변수
         self.laser_cool_time = random.randint(1, 5) * 1000
         self.is_laser_ready = True
         self.current_time = 0
         self.laser_time = 0
+        # FPS + 일시정지 변수
         self.clock = pygame.time.Clock()
         self.is_pause = False
         
@@ -43,7 +49,7 @@ class LaserMonster(pygame.sprite.Sprite):
             if current_time - self.monster_move_start > self.monster_order_wait_time:
                 self.is_moving = False
 
-    # 입력받은 움직임으로 이동
+    # 입력받은 움직임으로 이동 + 충돌 적용
     def move(self, speed, dt):
         if self.is_moving:
             self.hitbox.left += self.dir.x * speed * (dt // 6)
@@ -52,7 +58,7 @@ class LaserMonster(pygame.sprite.Sprite):
             self.collision("vertical")
             self.rect.center = self.hitbox.center
         
-    # 몬스터 충돌 (여기에 플레이어 충돌을 만들까 고민중)
+    # 몬스터 충돌
     def collision(self, direction):
         if direction == "horizontal":
             for sprite in self.border_images:
