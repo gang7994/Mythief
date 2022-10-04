@@ -118,7 +118,7 @@ class GameManager:
         return pygame.font.SysFont('malgungothic', size)
 
     def main_menu(self):
-        global rope_item, current_hp, max_hp
+        global rope_item, current_hp, max_hp, half_hp_count
         while True:
             if not pygame.mixer.Channel(0).get_busy():
                 bgm_sound.set_volume(bgm_vol/200)
@@ -166,6 +166,7 @@ class GameManager:
                             self.running = True
                             self.Run()
                             # 초기화
+                            half_hp_count = 0
                             max_hp = 100
                             current_hp = max_hp
                             theme_inventory.clear()
@@ -289,28 +290,42 @@ class GameManager:
             
 
     # 클리어 함수
-    # def total_score_update(self, score): 수정시 수정 필요
     def clear(self, elapsed_time, mouse_pos):
+        if pygame.mixer.Channel(1).get_busy(): pygame.mixer.Channel(1).stop()
+        item_score = 0
+        time_score = 0
+        hp_score = half_hp_count * 200
+        for i in general_inventory: #테마 유물 아이템 개당 700점
+            if i[1] == 6: item_score += 700
+        if 1400 - time_record > 0:
+            time_score = int(1400 - time_record) *25
+        
+               
         global bonus
         MAINMENU = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
                        image1=pygame.image.load(os.path.join(images_path, "exit_icon2.png")).convert_alpha(),
-                       pos=(700, 650), scale_x=200, scale_y=200)
-        title_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 120)
-        game_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 80)
-        #msg = game_font.render(f"Your score is {self.total_score_update(self.total_time_update(elapsed_time))}", True, WHITE)
-        total = sum(stage_score) + len(theme_inventory) + bonus
+                       pos=(1200, 650), scale_x=200, scale_y=200)
+        title_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 100)
+        game_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 70)
+
+        total = time_score + 15000 + bonus + item_score + hp_score
         msg0 = title_font.render(f"[ Your Score ]", True, WHITE)
-        msg0_rect = msg0.get_rect(center=(screen_width / 2, screen_height / 2 - 250))
-        msg1 = game_font.render(f"스테이지 : {sum(stage_score)}", True, WHITE)
-        msg1_rect = msg1.get_rect(center=(screen_width / 2, screen_height / 2 - 150))
-        msg2 = game_font.render(f"테마유물 : {len(theme_inventory)}", True, WHITE)
-        msg2_rect = msg2.get_rect(center=(screen_width / 2, screen_height / 2 -50))
-        msg3 = game_font.render(f"보너스 : {bonus}", True, WHITE)
-        msg3_rect = msg3.get_rect(center=(screen_width / 2, screen_height / 2 + 50))
-        msg4 = game_font.render(f"TOTAL : {total}", True, WHITE)
-        msg4_rect = msg4.get_rect(center=(screen_width / 2, screen_height / 2 + 150))
+        msg0_rect = msg0.get_rect(center=(screen_width / 2, screen_height / 2 - 290))
+        msg1 = game_font.render(f"클리어 타임 : {time_score}", True, WHITE) 
+        msg1_rect = msg1.get_rect(center=(screen_width / 2, screen_height / 2 - 190))
+        msg2 = game_font.render(f"테마유물 : 15000", True, WHITE)  # 테마유물 점수
+        msg2_rect = msg2.get_rect(center=(screen_width / 2, screen_height / 2 -90))
+        msg3 = game_font.render(f"보너스 : {bonus}", True, WHITE)   # 추가 점수 오브젝트
+        msg3_rect = msg3.get_rect(center=(screen_width / 2, screen_height / 2 + 10))
+        msg4 = game_font.render(f"일반유물 : {item_score}", True, WHITE)   # 유물 개수
+        msg4_rect = msg4.get_rect(center=(screen_width / 2, screen_height / 2 + 110))
+        msg5 = game_font.render(f"체력 : {hp_score}", True, WHITE)   # 유물 개수
+        msg5_rect = msg5.get_rect(center=(screen_width / 2, screen_height / 2 + 210))
+        
+        msg = game_font.render(f"TOTAL : {total}", True, WHITE)   # 총합
+        msg_rect = msg.get_rect(center=(screen_width / 2, screen_height / 2 + 310))
         self.screen.fill(BLACK)
-        self.screen.blits([(msg0, msg0_rect), (msg1, msg1_rect), (msg2, msg2_rect), (msg3, msg3_rect), (msg4, msg4_rect)])
+        self.screen.blits([(msg0, msg0_rect), (msg1, msg1_rect), (msg2, msg2_rect), (msg3, msg3_rect), (msg4, msg4_rect), (msg5, msg5_rect), (msg, msg_rect)])
         MAINMENU.changeColor(mouse_pos)
         MAINMENU.update(self.screen)
         for event in pygame.event.get():
@@ -582,7 +597,7 @@ class GameManager:
     def get_bonus_score(self):
         global bonus
         if self.level.player.bonus_flag:
-            bonus += 100
+            bonus += 200
             self.level.player.bonus_flag = False
         
     def sound_click(self):
@@ -596,7 +611,7 @@ class GameManager:
             
     # 게임 로직
     def Run(self):
-        global rope_item, shield, max_hp, current_hp
+        global rope_item, shield, max_hp, current_hp, half_hp_count, time_record
         # 프레임 영역
         self.start_time = pygame.time.get_ticks()
         # 메인 로직 영역
@@ -699,7 +714,7 @@ class GameManager:
             self.current_stage() #현재 캐릭터가 있는 스테이지와 맵의 번호를 보여주는 함수
             self.show_general_inventory() #획득한 일반 유물 아이템을 보여주는 함수 
             self.general_item_effect() #획득한 일반 유물 아이템 조각 6개가 모이면 각 효과에 맞게 실행시켜주는 함수
-            self.show_dir() #캐릭터가 보고 있는 방향을 화살표로 알려주는 함수
+            self.show_dir() #캐릭터가 보고 있는 방향을 화살표로 알려주는 함수f
             self.item_interaction_text() #아이템 근처에 갔을 경우 상호작용 할 수 있는 함수 
             self.door_interaction_text() #스테이지 입구 문 근처에 갔을 경우 스테이지 명을 보여주는 함수
             self.show_theme_inventory() #테마 유물 아이템을 보여주는 인벤토리
@@ -710,7 +725,7 @@ class GameManager:
             self.player_event_max_hp() #이벤트 맵의 결과에 따라 캐릭터 최대 체력이 변경되게 하는 함수
             # player_bonus
             self.get_bonus_score() #보너스 아이템을 먹었을 때 보너스 점수 100을 더하는 함수
-
+            print(time_record)
             if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]): #해당스테이지와 맵에 맞는 텍스트를 보여줌
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
             if self.level.player.event_handler:
@@ -720,10 +735,12 @@ class GameManager:
 
             if not self.level.is_pause:
                 self.tem_now_time = pygame.time.get_ticks() - self.start_time
-                elapse_time = (self.tem_now_time) / 1000
+                elapse_time = (self.tem_now_time) / 1000   
+
             else:
                 self.start_time = pygame.time.get_ticks() - self.tem_now_time
                 elapse_time = (self.tem_now_time) / 1000
+    
             self.draw_time(elapse_time)
             self.draw_score(self.total_score)
             if self.level.is_pause:
@@ -747,12 +764,18 @@ class GameManager:
             
             if self.use_rope:
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
+                    if max_hp / 2 <= current_hp and not(self.level.map_idx ==3 or self.level.map_idx == 7): half_hp_count+=1
+                    time_record += (pygame.time.get_ticks() - self.level.start_time) / 1000
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                     self.player_hp_recovery()
                 self.use_rope = False
             if x.hitbox.colliderect(y.rect):
+                if not self.finish:
+                    print(self.level.stage_number != 1)
+                    time_record += (pygame.time.get_ticks() - self.level.start_time) /1000
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
                     self.level.remain_monster = 0
+                    if max_hp / 2 <= current_hp and not(self.level.map_idx ==3 or self.level.map_idx == 7): half_hp_count+=1
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                     self.player_hp_recovery()
                 else: #다음 방이 없으면 메인 스테이지로 넘어가기
@@ -761,11 +784,14 @@ class GameManager:
                         rope_item = 100
                         max_hp = 100
                         current_hp = max_hp
-                    if self.level.stage_number == 5: # 마지막 스테이지
+                        time_record = 0
+                        
+                    if self.level.stage_number == 5: # 마지막 스테이지    
                         self.finish = True
                     else:
                         stage_clear[self.level.stage_number] = True
                         text_flag[self.level.stage_number + 1] = True
+                        if max_hp / 2 <= current_hp and not(self.level.map_idx ==3 or self.level.map_idx == 7): half_hp_count+=1
                         self.level = Level(0, 0, 0, pygame.time.get_ticks())
                         self.player_hp_recovery()
             if self.level.stage_number == 0: #메인 스테이지 

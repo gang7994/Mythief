@@ -67,7 +67,8 @@ shield = 0
 # score
 stage_score = [0,0,0,0,100]
 bonus = 0
-
+half_hp_count = 0
+time_record = 0
 #sound_effect
 sound_path = os.path.join(current_path, "Sound")
 click_sound = pygame.mixer.Sound((os.path.join(sound_path, "click.wav")))
