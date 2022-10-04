@@ -604,7 +604,6 @@ class GameManager:
             if not pygame.mixer.Channel(0).get_busy():
                 bgm_sound.set_volume(bgm_vol/200)
                 pygame.mixer.Channel(0).play(bgm_sound)
-            
             dt = self.clock.tick(FPS)
             PAUSE_MOUSE_POS = pygame.mouse.get_pos()
             if not self.level.is_pause:
@@ -642,7 +641,6 @@ class GameManager:
                     elif PAUSE.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
                         self.sound_click()
                         self.level.pause("F")
-
                     if SETTING.checkForInput(PAUSE_MOUSE_POS) and self.level.is_pause:
                         self.sound_click()
                         self.Option()
@@ -651,10 +649,8 @@ class GameManager:
                         self.running = False
 
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE and not self.level.is_pause:
-                        self.level.pause("T")
-                    elif event.key == pygame.K_ESCAPE and self.level.is_pause:
-                        self.level.pause("F")
+                    if event.key == pygame.K_ESCAPE and not self.level.is_pause: self.level.pause("T")
+                    elif event.key == pygame.K_ESCAPE and self.level.is_pause: self.level.pause("F")
                     if event.key == pygame.K_r and self.level.stage_number != 0:
                         if rope_item != 0 and not self.use_rope:
                             if self.level.stage_number == 0:
@@ -678,7 +674,6 @@ class GameManager:
                                     rope_item -= 1
                                     self.use_rope = True
                                     
-                            
                     if event.key == pygame.K_f:
                         if not text_flag[self.level.stage_number + 1]:
                             if len(self.level.text.texts[self.level.map_idx]) != 0:
@@ -696,29 +691,27 @@ class GameManager:
             # 이미지 영역
             self.screen.fill(BLACK)
             self.level.run()
-            self.draw_frame()
-            self.draw_rock_count()
-            self.show_item()
-            self.player_hp()
-            self.draw_hp()
-            self.current_stage()
-            self.show_general_inventory()
-            self.general_item_effect()
-            self.show_dir()
-            self.item_interaction_text()
-            self.door_interaction_text()
-            self.show_theme_inventory()
-            self.sound_setting()
-
+            self.draw_frame() #게임화면에서 테투리를 그리는 함수
+            self.draw_rock_count() #
+            self.show_item() #오른쪽 하단의 기믹아이템, 로프(패스권), 돌 쿨타임을 화면에 보여주는 함수
+            self.player_hp() #캐릭터의 체력을 계산해주는 함수
+            self.draw_hp() #캐릭터의 체력을 화면에 보여주는 함수
+            self.current_stage() #현재 캐릭터가 있는 스테이지와 맵의 번호를 보여주는 함수
+            self.show_general_inventory() #획득한 일반 유물 아이템을 보여주는 함수 
+            self.general_item_effect() #획득한 일반 유물 아이템 조각 6개가 모이면 각 효과에 맞게 실행시켜주는 함수
+            self.show_dir() #캐릭터가 보고 있는 방향을 화살표로 알려주는 함수
+            self.item_interaction_text() #아이템 근처에 갔을 경우 상호작용 할 수 있는 함수 
+            self.door_interaction_text() #스테이지 입구 문 근처에 갔을 경우 스테이지 명을 보여주는 함수
+            self.show_theme_inventory() #테마 유물 아이템을 보여주는 인벤토리
+            self.sound_setting() # 조절한 소리 값으로 모든 소리크기 변수를 바꿔주는 함수 
             # player_get_event
-            self.player_event_hp_loss()
-            self.player_event_hp_get()
-            self.player_event_max_hp()
-
+            self.player_event_hp_loss() #이벤트 맵의 결과에 따라 캐릭터 체력 30을 잃게 만드는 함수
+            self.player_event_hp_get() #이벤트 맵의 결과에 따라 캐릭터 체력 50을 회복하게 만드는 함수
+            self.player_event_max_hp() #이벤트 맵의 결과에 따라 캐릭터 최대 체력이 변경되게 하는 함수
             # player_bonus
-            self.get_bonus_score()
+            self.get_bonus_score() #보너스 아이템을 먹었을 때 보너스 점수 100을 더하는 함수
 
-            if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]):
+            if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]): #해당스테이지와 맵에 맞는 텍스트를 보여줌
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
             if self.level.player.event_handler:
                 if self.level.player.event_code is not None:
