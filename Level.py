@@ -91,16 +91,14 @@ class Level:
             self.cur_map = map[0]
         elif self.stage_number == 1: #튜토리얼
             self.cur_map = map[1]
-        elif self.stage_number == 2:
+        elif self.stage_number == 2: #스테이지1
             self.cur_map = map[2]
-        elif self.stage_number == 3:
+        elif self.stage_number == 3: #스테이지2
             self.cur_map = map[3]
-        elif self.stage_number == 4:
+        elif self.stage_number == 4: #스테이지3
             self.cur_map = map[4]
-        elif self.stage_number == 5:
+        elif self.stage_number == 5: #스테이지4
             self.cur_map = map[5]
-        elif self.stage_number == 6:
-            self.cur_map = map[6]
 
         for row_idx, row in enumerate(self.cur_map[self.map_idx]):
             for col_idx, col in enumerate(row):
@@ -453,7 +451,6 @@ class Level:
                         monster.is_rush = False
                         if pygame.mixer.Channel(2).get_busy():
                             pygame.mixer.Channel(2).stop()
-                    
                 else:
                     if pygame.mixer.Channel(2).get_busy():
                         pygame.mixer.Channel(2).stop()
