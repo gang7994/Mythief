@@ -290,58 +290,63 @@ class GameManager:
             
 
     # 클리어 함수
-    def clear(self, elapsed_time, mouse_pos):
-        if pygame.mixer.Channel(1).get_busy(): pygame.mixer.Channel(1).stop()
-        item_score = 0
-        time_score = 0
-        hp_score = half_hp_count * 200
-        for i in general_inventory: #테마 유물 아이템 개당 700점
-            if i[1] == 6: item_score += 700
-        if 1400 - time_record > 0:
-            time_score = int(1400 - time_record) *25
-        
-               
-        global bonus
-        MAINMENU = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
-                       image1=pygame.image.load(os.path.join(images_path, "exit_icon2.png")).convert_alpha(),
-                       pos=(1200, 650), scale_x=200, scale_y=200)
-        title_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 100)
-        game_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 70)
+    def clear(self, elapsed_time):
+        running = True
+        while running:
+            mouse_pos = pygame.mouse.get_pos()
+            if pygame.mixer.Channel(1).get_busy(): pygame.mixer.Channel(1).stop()
+            item_score = 0
+            time_score = 0
+            hp_score = half_hp_count * 200
+            for i in general_inventory: #테마 유물 아이템 개당 700점
+                if i[1] == 6: item_score += 700
+            if 1400 - time_record > 0:
+                time_score = int(1400 - time_record) *25
 
-        total = time_score + 15000 + bonus + item_score + hp_score
-        msg0 = title_font.render(f"[ Your Score ]", True, WHITE)
-        msg0_rect = msg0.get_rect(center=(screen_width / 2, screen_height / 2 - 290))
-        msg1 = game_font.render(f"클리어 타임 : {time_score}", True, WHITE) 
-        msg1_rect = msg1.get_rect(center=(screen_width / 2, screen_height / 2 - 190))
-        msg2 = game_font.render(f"테마유물 : 15000", True, WHITE)  # 테마유물 점수
-        msg2_rect = msg2.get_rect(center=(screen_width / 2, screen_height / 2 -90))
-        msg3 = game_font.render(f"보너스 : {bonus}", True, WHITE)   # 추가 점수 오브젝트
-        msg3_rect = msg3.get_rect(center=(screen_width / 2, screen_height / 2 + 10))
-        msg4 = game_font.render(f"일반유물 : {item_score}", True, WHITE)   # 유물 개수
-        msg4_rect = msg4.get_rect(center=(screen_width / 2, screen_height / 2 + 110))
-        msg5 = game_font.render(f"체력 : {hp_score}", True, WHITE)   # 유물 개수
-        msg5_rect = msg5.get_rect(center=(screen_width / 2, screen_height / 2 + 210))
-        
-        msg = game_font.render(f"TOTAL : {total}", True, WHITE)   # 총합
-        msg_rect = msg.get_rect(center=(screen_width / 2, screen_height / 2 + 310))
-        self.screen.fill(BLACK)
-        self.screen.blits([(msg0, msg0_rect), (msg1, msg1_rect), (msg2, msg2_rect), (msg3, msg3_rect), (msg4, msg4_rect), (msg5, msg5_rect), (msg, msg_rect)])
-        MAINMENU.changeColor(mouse_pos)
-        MAINMENU.update(self.screen)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                self.particle.click_flag = True
-                if MAINMENU.checkForInput(mouse_pos):
-                    self.sound_click()
-                    if total >= 1000:
-                        self.text.draw_text(7, self.screen)
-                    else:
-                        self.text.draw_text(8, self.screen)
-                    self.running = False
-        self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
+
+            global bonus
+            MAINMENU = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
+                           image1=pygame.image.load(os.path.join(images_path, "exit_icon2.png")).convert_alpha(),
+                           pos=(1200, 650), scale_x=200, scale_y=200)
+            title_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 100)
+            game_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 70)
+
+            total = time_score + 15000 + bonus + item_score + hp_score
+            msg0 = title_font.render(f"[ Your Score ]", True, WHITE)
+            msg0_rect = msg0.get_rect(center=(screen_width / 2, screen_height / 2 - 290))
+            msg1 = game_font.render(f"클리어 타임 : {time_score}", True, WHITE)
+            msg1_rect = msg1.get_rect(center=(screen_width / 2, screen_height / 2 - 190))
+            msg2 = game_font.render(f"테마유물 : 15000", True, WHITE)  # 테마유물 점수
+            msg2_rect = msg2.get_rect(center=(screen_width / 2, screen_height / 2 -90))
+            msg3 = game_font.render(f"보너스 : {bonus}", True, WHITE)   # 추가 점수 오브젝트
+            msg3_rect = msg3.get_rect(center=(screen_width / 2, screen_height / 2 + 10))
+            msg4 = game_font.render(f"일반유물 : {item_score}", True, WHITE)   # 유물 개수
+            msg4_rect = msg4.get_rect(center=(screen_width / 2, screen_height / 2 + 110))
+            msg5 = game_font.render(f"체력 : {hp_score}", True, WHITE)   # 유물 개수
+            msg5_rect = msg5.get_rect(center=(screen_width / 2, screen_height / 2 + 210))
+
+            msg = game_font.render(f"TOTAL : {total}", True, WHITE)   # 총합
+            msg_rect = msg.get_rect(center=(screen_width / 2, screen_height / 2 + 310))
+            self.screen.fill(BLACK)
+            self.screen.blits([(msg0, msg0_rect), (msg1, msg1_rect), (msg2, msg2_rect), (msg3, msg3_rect), (msg4, msg4_rect), (msg5, msg5_rect), (msg, msg_rect)])
+            MAINMENU.changeColor(mouse_pos)
+            MAINMENU.update(self.screen)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.particle.click_flag = True
+                    if MAINMENU.checkForInput(mouse_pos):
+                        self.sound_click()
+                        if total >= 1000:
+                            self.text.draw_text(7, self.screen)
+                        else:
+                            self.text.draw_text(8, self.screen)
+                        running = False
+            self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
+            pygame.display.update()
+        self.running = False
     
     
     # 현재 스테이지 글자로 표시
@@ -754,9 +759,7 @@ class GameManager:
             if self.level.glow.dead_rad <= 0:
                 self.dead_surface(PAUSE_MOUSE_POS)
             self.particle.click_effect(self.screen, PAUSE_MOUSE_POS[0], PAUSE_MOUSE_POS[1], dt)
-            
-            if self.finish:
-                self.clear(int(elapse_time), PAUSE_MOUSE_POS)
+
 
             # 게임 클리어 영역
             x = self.level.get_player() # 캐릭터
@@ -788,6 +791,8 @@ class GameManager:
                         
                     if self.level.stage_number == 5: # 마지막 스테이지    
                         self.finish = True
+                    if self.level.stage_number == 0:
+                        self.clear(int(elapse_time))
                     else:
                         stage_clear[self.level.stage_number] = True
                         text_flag[self.level.stage_number + 1] = True
@@ -800,7 +805,6 @@ class GameManager:
                 s2 = self.level.get_stage2()
                 s3 = self.level.get_stage3()
                 s4 = self.level.get_stage4()
-                s5 = self.level.get_stage5()
                 if x.hitbox.colliderect(s0.rect): #튜토리얼 입구로 들어 갔을때
                     self.level.stage_number = 1
                     self.text.draw_text(1, self.screen)
@@ -827,12 +831,6 @@ class GameManager:
                 if x.hitbox.colliderect(s4.rect) and stage_clear[4]: #스테이지 4 입구로 들어 갔을때
                     self.level.stage_number = 5
                     self.text.draw_text(5, self.screen)
-                    if use_item3:
-                        shield = 2
-                    self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
-                if x.hitbox.colliderect(s5.rect) and stage_clear[5]: #스테이지 5 입구로 들어 갔을때
-                    self.level.stage_number = 6
-                    self.text.draw_text(6, self.screen)
                     if use_item3:
                         shield = 2
                     self.level = Level(0, self.level.stage_number, 0, pygame.time.get_ticks())
