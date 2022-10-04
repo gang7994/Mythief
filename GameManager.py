@@ -366,13 +366,6 @@ class GameManager:
             self.item_cover.set_alpha(200)                                          
             self.screen.blit(self.item_cover,(130+i*105, 78))
 
-    def show_info(self):
-        font = pygame.font.Font(None, 25)
-        pos = font.render(f"Player_pos: {self.level.player.rect.centerx, self.level.player.rect.centery,}", True, WHITE)
-        remain_monster = font.render(f"Remaining_Monster: {self.level.remain_monster}", True, WHITE) # Show_info로 주석표기
-        fps = font.render(f"FPS: {str(int(self.clock.get_fps()))}", True, WHITE)
-        self.screen.blits([(pos, (10, 560)),(remain_monster, (10, 590)), (fps, (10, 620))])
-        
     def show_theme_inventory(self):
         pygame.draw.circle(self.screen, GREY, (45, 710), 40)
         pygame.draw.circle(self.screen, GREY, (165, 710), 40)
@@ -711,9 +704,7 @@ class GameManager:
             self.current_stage()
             self.show_general_inventory()
             self.general_item_effect()
-            #self.draw_current_stage(self.level.map_idx)
             self.show_dir()
-            self.show_info()
             self.item_interaction_text()
             self.door_interaction_text()
             self.show_theme_inventory()
@@ -764,14 +755,13 @@ class GameManager:
             # 이부분 고쳐야함
             if self.use_rope:
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
-                    
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                     self.player_hp_recovery()
                 self.use_rope = False
 
             if x.hitbox.colliderect(y.rect):
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
-                    self.level.remain_monster = 0 # Show_info
+                    self.level.remain_monster = 0
                     self.level = Level(self.level.text_idx + 1, self.level.stage_number, self.level.map_idx + 1, pygame.time.get_ticks())
                     self.player_hp_recovery()
                 else: #다음 방이 없으면 메인 스테이지로 넘어가기

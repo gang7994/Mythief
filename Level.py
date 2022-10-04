@@ -453,7 +453,6 @@ class Level:
                     
                 else:
                     if pygame.mixer.Channel(2).get_busy():
-                        print("1123213")
                         pygame.mixer.Channel(2).stop()
                     if distance <= monster.boundary:
                         monster.rush((dir_x, dir_y), dt)
