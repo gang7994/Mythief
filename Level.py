@@ -387,8 +387,6 @@ class Level:
         return self.stage3
     def get_stage4(self):
         return self.stage4
-    def get_stage5(self):
-        return self.stage5
 
     def pause(self, str): #일시정지 함수
         if str == "T":
@@ -416,7 +414,7 @@ class Level:
             self.glow.is_pause = False
             self.images.is_pause = False
             self.monster_images.is_pause = False
-            self.pillar_images.is_pause  = False
+            self.pillar_images.is_pause = False
 
     
     def get_player_distance(self, player, dt): # 플레이어 , 적 거리 계산

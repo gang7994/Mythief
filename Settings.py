@@ -43,7 +43,7 @@ general_inventory = []
 # 로프(패스권)
 rope_item = 100
 # 스테이지 클리어 여부
-stage_clear = [True, True, True, True, True, True]
+stage_clear = [False, False, False, False, True, True]
 
 # player use item
 use_item0 = False
@@ -67,7 +67,8 @@ shield = 0
 # score
 stage_score = [0,0,0,0,100]
 bonus = 0
-
+half_hp_count = 0
+time_record = 0
 #sound_effect
 sound_path = os.path.join(current_path, "Sound")
 click_sound = pygame.mixer.Sound((os.path.join(sound_path, "click.wav")))
