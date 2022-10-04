@@ -480,7 +480,7 @@ class GameManager:
                         rope_item -= 1
                     use_item4 = True
                 elif tmp[0].name == "general_item5" and not use_item5: #고대주화
-                    bonus += 100
+                    bonus += 1000
                     use_item5 = True
                 elif tmp[0].name == "general_item6": #회중시계
                     try:
