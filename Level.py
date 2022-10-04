@@ -404,6 +404,9 @@ class Level:
             self.glow.is_pause = True
             pygame.mixer.Channel(1).stop()
             pygame.mixer.Channel(2).stop()
+            self.images.is_pause = True
+            self.monster_images.is_pause = True
+            self.pillar_images.is_pause  = True
         elif str == 'F':
             self.is_pause = False
             for sprite in self.images:
@@ -413,6 +416,10 @@ class Level:
             for fire in self.fire_images:
                 fire.is_pause = False
             self.glow.is_pause = False
+            self.images.is_pause = False
+            self.monster_images.is_pause = False
+            self.pillar_images.is_pause  = False
+
     
     def get_player_distance(self, player, dt): # 플레이어 , 적 거리 계산
         for monster in self.monster_images:
@@ -641,13 +648,15 @@ class CameraGroup(pygame.sprite.Group):
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
         self.camera_move_flag = False
+        self.is_pause = False
 
     # 카메라 드로우
     def custom_draw(self, player, dt):
         if not self.camera_move_flag:
             self.offset.x = player.rect.centerx - self.half_width
             self.offset.y = player.rect.centery - self.half_height
-        self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
+        if not self.is_pause:
+            self.camera_move((player.rect.centerx - self.half_width, player.rect.centery - self.half_height), dt)
         for sprite in self.sprites():
             offset_rect = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_rect)
