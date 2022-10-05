@@ -301,7 +301,7 @@ class GameManager:
             time_score = 0
             hp_score = half_hp_count * 200
             for i in general_inventory: #테마 유물 아이템 개당 700점
-                if i[1] == 6: item_score += 700
+                if i[1] >= 6: item_score += 700
             if 1400 - time_record > 0:
                 time_score = int(1400 - time_record) * 25
                 
@@ -382,6 +382,7 @@ class GameManager:
             self.screen.blit(item[0].image, image_rect)
             self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
             if item[1] == -1: self.item_cover = pygame.transform.scale(self.item_cover, (45,45))
+            elif item[1] == 7: self.item_cover = pygame.transform.scale(self.item_cover, (45,45))
             else: self.item_cover = pygame.transform.scale(self.item_cover, (45,45-item[1]*7.5))
             self.item_cover.set_alpha(200)                                          
             self.screen.blit(self.item_cover,(130+i*105, 78))
@@ -393,23 +394,23 @@ class GameManager:
         pygame.draw.circle(self.screen, GREY, (405, 710), 40)
         pygame.draw.circle(self.screen, GREY, (525, 710), 40)
         for i, item in enumerate(theme_inventory):
-            if item == "Them_1.png" and stage_clear[1]:
+            if item == "Them_1.png" and theme_clear[0]:
                 image = pygame.image.load(os.path.join(item_path, "Them_1.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_2.png" and stage_clear[2]:
+            elif item == "Them_2.png" and theme_clear[1]:
                 image = pygame.image.load(os.path.join(item_path, "Them_2.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_3.png" and stage_clear[3]:
+            elif item == "Them_3.png" and theme_clear[2]:
                 image = pygame.image.load(os.path.join(item_path, "Them_3.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_4.png" and stage_clear[4]:
+            elif item == "Them_4.png" and theme_clear[3]:
                 image = pygame.image.load(os.path.join(item_path, "Them_4.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_5.png" and stage_clear[5]:
+            elif item == "Them_5.png" and theme_clear[4]:
                 image = pygame.image.load(os.path.join(item_path, "Them_5.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
@@ -458,10 +459,8 @@ class GameManager:
     def general_item_effect(self):
         global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8, use_item9, use_item10
         for tmp in general_inventory:
-            if tmp[1] == 6 and self.level.player.ignore_item and not tmp[0].name == "general_item9":
-                tmp[1] = -1 
-                self.level.player.ignore_item = False
-            elif tmp[1] == 6:
+
+            if tmp[1] == 6:
                 if tmp[0].name == "general_item0" and not use_item0: #로프 1개 추가
                     rope_item +=1
                     use_item0 = True
@@ -494,7 +493,7 @@ class GameManager:
                 elif tmp[0].name == "general_item8": #이상한 석상
                     self.level.player.is_effect0 = True
                     use_item8 = True       
-                elif tmp[0].name == "general_item9" and not use_item9: #미믹 [비활성화 토의필요]
+                elif tmp[0].name == "general_item9": #미믹 [비활성화 토의필요]
                     self.level.player.ignore_item = True
                     use_item9 = True
                 elif tmp[0].name == "general_item10": #대나무 낚싯대
@@ -730,7 +729,7 @@ class GameManager:
             self.player_event_max_hp() #이벤트 맵의 결과에 따라 캐릭터 최대 체력이 변경되게 하는 함수
             # player_bonus
             self.get_bonus_score() #보너스 아이템을 먹었을 때 보너스 점수 100을 더하는 함수
-            print(time_record)
+            
             if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]): #해당스테이지와 맵에 맞는 텍스트를 보여줌
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
             if self.level.player.event_handler:
@@ -760,6 +759,9 @@ class GameManager:
                 self.dead_surface(PAUSE_MOUSE_POS)
             self.particle.click_effect(self.screen, PAUSE_MOUSE_POS[0], PAUSE_MOUSE_POS[1], dt)
 
+            if self.level.stage_number == 0 and self.finish:
+                self.level.finish.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
+                self.level.finish.name = "Finish"
 
             # 게임 클리어 영역
             x = self.level.get_player() # 캐릭터
@@ -774,7 +776,6 @@ class GameManager:
                 self.use_rope = False
             if x.hitbox.colliderect(y.rect):
                 if not self.finish:
-                    print(self.level.stage_number != 1)
                     time_record += (pygame.time.get_ticks() - self.level.start_time) /1000
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
                     self.level.remain_monster = 0
@@ -791,10 +792,15 @@ class GameManager:
                         
                     if self.level.stage_number == 5: # 마지막 스테이지    
                         self.finish = True
+                        theme_clear[self.level.stage_number -1] = True
                     if self.level.stage_number == 0:
                         self.clear(int(elapse_time))
                     else:
                         stage_clear[self.level.stage_number] = True
+                        theme_clear[self.level.stage_number -1] = True
+                        stage_clear[self.level.stage_number - 1] = False
+                        print(self.level.stage_number)
+                        print(stage_clear)
                         text_flag[self.level.stage_number + 1] = True
                         if max_hp / 2 <= current_hp and not(self.level.map_idx ==3 or self.level.map_idx == 7): half_hp_count+=1
                         self.level = Level(0, 0, 0, pygame.time.get_ticks())
@@ -805,7 +811,7 @@ class GameManager:
                 s2 = self.level.get_stage2()
                 s3 = self.level.get_stage3()
                 s4 = self.level.get_stage4()
-                if x.hitbox.colliderect(s0.rect): #튜토리얼 입구로 들어 갔을때
+                if x.hitbox.colliderect(s0.rect) and stage_clear[0]: #튜토리얼 입구로 들어 갔을때
                     self.level.stage_number = 1
                     self.text.draw_text(1, self.screen)
                     text_flag[1] = True

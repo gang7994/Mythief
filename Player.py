@@ -84,6 +84,12 @@ class Player(pygame.sprite.Sprite):
         self.max_item_gage = 100
         self.item_bar_length = 300
         self.item_ratio = self.max_item_gage / self.item_bar_length
+        self.item_list = ["event_item1", "event_item2", "event_item3",
+                          "general_item", "general_item0", "general_item1",
+                          "general_item2", "general_item3", "general_item4",
+                          "general_item5", "general_item6", "general_item7",
+                          "general_item8", "general_item9", "general_item10",
+                          "hadesHelmet", "bonus_item"]
         # event item handler var
         self.event_handler = False
         self.event_code = None
@@ -125,6 +131,7 @@ class Player(pygame.sprite.Sprite):
         self.is_first1 = True #대나무 낚싯대
         self.is_effect0 = False #이상한 석상
         self.is_effect1 = False #대나무 낚싯대
+
         # sound var
         self.effect_vol = 0
         self.sound_flag0 = True
@@ -489,37 +496,123 @@ class Player(pygame.sprite.Sprite):
                 if tmp == "general_item0":
                     a = GeneralItem0((0,0),[self.images, self.item_images])
                     a.is_get = True
-                    general_inventory.append([a, 6])
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item1":
+                    a = GeneralItem1((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
                     a.kill()
                 elif tmp == "general_item2":
                     a = GeneralItem2((0, 0), [self.images, self.item_images])
                     a.is_get = True
-                    general_inventory.append([a, 6])
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item3":
+                    a = GeneralItem3((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
                     a.kill()
                 elif tmp == "general_item4":
                     a = GeneralItem4((0, 0), [self.images, self.item_images])
                     a.is_get = True
-                    general_inventory.append([a, 6])
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item5":
+                    a = GeneralItem5((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
                     a.kill()
                 elif tmp == "general_item6":
                     a = GeneralItem6((0, 0), [self.images, self.item_images])
                     a.is_get = True
-                    general_inventory.append([a, 6])
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
                     a.kill()
                 elif tmp == "general_item7":
                     a = GeneralItem7((0, 0), [self.images, self.item_images])
                     a.is_get = True
-                    general_inventory.append([a, 6])
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
+                    a.kill()
+                elif tmp == "general_item8":
+                    a = GeneralItem8((0, 0), [self.images, self.item_images])
+                    a.is_get = True
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
                     a.kill()
                 elif tmp == "general_item9":
                     a = GeneralItem9((0, 0), [self.images, self.item_images])
                     a.is_get = True
-                    general_inventory.append([a, 6])
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
                     a.kill()
                 elif tmp == "general_item10":
                     a = GeneralItem10((0, 0), [self.images, self.item_images])
                     a.is_get = True
-                    general_inventory.append([a, 6])
+                    if self.ignore_item:
+                        general_inventory.append([a, -1])
+                        self.ignore_item = False
+                        for i in general_inventory:
+                            if i[0].name == "general_item9": i[1] +=1
+                    else:
+                        general_inventory.append([a, 6])
                     a.kill()
                 return
 
@@ -755,23 +848,7 @@ class Player(pygame.sprite.Sprite):
         for item in self.item_images:
             if self.get_event_item and item.name in ["event_item1", "event_item2", "event_item3"]:
                 item.kill()
-            if item.name in ["event_item1",
-                             "event_item2",
-                             "event_item3",
-                             "general_item",
-                             "general_item0",
-                             "general_item1",
-                             "general_item2",
-                             "general_item3",
-                             "general_item4",
-                             "general_item5",
-                             "general_item6",
-                             "general_item7",
-                             "general_item8",
-                             "general_item9",
-                             "general_item10",
-                             "hadesHelmet",
-                             "bonus_item"]:
+            if item.name in self.item_list:
                 item_vec = pygame.math.Vector2(item.rect.center)
                 player_vec = pygame.math.Vector2(self.rect.center)
                 distance = (player_vec - item_vec).magnitude()
@@ -812,12 +889,16 @@ class Player(pygame.sprite.Sprite):
                                     if tmp[0].name == item.name:
                                         if tmp[1] < 6:
                                             tmp[1] += 1
-                                            if tmp[1] == 6:
+                                            if tmp[1] == 6 and self.ignore_item and item.name != "general_item9":
+                                                tmp[1] = -1
+                                                self.ignore_item = False
+                                                for i in general_inventory:
+                                                    if i[0].name == "general_item9": i[1] +=1
+                                            elif tmp[1] == 6 and not self.ignore_item:
                                                 tmp[0].is_get = True
                                         is_fill = False
                                 if is_fill:
                                     general_inventory.append([item, 1])
-                                
                             item.kill()
                     elif not keys[pygame.K_TAB]:
                         item.item_gage = 0
