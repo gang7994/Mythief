@@ -41,9 +41,9 @@ stage_Z_path = os.path.join(current_path, "Images/Stage4_Z")
 theme_inventory = ["Them_1.png", "Them_2.png", "Them_3.png", "Them_4.png", "Them_5.png"]
 general_inventory = []
 # 로프(패스권)
-rope_item = 100
+rope_item = 2
 # 스테이지 클리어 여부
-stage_clear = [True, False, False, False, False, False]
+stage_clear = [True, True, True, True, True, True]
 theme_clear = [False, False, False, False, False]
 
 # player use item

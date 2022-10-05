@@ -122,10 +122,10 @@ class GameManager:
     def main_menu(self):
         global rope_item, current_hp, max_hp, half_hp_count, stage_clear
         while True:
+            dt = self.clock.tick(FPS)
             if not pygame.mixer.Channel(0).get_busy():
                 bgm_sound.set_volume(bgm_vol / 200)
                 pygame.mixer.Channel(0).play(bgm_sound)
-                dt = self.clock.tick(FPS)
             self.screen.fill(BLACK)
             bg_image = pygame.transform.scale(
                 pygame.image.load(os.path.join(images_path, "mainBackGround.png")).convert_alpha(), (1456, 776))
@@ -174,7 +174,7 @@ class GameManager:
                             theme_inventory.clear()
                             general_inventory.clear()
                             rope_item = 2
-                            for i in range(0, 6):
+                            for i in range(1, 6):
                                 stage_clear[i] = False
                             self.general_item_effect_clear()
 
@@ -819,7 +819,7 @@ class GameManager:
                 else:  # 다음 방이 없으면 메인 스테이지로 넘어가기
                     if self.level.stage_number == 1:  # 튜토리얼 스테이지 마지막 방에서 나왔을때 초기화
                         general_inventory.clear()
-                        rope_item = 100
+                        rope_item = 2
                         max_hp = 100
                         current_hp = max_hp
                         time_record = 0

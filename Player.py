@@ -616,34 +616,6 @@ class Player(pygame.sprite.Sprite):
                     a.kill()
                 return
 
-    def debug_item(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_v] and len(general_inventory) == 0:
-            a = GeneralItem0((0, 0), [self.images, self.item_images])
-            a.is_get = True
-            general_inventory.append([a, 6])
-            a.kill()
-
-            a = GeneralItem1((0, 0), [self.images, self.item_images])
-            a.is_get = True
-            general_inventory.append([a, 6])
-            a.kill()
-
-            a = GeneralItem2((0, 0), [self.images, self.item_images])
-            a.is_get = True
-            general_inventory.append([a, 6])
-            a.kill()
-
-            a = GeneralItem3((0, 0), [self.images, self.item_images])
-            a.is_get = True
-            general_inventory.append([a, 6])
-            a.kill()
-
-            a = GeneralItem4((0, 0), [self.images, self.item_images])
-            a.is_get = True
-            general_inventory.append([a, 6])
-            a.kill()
-
     def event_item_effects(self, event_char):    # 이벤트 유물 효과 필요 -> hp관련 수정 필요
         global current_hp, max_hp
         if event_char == "A":
@@ -877,8 +849,17 @@ class Player(pygame.sprite.Sprite):
                                 self.is_full = False
                                 if item.name == "general_item":
                                     while 1:
-                                        item.name = random.choice(["general_item0","general_item1","general_item2","general_item3","general_item4",\
-                                            "general_item5", "general_item6", "general_item7", "general_item8", "general_item9", "general_item10"])
+                                        item.name = random.choice(["general_item0",
+                                                                   "general_item1",
+                                                                   "general_item2",
+                                                                   "general_item3",
+                                                                   "general_item4",
+                                                                   "general_item5",
+                                                                   "general_item6",
+                                                                   "general_item7",
+                                                                   "general_item8",
+                                                                   "general_item9",
+                                                                   "general_item10"])
                                         for i in general_inventory:
                                             if (i[0].name == item.name):
                                                 if i[1] == 6: self.is_full = True; break
@@ -889,7 +870,9 @@ class Player(pygame.sprite.Sprite):
                                     if tmp[0].name == item.name:
                                         if tmp[1] < 6:
                                             tmp[1] += 1
-                                            if tmp[1] == 6 and self.ignore_item and item.name != "general_item9":
+                                            if tmp[1] == 6 and\
+                                               self.ignore_item and\
+                                               item.name != "general_item9":
                                                 tmp[1] = -1
                                                 self.ignore_item = False
                                                 for i in general_inventory:
