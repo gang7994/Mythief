@@ -299,7 +299,7 @@ class GameManager:
             time_score = 0
             hp_score = half_hp_count * 200
             for i in general_inventory: #테마 유물 아이템 개당 700점
-                if i[1] == 6: item_score += 700
+                if i[1] >= 6: item_score += 700
             if 1400 - time_record > 0:
                 time_score = int(1400 - time_record) * 25
                 
@@ -380,6 +380,7 @@ class GameManager:
             self.screen.blit(item[0].image, image_rect)
             self.item_cover = pygame.image.load(os.path.join(item_path, "item_cover.png")).convert_alpha()
             if item[1] == -1: self.item_cover = pygame.transform.scale(self.item_cover, (45,45))
+            elif item[1] == 7: self.item_cover = pygame.transform.scale(self.item_cover, (45,45))
             else: self.item_cover = pygame.transform.scale(self.item_cover, (45,45-item[1]*7.5))
             self.item_cover.set_alpha(200)                                          
             self.screen.blit(self.item_cover,(130+i*105, 78))
@@ -456,10 +457,8 @@ class GameManager:
     def general_item_effect(self):
         global rope_item, max_hp, shield, bonus, use_item0, use_item1, use_item2, use_item3, use_item4, use_item5, use_item6, use_item7, use_item8, use_item9, use_item10
         for tmp in general_inventory:
-            if tmp[1] == 6 and self.level.player.ignore_item and not tmp[0].name == "general_item9":
-                tmp[1] = -1 
-                self.level.player.ignore_item = False
-            elif tmp[1] == 6:
+
+            if tmp[1] == 6:
                 if tmp[0].name == "general_item0" and not use_item0: #로프 1개 추가
                     rope_item +=1
                     use_item0 = True
@@ -492,7 +491,7 @@ class GameManager:
                 elif tmp[0].name == "general_item8": #이상한 석상
                     self.level.player.is_effect0 = True
                     use_item8 = True       
-                elif tmp[0].name == "general_item9" and not use_item9: #미믹 [비활성화 토의필요]
+                elif tmp[0].name == "general_item9": #미믹 [비활성화 토의필요]
                     self.level.player.ignore_item = True
                     use_item9 = True
                 elif tmp[0].name == "general_item10": #대나무 낚싯대
@@ -728,7 +727,7 @@ class GameManager:
             self.player_event_max_hp() #이벤트 맵의 결과에 따라 캐릭터 최대 체력이 변경되게 하는 함수
             # player_bonus
             self.get_bonus_score() #보너스 아이템을 먹었을 때 보너스 점수 100을 더하는 함수
-            print(time_record)
+            
             if not text_flag[self.level.stage_number + 1] and len(self.level.text.texts[self.level.map_idx]): #해당스테이지와 맵에 맞는 텍스트를 보여줌
                 self.level.text.draw_ui_text(self.level.text_idx, self.screen)     # 자동으로 생성되는 텍스트(한번 봤으면 다시 못봄)
             if self.level.player.event_handler:
@@ -772,7 +771,6 @@ class GameManager:
                 self.use_rope = False
             if x.hitbox.colliderect(y.rect):
                 if not self.finish:
-                    print(self.level.stage_number != 1)
                     time_record += (pygame.time.get_ticks() - self.level.start_time) /1000
                 if self.level.map_idx < len(map[self.level.stage_number]) - 1: #다음 방이 있다면 넘어가기
                     self.level.remain_monster = 0
