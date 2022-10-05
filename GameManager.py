@@ -339,10 +339,12 @@ class GameManager:
                     self.particle.click_flag = True
                     if MAINMENU.checkForInput(mouse_pos):
                         self.sound_click()
-                        if total >= 24100:
+                        if total >= 32600:
                             self.text.draw_text(7, self.screen)  # happy end
+                        elif total >= 24100:
+                            self.text.draw_text(8, self.screen)  # normal end
                         else:
-                            self.text.draw_text(8, self.screen)  # bad end
+                            self.text.draw_text(9, self.screen)  # bad end
                         running = False
             self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
             pygame.display.update()
