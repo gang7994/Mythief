@@ -118,7 +118,7 @@ class GameManager:
         return pygame.font.SysFont('malgungothic', size)
 
     def main_menu(self):
-        global rope_item, current_hp, max_hp, half_hp_count
+        global rope_item, current_hp, max_hp, half_hp_count, stage_clear
         while True:
             if not pygame.mixer.Channel(0).get_busy():
                 bgm_sound.set_volume(bgm_vol/200)
@@ -172,6 +172,8 @@ class GameManager:
                             theme_inventory.clear()
                             general_inventory.clear()
                             rope_item = 2
+                            for i in range(0, 6):
+                                stage_clear[i] = False
                             self.general_item_effect_clear()
 
                             
