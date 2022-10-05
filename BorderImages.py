@@ -240,7 +240,10 @@ class Finish4(pygame.sprite.Sprite):
 class Stage0(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
+        if stage_clear[0]:
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1.png")).convert_alpha()
+        else:
+            self.image = pygame.image.load(os.path.join(images_path, "wall_door1_closed.png")).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(-2, -2)
         self.name = "Stage0"

@@ -394,23 +394,23 @@ class GameManager:
         pygame.draw.circle(self.screen, GREY, (405, 710), 40)
         pygame.draw.circle(self.screen, GREY, (525, 710), 40)
         for i, item in enumerate(theme_inventory):
-            if item == "Them_1.png" and stage_clear[1]:
+            if item == "Them_1.png" and theme_clear[0]:
                 image = pygame.image.load(os.path.join(item_path, "Them_1.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_2.png" and stage_clear[2]:
+            elif item == "Them_2.png" and theme_clear[1]:
                 image = pygame.image.load(os.path.join(item_path, "Them_2.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_3.png" and stage_clear[3]:
+            elif item == "Them_3.png" and theme_clear[2]:
                 image = pygame.image.load(os.path.join(item_path, "Them_3.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_4.png" and stage_clear[4]:
+            elif item == "Them_4.png" and theme_clear[3]:
                 image = pygame.image.load(os.path.join(item_path, "Them_4.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
-            elif item == "Them_5.png" and stage_clear[5]:
+            elif item == "Them_5.png" and theme_clear[4]:
                 image = pygame.image.load(os.path.join(item_path, "Them_5.png")).convert_alpha()
                 image_rect = image.get_rect(center=(45 + i * 120, 710))
                 self.screen.blit(image, image_rect)
@@ -789,10 +789,15 @@ class GameManager:
                         
                     if self.level.stage_number == 5: # 마지막 스테이지    
                         self.finish = True
+                        theme_clear[self.level.stage_number -1] = True
                     if self.level.stage_number == 0:
                         self.clear(int(elapse_time))
                     else:
                         stage_clear[self.level.stage_number] = True
+                        theme_clear[self.level.stage_number -1] = True
+                        stage_clear[self.level.stage_number - 1] = False
+                        print(self.level.stage_number)
+                        print(stage_clear)
                         text_flag[self.level.stage_number + 1] = True
                         if max_hp / 2 <= current_hp and not(self.level.map_idx ==3 or self.level.map_idx == 7): half_hp_count+=1
                         self.level = Level(0, 0, 0, pygame.time.get_ticks())
@@ -803,7 +808,7 @@ class GameManager:
                 s2 = self.level.get_stage2()
                 s3 = self.level.get_stage3()
                 s4 = self.level.get_stage4()
-                if x.hitbox.colliderect(s0.rect): #튜토리얼 입구로 들어 갔을때
+                if x.hitbox.colliderect(s0.rect) and stage_clear[0]: #튜토리얼 입구로 들어 갔을때
                     self.level.stage_number = 1
                     self.text.draw_text(1, self.screen)
                     text_flag[1] = True
