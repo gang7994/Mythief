@@ -290,7 +290,7 @@ class GameManager:
             
 
     # 클리어 함수
-    def clear(self, elapsed_time):
+    def clear(self):
         running = True
         while running:
             mouse_pos = pygame.mouse.get_pos()
@@ -301,10 +301,8 @@ class GameManager:
             for i in general_inventory: #테마 유물 아이템 개당 700점
                 if i[1] == 6: item_score += 700
             if 1400 - time_record > 0:
-                time_score = int(1400 - time_record) *25
-
-
-            global bonus
+                time_score = int(1400 - time_record) * 25
+                
             MAINMENU = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
                            image1=pygame.image.load(os.path.join(images_path, "exit_icon2.png")).convert_alpha(),
                            pos=(1200, 650), scale_x=200, scale_y=200)
@@ -339,10 +337,10 @@ class GameManager:
                     self.particle.click_flag = True
                     if MAINMENU.checkForInput(mouse_pos):
                         self.sound_click()
-                        if total >= 1000:
-                            self.text.draw_text(7, self.screen)
+                        if total >= 24100:
+                            self.text.draw_text(7, self.screen) #happy end
                         else:
-                            self.text.draw_text(8, self.screen)
+                            self.text.draw_text(8, self.screen) #bad end
                         running = False
             self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
             pygame.display.update()
