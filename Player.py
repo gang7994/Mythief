@@ -26,11 +26,9 @@ class Player(pygame.sprite.Sprite):
         self.stage_num = stage_number
         self.map_num = map_idx
         self.ignore_item = False
-
-        self.item_name_list = ["general_item0", "general_item1", "general_item2",
-                             "general_item3", "general_item4", "general_item5",
-                             "general_item6", "general_item7", "general_item8",
-                             "general_item9", "general_item10"]
+        self.get_item_name_list = ["general_item0", "general_item2", "general_item4",
+                                   "general_item6", "general_item7",
+                                   "general_item9", "general_item10"]
         # player hp var
         self.is_dead = False
         # player move var
@@ -479,7 +477,7 @@ class Player(pygame.sprite.Sprite):
 
     def get_item(self):
         while True:
-            tmp = random.choice(self.item_name_list)
+            tmp = random.choice(self.get_item_name_list)
             flag = False
             for item in general_inventory:
                 if item[0].name == tmp and item[1] < 6:
@@ -708,7 +706,7 @@ class Player(pygame.sprite.Sprite):
                             self.start0 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
                             pass
-                        elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
+                        elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle" or sprite.name == "Pillar_2":
                             if self.dir.x > 0:
                                 self.hitbox.right = sprite.rect.left
                             elif self.dir.x < 0:
@@ -764,7 +762,7 @@ class Player(pygame.sprite.Sprite):
                             self.start1 = pygame.time.get_ticks()
                         if sprite.name == "alcoholRoad":
                             pass
-                        elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle":
+                        elif not self.is_dark and not self.is_thunder and not self.is_tile_mix or sprite.name == "Wall" or sprite.name == "obstacle" or sprite.name == "Pillar_2":
                             if self.dir.y > 0:
                                 self.hitbox.bottom = sprite.rect.top
                             elif self.dir.y < 0:

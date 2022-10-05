@@ -2,7 +2,7 @@ import pygame, os, random
 from Settings import *
 from BorderImages import Wall1, Wall2, Wall3, Wall4, Fire_Wall, Corner1, Corner2, Corner3,\
                          Corner4, NoneRoad, Finish, Finish2, Finish3, Finish4, Obstacle, Wall_Plant, Wall_Wreck, WaterHole, Stage0, Stage1,\
-                         Stage2, Stage3, Stage4, Stage5, Wave, Flood, Pillar0, Pillar1,Pillar2, Thunder, \
+                         Stage2, Stage3, Stage4, Wave, Flood, Pillar0, Pillar1,Pillar2, Thunder, \
                          CrossWire, DownLeftWire, DownRightWire, HorizontalDownWire, HorizontalUpWire, \
                          UpLeftWire, UpRightWire, VerticalLeftWire, VerticalRightWire, VerticalWire, HorizontalWire, Statue
 from Player import Player
@@ -324,8 +324,6 @@ class Level:
                     self.stage3 = Stage3((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
                 if col == "S4":
                     self.stage4 = Stage4((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
-                if col == "S5":
-                    self.stage5 = Stage5((tile_pos_x, tile_pos_y), [self.images, self.border_images, self.door_images])
                 if col == "RH":
                     Road_Horizontal((tile_pos_x, tile_pos_y), [self.images])
                     self.flooding_tile.append((tile_pos_x, tile_pos_y))
