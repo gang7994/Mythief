@@ -831,6 +831,7 @@ class GameManager:
                         theme_clear[self.level.stage_number - 1] = True
                     if self.level.stage_number == 0 and self.finish:
                         self.clear()
+                        self.text.draw_credit_text(10, self.screen)
                     else:
                         stage_clear[self.level.stage_number] = True
                         theme_clear[self.level.stage_number - 1] = True
