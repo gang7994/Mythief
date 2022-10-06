@@ -1,4 +1,13 @@
-import os, pygame
+import os, pygame, sys
+def resource_path(relative_path):
+    try:
+
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 pygame.init()
 # 게임 세팅 - 시험해보기 주석
 
@@ -28,8 +37,8 @@ FPS = 60
 tile_width_size = 48
 tile_height_size = 48
 # 이미지 경로
-current_path = os.path.dirname(__file__)
-images_path = os.path.join(current_path, "Images/TestPix")
+current_path = os.path.dirname(resource_path(__file__))
+images_path = os.path.join(current_path,"Images/TestPix")
 item_path = os.path.join(current_path, "Images/Item")
 stage_road_path = os.path.join(current_path, "Images/Stage_Road")
 stage_P_path = os.path.join(current_path, "Images/Stage1_P")
@@ -37,6 +46,7 @@ stage_H_path = os.path.join(current_path, "Images/Stage2_H")
 stage_D_path = os.path.join(current_path, "Images/Stage3_D")
 stage_Z_path = os.path.join(current_path, "Images/Stage4_Z")
 
+font_path = os.path.join(current_path, "Font")
 # 인벤토리
 theme_inventory = ["Them_1.png", "Them_2.png", "Them_3.png", "Them_4.png", "Them_5.png"]
 general_inventory = []
@@ -74,7 +84,7 @@ time_record = 0
 sound_path = os.path.join(current_path, "Sound")
 click_sound = pygame.mixer.Sound((os.path.join(sound_path, "click.wav")))
 stone_break_sound = pygame.mixer.Sound((os.path.join(sound_path, "stone_break.mp3")))
-item_interaction_sound = pygame.mixer.Sound("Sound/item_interaction.wav")
+item_interaction_sound = pygame.mixer.Sound((os.path.join(sound_path, "item_interaction.wav")))
 use_sound = pygame.mixer.Sound((os.path.join(sound_path, "throw.wav")))
 damage_sound = pygame.mixer.Sound((os.path.join(sound_path, "hurt.wav")))
 thunder_sound = pygame.mixer.Sound((os.path.join(sound_path, "thunder.wav")))

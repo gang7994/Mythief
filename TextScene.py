@@ -10,15 +10,15 @@ class TextManager:
         self.max_idx = len(self.texts) - 1
         self.text_speed = 1
         self.text_pos = 800
-        self.scene_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 25)
-        self.ui_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 20)
-        self.credit_font = pygame.font.Font("Images/TestPix/Mabinogi_Classic_TTF.ttf", 50)
-        self.text_ui = pygame.image.load(os.path.join(images_path, "text_UI.png")).convert_alpha()
+        self.scene_font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 25)
+        self.ui_font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 20)
+        self.credit_font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 50)
+        self.text_ui = pygame.image.load(os.path.join(images_path, resource_path("Images\TestPix\\text_UI.png"))).convert_alpha()
         self.ui_flag = True
         self.event_ui_flag = True
         self.text_idx = 0
         self.event_text_idx = 0
-        self.event_item_list = ["rotatingEXP_0.png", "rotatingEXP2_0.png", "rotatingEXP3_0.png"]
+        self.event_item_list = ["Images\Item\\rotatingEXP_0.png", "Images\Item\\rotatingEXP2_0.png", "Images\Item\\rotatingEXP3_0.png"]
         self.event_item_image = None
         self.clock = pygame.time.Clock()
 
@@ -61,7 +61,7 @@ class TextManager:
             screen.blit(text, (585, 685))
             screen.blit(support,(1180, 725))
             if code == "000":
-                self.event_item_image = pygame.image.load(os.path.join(item_path, self.event_item_list[self.event_text_idx])).convert_alpha()
+                self.event_item_image = pygame.image.load(os.path.join(item_path, resource_path(self.event_item_list[self.event_text_idx]))).convert_alpha()
                 screen.blit(self.event_item_image, (575, 665))
 
     def draw_credit_text(self, idx, screen):
