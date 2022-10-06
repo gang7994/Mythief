@@ -17,7 +17,6 @@ class GameManager:
         self.particle = Particle()
         self.total_time = 0
         self.total_rock_count = 0
-        self.total_score = 0
         self.running = True
         self.level = None
         self.use_rope = False
@@ -212,34 +211,6 @@ class GameManager:
                     self.sound_click()
                     self.running = False
         self.particle.mouse_cursor(self.screen, mouse_pos[0], mouse_pos[1])
-
-    # 시간 재기
-    def draw_time(self, elapse_time):
-        font = pygame.font.Font(None, 25)
-        timer = font.render("Time : {}".format(int(elapse_time)), True, WHITE)
-        self.screen.blit(timer, (10, 170))
-
-    # 걸린 시간
-    def total_time_update(self, elapse_time):
-        self.total_time += elapse_time
-        return self.total_time
-
-    # 얻은 점수 수정 필요
-    def total_score_update(self, score):
-        self.total_score += score
-        return self.total_score
-
-    # 점수 그리기
-    def draw_score(self, total_score):
-        font = pygame.font.Font(None, 25)
-        score = font.render("Score : {}".format(int(total_score)), True, WHITE)
-        self.screen.blit(score, (10, 205))
-
-    # 돌 던진 횟수 그리기
-    def draw_rock_count(self):
-        font = pygame.font.Font(None, 25)
-        score = font.render("Rock Count : {}".format(int(self.level.player.rock_count)), True, WHITE)
-        self.screen.blit(score, (10, 240))
 
     # 체력 그리기
     def draw_hp(self):
@@ -745,7 +716,6 @@ class GameManager:
             self.screen.fill(BLACK)
             self.level.run()
             self.draw_frame()  # 게임화면에서 테투리를 그리는 함수
-            self.draw_rock_count()  #
             self.show_item()  # 오른쪽 하단의 기믹아이템, 로프(패스권), 돌 쿨타임을 화면에 보여주는 함수
             self.player_hp()  # 캐릭터의 체력을 계산해주는 함수
             self.draw_hp()  # 캐릭터의 체력을 화면에 보여주는 함수
@@ -780,8 +750,6 @@ class GameManager:
                 self.start_time = pygame.time.get_ticks() - self.tem_now_time
                 elapse_time = (self.tem_now_time) / 1000
 
-            self.draw_time(elapse_time)
-            self.draw_score(self.total_score)
             if self.level.is_pause:
                 self.popup = pygame.image.load(os.path.join(images_path, "popup.png")).convert_alpha()
                 self.popup.set_alpha(200)
