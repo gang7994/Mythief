@@ -10,15 +10,15 @@ class TextManager:
         self.max_idx = len(self.texts) - 1
         self.text_speed = 1
         self.text_pos = 800
-        self.scene_font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 25)
-        self.ui_font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 20)
-        self.credit_font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 50)
-        self.text_ui = pygame.image.load(os.path.join(images_path, resource_path("Images\TestPix\\text_UI.png"))).convert_alpha()
+        self.scene_font = pygame.font.Font(os.path.join(font_path, resource_path("Font/Mabinogi.ttf")), 25)
+        self.ui_font = pygame.font.Font(os.path.join(font_path, resource_path("Font/Mabinogi.ttf")), 20)
+        self.credit_font = pygame.font.Font(os.path.join(font_path, resource_path("Font/Mabinogi.ttf")), 50)
+        self.text_ui = pygame.image.load(os.path.join(images_path, resource_path("Images/TestPix/text_UI.png"))).convert_alpha()
         self.ui_flag = True
         self.event_ui_flag = True
         self.text_idx = 0
         self.event_text_idx = 0
-        self.event_item_list = ["Images\Item\\rotatingEXP_0.png", "Images\Item\\rotatingEXP2_0.png", "Images\Item\\rotatingEXP3_0.png"]
+        self.event_item_list = ["Images/Item/rotatingEXP_0.png", "Images/Item/rotatingEXP2_0.png", "Images/Item/rotatingEXP3_0.png"]
         self.event_item_image = None
         self.clock = pygame.time.Clock()
 

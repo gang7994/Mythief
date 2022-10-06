@@ -228,7 +228,7 @@ class GameManager:
 
     def item_interaction_text(self):
         if self.level.player.item_interaction:
-            font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 20)
+            font = pygame.font.Font(os.path.join(font_path, resource_path("Font/Mabinogi.ttf")), 20)
             tap_key = font.render("Tab을 누르시오", True, BLACK)
             txt_w, txt_h = tap_key.get_size()
             self.screen.blit(self.interaction_UI, (screen_width // 2 - 149 // 2, screen_height // 2 - 75))
@@ -247,7 +247,7 @@ class GameManager:
                                   10), 2)
 
     def door_interaction_text(self):
-        font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 30)
+        font = pygame.font.Font(os.path.join(font_path, resource_path("Font/Mabinogi.ttf")), 30)
         door_text = font.render("", True, WHITE)
         if self.level.player.stage0_interaction:
             door_text = font.render("Tutorial", True, WHITE)
@@ -280,8 +280,8 @@ class GameManager:
             MAINMENU = Button(image0=pygame.image.load(os.path.join(images_path, "exit_icon.png")).convert_alpha(),
                               image1=pygame.image.load(os.path.join(images_path, "exit_icon2.png")).convert_alpha(),
                               pos=(1200, 650), scale_x=200, scale_y=200)
-            title_font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 100)
-            game_font = pygame.font.Font(os.path.join(font_path, resource_path("Font\Mabinogi.ttf")), 70)
+            title_font = pygame.font.Font(os.path.join(font_path, resource_path("Font/Mabinogi.ttf")), 100)
+            game_font = pygame.font.Font(os.path.join(font_path, resource_path("Font/Mabinogi.ttf")), 70)
 
             total = time_score + 15000 + bonus + item_score + hp_score
             msg0 = title_font.render(f"[ Your Score ]", True, WHITE)
