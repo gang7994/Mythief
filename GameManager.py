@@ -171,11 +171,14 @@ class GameManager:
                             half_hp_count = 0
                             max_hp = 100
                             current_hp = max_hp
-                            theme_inventory.clear()
                             general_inventory.clear()
                             rope_item = 2
                             for i in range(1, 6):
                                 stage_clear[i] = False
+                            stage_clear[0] = True
+                            for i in range(5):
+                                theme_clear[i] = False
+                            print(stage_clear)
                             self.general_item_effect_clear()
 
                         if OPTION_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -835,8 +838,7 @@ class GameManager:
                         stage_clear[self.level.stage_number] = True
                         theme_clear[self.level.stage_number - 1] = True
                         stage_clear[self.level.stage_number - 1] = False
-                        print(self.level.stage_number)
-                        print(stage_clear)
+
                         text_flag[self.level.stage_number + 1] = True
                         if max_hp / 2 <= current_hp and not (
                                 self.level.map_idx == 3 or self.level.map_idx == 7): half_hp_count += 1

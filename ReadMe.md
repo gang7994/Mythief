@@ -1,6 +1,14 @@
 Mythief
 ===========================
 
+개발 기간 : 22.07.29 ~ 22.10.07 </br>
+기획 : 오현민, 정하영 </br>
+개발 : 안동현, 이강영 </br>
+그래픽 및 사운드 : 박준용
+
+-----------------------------
+
+
 ## 타일 정보
 
 ### [벽]
@@ -35,7 +43,7 @@ Mythief
 ### [길]
 |이미지|코드(명칭)|클래스|비고|
 |:------:|:---:|:---:|:---:|
-|![img](/Images/TestPix/tile_N.png)|"R"(Road)|Road( )|.|
+|![img](/Images/Stage_Road/tile2.png)|"R"(Road)|Road( )|.|
 |![img](/Images/TestPix/re_tile_horiz.png)|"RH"(Road)|Road_Horizontal( )|.|
 |![img](/Images/TestPix/re_tile_vert.png)|"RV"(Road)|Road_Vertical( )|.|
 
@@ -48,9 +56,12 @@ Mythief
 ### [테마 아이템]
 |이미지|코드(명칭)|클래스|비고|
 |:------:|:---:|:---:|:---:|
-|![img](/Images/Item/test0_item.png)|"I0"(test0_item)|Test0Item( )|.|
-|![img](/Images/Item/test1_item.png)|"I1"(test1_item)|Test1Item( )|.|
-|![img](/Images/Item/test2_item.png)|"I2"(test2_item)|Test2Item( )|.|
+|![img](/Images/Item/Them_1.png)|(Them_1.png))|.|.|
+|![img](/Images/Item/Them_2.png)|(Them_2.png))|.|.|
+|![img](/Images/Item/Them_3.png)|(Them_3.png))|.|.|
+|![img](/Images/Item/Them_4.png)|(Them_4.png))|.|.|
+|![img](/Images/Item/Them_5.png)|(Them_5.png))|.|.|
+
 
 ### [일반 아이템]
 |이미지|코드(명칭)|클래스|비고|
@@ -104,7 +115,7 @@ Mythief
 ### [배경음]
 |파일명|출처|라이선스|
 |:------:|:---:|:---:|
-|-|-|-|
+|master.mp3|자체제작|.|
 
 ### [효과음]
 |파일명|출처|라이선스|
