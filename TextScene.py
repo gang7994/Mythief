@@ -85,11 +85,11 @@ class TextManager:
 
             screen.blit(team_name, (510,0 + self.text_pos))
             screen.blit(game_planner, (600,150 + self.text_pos))
-            screen.blit(planner_name, (560,200 + self.text_pos))
+            screen.blit(planner_name, (560,230 + self.text_pos))
             screen.blit(game_developer, (600,350 + self.text_pos))
-            screen.blit(developer_name, (560,400 + self.text_pos))
+            screen.blit(developer_name, (560,430 + self.text_pos))
             screen.blit(game_graphic, (500,550 + self.text_pos))
-            screen.blit(graphic_name, (640,600 + self.text_pos))
+            screen.blit(graphic_name, (640,630 + self.text_pos))
             screen.blit(thanks, (600,750 + self.text_pos))
             self.text_pos -= self.text_speed
             if self.text_pos <= -800:
