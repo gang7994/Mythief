@@ -379,7 +379,9 @@ class GameManager:
             elif item[1] == 7:
                 self.item_cover = pygame.transform.scale(self.item_cover, (45, 45))
             else:
-                self.item_cover = pygame.transform.scale(self.item_cover, (45, 45 - item[1] * 7.5))
+                if 45 - item[1] * 7.5 < 0: n = 0
+                else: n = 45 - item[1] * 7.5
+                self.item_cover = pygame.transform.scale(self.item_cover, (45, n))
             self.item_cover.set_alpha(200)
             self.screen.blit(self.item_cover, (130 + i * 105, 78))
 
